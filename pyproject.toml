@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "optionslib"
+version = "0.1.0"
+authors = ["quantophile", "bwrob"]
+description = ""
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+numpy = "^1.26"
+matplotlib = "^3.8"
+scipy = "^1.11"
+
+
+[tool.poetry.group.dev.dependencies]
+black = "^23.11"
+pylint = "^3.0"
+mypy = "^1.7"
+docformatter = "^1.7"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
