@@ -10,8 +10,6 @@ python = "^3.11"
 numpy = "^1.26"
 matplotlib = "^3.8"
 scipy = "^1.11"
-doxy = "^0.3.2"
-
 
 [tool.poetry.group.dev.dependencies]
 black = "^23.11"
@@ -20,6 +18,7 @@ mypy = "^1.7"
 docformatter = "^1.7"
 jupyter = "^1.0"
 pre-commit = "^3.5"
+doxy = "^0.3.2"
 
 [build-system]
 requires = ["poetry-core"]
