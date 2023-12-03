@@ -1,0 +1,47 @@
+\doxysection{basics.\+Day\+Count\+Basis.\+Thirty360 Class Reference}
+\hypertarget{classbasics_1_1_day_count_basis_1_1_thirty360}{}\label{classbasics_1_1_day_count_basis_1_1_thirty360}\index{basics.DayCountBasis.Thirty360@{basics.DayCountBasis.Thirty360}}
+Inheritance diagram for basics.\+Day\+Count\+Basis.\+Thirty360\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classbasics_1_1_day_count_basis_1_1_thirty360}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classbasics_1_1_day_count_basis_1_1_thirty360_af5e7620bd6755ef822295bbda9cdb753}{year\+Fraction}} (date d1, date d2)
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions inherited from \mbox{\hyperlink{classbasics_1_1_day_count_basis_1_1_day_count_base}{basics.\+Day\+Count\+Basis.\+Day\+Count\+Base}}}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classbasics_1_1_day_count_basis_1_1_day_count_base_a14ae5dcb186762c783ce7c494c7625d2}{days\+Between}} (date start\+Inclusive, date end\+Exlusive)
+\begin{DoxyCompactList}\small\item\em Returns the number of calendar days in the period \mbox{[}start\+Inclusive,end\+Exclusive). \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classbasics_1_1_day_count_basis_1_1_thirty360_af5e7620bd6755ef822295bbda9cdb753}\label{classbasics_1_1_day_count_basis_1_1_thirty360_af5e7620bd6755ef822295bbda9cdb753} 
+\index{basics.DayCountBasis.Thirty360@{basics.DayCountBasis.Thirty360}!yearFraction@{yearFraction}}
+\index{yearFraction@{yearFraction}!basics.DayCountBasis.Thirty360@{basics.DayCountBasis.Thirty360}}
+\doxysubsubsection{\texorpdfstring{yearFraction()}{yearFraction()}}
+{\footnotesize\ttfamily basics.\+Day\+Count\+Basis.\+Thirty360.\+year\+Fraction (\begin{DoxyParamCaption}\item[{date}]{d1,  }\item[{date}]{d2 }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00056\ \ \ \ \ \textcolor{keyword}{def\ }yearFraction(d1:date,\ d2:date): }
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \ \ startDate\ =\ d1 }
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \ \ endDate\ =\ d2 }
+\DoxyCodeLine{00059\  }
+\DoxyCodeLine{00060\ \ \ \ \ \ \ \ \ if(d2.day\ ==\ 31\ \textcolor{keywordflow}{and}\ d1.day\ >\ 29): }
+\DoxyCodeLine{00061\ \ \ \ \ \ \ \ \ \ \ \ \ endDate\ =\ date(d2.year,\ d2.month,30) }
+\DoxyCodeLine{00062\  }
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \ \ if(d1.day\ ==\ 31): }
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \ \ \ \ \ \ startDate\ =\ date(d1.year,d1.month,30) }
+\DoxyCodeLine{00065\  }
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (360\ *\ (endDate.year\ -\/\ startDate.year)\ +\ 30\ *\ (endDate.month\ -\/\ startDate.month)\ +\ (endDate.day\ -\/\ startDate.day))/360 }
+
+\end{DoxyCode}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+basics/\mbox{\hyperlink{_day_count_basis_8py}{Day\+Count\+Basis.\+py}}\end{DoxyCompactItemize}

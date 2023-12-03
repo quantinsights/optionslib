@@ -1,0 +1,368 @@
+\doxysection{Discounting\+Curve.\+Discounting\+Curve Class Reference}
+\hypertarget{class_discounting_curve_1_1_discounting_curve}{}\label{class_discounting_curve_1_1_discounting_curve}\index{DiscountingCurve.DiscountingCurve@{DiscountingCurve.DiscountingCurve}}
+
+
+A curve object that stores discount factors.  
+
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_discounting_curve_1_1_discounting_curve_aae9dabbbb36b105d2a89fee65e4a76b8}{\+\_\+\+\_\+init\+\_\+\+\_\+}} (self, np.\+ndarray \mbox{\hyperlink{class_discounting_curve_1_1_discounting_curve_ad6b485e419c471c3f207de9bf9963cf3}{dates}}, np.\+ndarray discount\+Factors, \mbox{\hyperlink{class_discounting_curve_1_1_discounting_interpolation_method}{Discounting\+Interpolation\+Method}} disc\+Interp\+Method=\mbox{\hyperlink{class_discounting_curve_1_1_discounting_interpolation_method_ab396f53c61189bae978aad21381797fc}{Discounting\+Interpolation\+Method.\+FINANCIAL\+\_\+\+CUBIC\+\_\+\+SPLINE}})
+\item 
+\mbox{\hyperlink{class_discounting_curve_1_1_discounting_curve_adc277196d1b980c9301598415a9ffc03}{date\+Set\+For\+Plot}} (self)
+\item 
+\mbox{\hyperlink{class_discounting_curve_1_1_discounting_curve_a76f3c03a1da598eed660c09426b0b52e}{plot\+DFs}} (self)
+\item 
+\mbox{\hyperlink{class_discounting_curve_1_1_discounting_curve_a1aa705ab59a280993818e7baac3bb90b}{plot\+Rates}} (self)
+\item 
+\mbox{\hyperlink{class_discounting_curve_1_1_discounting_curve_aa64973b5d5518c7c813d8458a01a657b}{plot\+Zero\+Coupon\+Curve}} (self)
+\item 
+\mbox{\hyperlink{class_discounting_curve_1_1_discounting_curve_a9291be9005c72e6b728ad9d318d940f6}{plot\+Forward\+Curve}} (self)
+\item 
+\mbox{\hyperlink{class_discounting_curve_1_1_discounting_curve_a0386f8281e45d8cf145c8ecb8ac40ec9}{discount\+Factor}} (self, datetime.\+date t, datetime.\+date T)
+\begin{DoxyCompactList}\small\item\em Returns the discount factor P(t,\+T) between times t and T. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_discounting_curve_1_1_discounting_curve_ab82602e06a3578c101c6863577d49f19}{zero}} (self, date t, date T)
+\begin{DoxyCompactList}\small\item\em Returns the annual compounded spot interest rate(zero) Y(t,\+T) between times t and T. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_discounting_curve_1_1_discounting_curve_a1378f103b8f17eb48cbbe1dfeac9027c}{rate}} (self, date t, date T)
+\begin{DoxyCompactList}\small\item\em Returns the continuous compounded spot rate R(t,\+T) between times t and T. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_discounting_curve_1_1_discounting_curve_a71e8113eba9987e01cf915e15ea49aca}{forward}} (self, date t, date T, date S)
+\begin{DoxyCompactList}\small\item\em Returns the simply compounded forward rate F(t;T,S) between times T and S, as observed on t. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_discounting_curve_1_1_discounting_curve_ad6b485e419c471c3f207de9bf9963cf3}{dates}}
+\item 
+\mbox{\hyperlink{class_discounting_curve_1_1_discounting_curve_aa372a53a24dfb7cda90e0e221bf7086c}{dfs}}
+\item 
+\mbox{\hyperlink{class_discounting_curve_1_1_discounting_curve_a08c9ff5260556a0491e8a9c783842c5d}{Discounting\+Interpolation\+Method}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+A curve object that stores discount factors. 
+
+A {\ttfamily \doxylink{namespace_discounting_curve}{Discounting\+Curve}} object stores a vector of dates and discount factors. There is a need to value all instruments consistently within a single valuation framework. For this we need a risk-\/free discounting curve which will be a continuous curve (because this is the standard format for all option pricing formulae).
+
+We establish a few important results.
+
+Definition. (Risk-\/free asset). Consider an asset with the price process $(B_t:t \in [0,T])$ which has the dynamics\+: \$\$d\+B(t) = r(t)B(t)dt\$\$
+
+where $r(t)$ is any adapted process. $B_t$ has no driving Wiener process ( $dW_t$ term). Such an asset is said to be a risk-\/free asset. This corresponds to a bank account with (possibly stochastic short interest rate $r(t)$. Note, that the bank-\/account is {\itshape locally risk-\/free}, in the sense that, even if the short rate is a random process, the return $r(t)$ over an infinitesimal time-\/period $dt$ is risk-\/free (that is deterministic, given the information available at time $t$). However, the return of $B$ over a longer time period is typically stochastic.
+
+Using ODE cookbook methods, we can solve the above equation using separation of variables\+: \$\$\+B(t) = B(0) e\texorpdfstring{$^\wedge$}{\string^}\{\textbackslash{}int\+\_\+\{0\}\texorpdfstring{$^\wedge$}{\string^}\{t\} r(s) ds\}\$\$
+
+Definition. (Discounting process). The discounting process is defined as $D(t)=\frac{1}{B(t)}$. It is easy to see that the dynamics of $D(t)$ is\+: \$\$\+D(t) = -\/r(t)D(t)dt\$\$
+
+with solution \$\$\+D(0) = D(t)e\texorpdfstring{$^\wedge$}{\string^}\{-\/\textbackslash{}int\+\_\+\{0\}\texorpdfstring{$^\wedge$}{\string^}\{t\} r(s) ds\}\$\$
+
+Definition. (Stochastic Discount Factor). The (stochastic) discount factor between two time instants $t$ and $T$ is the amount at time $t$ equal to one unit of currency payable at time $T$ and is given by\+: \$\$\+D(t,\+T) = \textbackslash{}frac\{B(t)\}\{B(\+T)\} = e\texorpdfstring{$^\wedge$}{\string^}\{-\/\textbackslash{}int\+\_\+\{t\}\texorpdfstring{$^\wedge$}{\string^}\{T\} r(s) ds\}\$\$
+
+Definition. (Zero coupon bond). A $T$ maturity zero-\/coupon bond is a contract that guarantees its holder the payment of one unit of currency at time $T$, with no intermediate payments. The contract value at time $t < T$ is denoted by $P(t,T)$. Clearly, $P(T,T) = 1$ for all $T$.
+
+By the risk neutral pricing formula, the price $P(t,T)$ of this claim at time $t$ is given by\+:
+
+\$\$\textbackslash{}frac\{P(t,\+T)\}\{B(t)\} = \textbackslash{}mathbb\{E\}\texorpdfstring{$^\wedge$}{\string^}\{\textbackslash{}mathbb\{Q\}\}\textbackslash{}left\mbox{[}\textbackslash{}frac\{1\}\{B(\+T)\}\texorpdfstring{$\vert$}{|}\textbackslash{}mathcal\{F\}\+\_\+t\textbackslash{}right\mbox{]}\$\$
+
+In other words, \$\$\+P(t,\+T) = \textbackslash{}mathbb\{E\}\texorpdfstring{$^\wedge$}{\string^}\{\textbackslash{}mathbb\{Q\}\}\textbackslash{}left\mbox{[}\textbackslash{}frac\{B(t)\}\{B(\+T)\}\texorpdfstring{$\vert$}{|}\textbackslash{}mathcal\{F\}\+\_\+t\textbackslash{}right\mbox{]}= \textbackslash{}mathbb\{E\}\texorpdfstring{$^\wedge$}{\string^}\{\textbackslash{}mathbb\{Q\}\}\textbackslash{}left\mbox{[}D(t,\+T)\texorpdfstring{$\vert$}{|}\textbackslash{}mathcal\{F\}\+\_\+t\textbackslash{}right\mbox{]}\$\$
+
+What is the relationship between the stochastic discount factor $D(t,T)$ and the zero-\/coupon bond price $P(t,T)$ for each pair $(t,T)$? If the rates $r$ are deterministic, then $D$ is deterministic as well and $D(t,T) = P(t,T)$. However, if the rates are stochastic, $D(t,T)$ is a random quantity at time $t$ depending on the future evolution of the rates $r$ between $t$ and $T$.
+
+{\itshape Remark.} It is common to refer to the ZCB price $P(t,T)$ as just the discount factor.
+
+Definition (Continuously compounded spot interest rate). The continuously compounded spot interest rate prevailing at time $t$ for the maturity $T$ is denoted by $R(t,T)$ and is the constant rate at which an investment of $P(t,T)$ units of currency at time $t$ accrues continuous to yield a unit amount of currency at maturity $T$. In formulas\+: \$\$ P(t,\+T)\textbackslash{}exp\{(R(t,\+T)\textbackslash{}tau(t,T))\} = 1\$\$
+
+or \$\$ R(t,\+T) = -\/\textbackslash{}frac\{\textbackslash{}ln P(t,\+T)\}\{\textbackslash{}tau(t,T)\}\$\$
+
+Definition (Annually compounded spot interest rate). The annually compounded spot interest rate prevailing at time $t$ for the maturity $T$ is denoted by $Y(t,T)$ and is the constant rate at which investment has to be made to produce an amount of one unit of currency at maturity starting from $P(t,T)$ units of currency at time $t$, when reinvesting the obtained amounts once a year. In formulas, \$\$\+P(t,\+T)\mbox{[}1 + Y(t,\+T)\mbox{]}\texorpdfstring{$^\wedge$}{\string^}\{\textbackslash{}tau(t,T)\} = 1\$\$
+
+Solving for $Y(t,T)$, we have\+:
+
+\$\$\+Y(t,\+T) \+:= \textbackslash{}frac\{1\}\{\mbox{[}P(t,\+T)\mbox{]}\texorpdfstring{$^\wedge$}{\string^}\{\textbackslash{}frac\{1\}\{\textbackslash{}tau(t,T)\}\}\} -\/ 1\$\$
+
+Thus, zero-\/coupon bond prices can be expressed in terms of annually compounded rates as\+:
+
+\$\$\+P(t,\+T) = \textbackslash{}frac\{1\}\{\mbox{[}1+Y(t,\+T)\mbox{]}\texorpdfstring{$^\wedge$}{\string^}\{\textbackslash{}tau(t,T)\}\}\$\$
+
+Definition (Simply-\/compounded spot interest rate). The simply compounded spot interest rate prevailing at time $t$ for maturity $T$ is denoted by $L(t,T)$ and is the constant rate at which an investment has to be made to produce one unit of currency at maturity, starting from $P(t,T)$ units of currency at time $t$, when accruing occurs proportionally to the investment time. In formulas\+: \$\$\+P(t,\+T)\mbox{[}1 + L(t,\+T) \textbackslash{}times \textbackslash{}tau(t,T)\mbox{]}=1\$\$
+
+Solving for $L(t,T)$, we have\+: \$\$\+L(t,\+T) \+:= \textbackslash{}frac\{1 -\/ P(t,\+T)\}\{\textbackslash{}tau(t,T)P(t,\+T)\}\$\$
+
+Reference \+: \href{http://www.deriscope.com/docs/Hagan_West_curves_AMF.pdf}{\texttt{ http\+://www.\+deriscope.\+com/docs/\+Hagan\+\_\+\+West\+\_\+curves\+\_\+\+AMF.\+pdf}} 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_discounting_curve_1_1_discounting_curve_aae9dabbbb36b105d2a89fee65e4a76b8}\label{class_discounting_curve_1_1_discounting_curve_aae9dabbbb36b105d2a89fee65e4a76b8} 
+\index{DiscountingCurve.DiscountingCurve@{DiscountingCurve.DiscountingCurve}!\_\_init\_\_@{\_\_init\_\_}}
+\index{\_\_init\_\_@{\_\_init\_\_}!DiscountingCurve.DiscountingCurve@{DiscountingCurve.DiscountingCurve}}
+\doxysubsubsection{\texorpdfstring{\_\_init\_\_()}{\_\_init\_\_()}}
+{\footnotesize\ttfamily Discounting\+Curve.\+Discounting\+Curve.\+\_\+\+\_\+init\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{np.\+ndarray}]{dates,  }\item[{np.\+ndarray}]{discount\+Factors,  }\item[{\mbox{\hyperlink{class_discounting_curve_1_1_discounting_interpolation_method}{Discounting\+Interpolation\+Method}} }]{disc\+Interp\+Method = {\ttfamily \mbox{\hyperlink{class_discounting_curve_1_1_discounting_interpolation_method_ab396f53c61189bae978aad21381797fc}{Discounting\+Interpolation\+Method.\+FINANCIAL\+\_\+\+CUBIC\+\_\+\+SPLINE}}} }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00117\ \ \ \ \ ): }
+\DoxyCodeLine{00118\ \ \ \ \ \ \ \ \ self.dates\ =\ dates }
+\DoxyCodeLine{00119\ \ \ \ \ \ \ \ \ self.dfs\ =\ discountFactors }
+\DoxyCodeLine{00120\ \ \ \ \ \ \ \ \ self.DiscountingInterpolationMethod\ =\ discInterpMethod }
+\DoxyCodeLine{00121\  }
+
+\end{DoxyCode}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_discounting_curve_1_1_discounting_curve_adc277196d1b980c9301598415a9ffc03}\label{class_discounting_curve_1_1_discounting_curve_adc277196d1b980c9301598415a9ffc03} 
+\index{DiscountingCurve.DiscountingCurve@{DiscountingCurve.DiscountingCurve}!dateSetForPlot@{dateSetForPlot}}
+\index{dateSetForPlot@{dateSetForPlot}!DiscountingCurve.DiscountingCurve@{DiscountingCurve.DiscountingCurve}}
+\doxysubsubsection{\texorpdfstring{dateSetForPlot()}{dateSetForPlot()}}
+{\footnotesize\ttfamily Discounting\+Curve.\+Discounting\+Curve.\+date\+Set\+For\+Plot (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00122\ \ \ \ \ \textcolor{keyword}{def\ }dateSetForPlot(self): }
+\DoxyCodeLine{00123\ \ \ \ \ \ \ \ \ anchorDate\ =\ self.dates[0] }
+\DoxyCodeLine{00124\ \ \ \ \ \ \ \ \ terminalDate\ =\ anchorDate\ +\ datetime.timedelta(days=365*5) }
+\DoxyCodeLine{00125\ \ \ \ \ \ \ \ \ nPoints\ =\ (terminalDate\ -\/\ anchorDate).days\ +\ 1 }
+\DoxyCodeLine{00126\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ anchorDate,\ [anchorDate\ +\ timedelta(days=i)\ \textcolor{keywordflow}{for}\ i\ \textcolor{keywordflow}{in}\ range(nPoints)],\ nPoints }
+\DoxyCodeLine{00127\  }
+
+\end{DoxyCode}
+\Hypertarget{class_discounting_curve_1_1_discounting_curve_a0386f8281e45d8cf145c8ecb8ac40ec9}\label{class_discounting_curve_1_1_discounting_curve_a0386f8281e45d8cf145c8ecb8ac40ec9} 
+\index{DiscountingCurve.DiscountingCurve@{DiscountingCurve.DiscountingCurve}!discountFactor@{discountFactor}}
+\index{discountFactor@{discountFactor}!DiscountingCurve.DiscountingCurve@{DiscountingCurve.DiscountingCurve}}
+\doxysubsubsection{\texorpdfstring{discountFactor()}{discountFactor()}}
+{\footnotesize\ttfamily Discounting\+Curve.\+Discounting\+Curve.\+discount\+Factor (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{datetime.\+date}]{t,  }\item[{datetime.\+date}]{T }\end{DoxyParamCaption})}
+
+
+
+Returns the discount factor P(t,\+T) between times t and T. 
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00157\ \ \ \ \ \textcolor{keyword}{def\ }discountFactor(self,\ t:\ datetime.date,\ T:\ datetime.date): }
+\DoxyCodeLine{00158\ \ \ \ \ \ \ \ \ anchorDate\ =\ self.dates[0] }
+\DoxyCodeLine{00159\ \ \ \ \ \ \ \ \ result\ =\ 0.0 }
+\DoxyCodeLine{00160\ \ \ \ \ \ \ \ \ interpolator\ =\ \textcolor{keywordtype}{None} }
+\DoxyCodeLine{00161\  }
+\DoxyCodeLine{00162\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (self.DiscountingInterpolationMethod\ ==\ DiscountingInterpolationMethod.LINEAR\_ON\_DISCOUNT\_FACTORS): }
+\DoxyCodeLine{00163\ \ \ \ \ \ \ \ \ \ \ \ \ interpolator\ =\ \mbox{\hyperlink{class_linear_interpolator_1_1_linear_interpolator}{LinearInterpolator.LinearInterpolator}}( }
+\DoxyCodeLine{00164\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ x\_values=self.dates, }
+\DoxyCodeLine{00165\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ y\_values=self.dfs }
+\DoxyCodeLine{00166\ \ \ \ \ \ \ \ \ \ \ \ \ ) }
+\DoxyCodeLine{00167\  }
+\DoxyCodeLine{00168\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ The\ discount\ factor\ P(0,t) }}
+\DoxyCodeLine{00169\ \ \ \ \ \ \ \ \ \ \ \ \ df\_t\ =\ interpolator.value(t) }
+\DoxyCodeLine{00170\  }
+\DoxyCodeLine{00171\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ The\ discount\ factor\ P(0,T) }}
+\DoxyCodeLine{00172\ \ \ \ \ \ \ \ \ \ \ \ \ df\_T\ =\ interpolator.value(T) }
+\DoxyCodeLine{00173\  }
+\DoxyCodeLine{00174\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ We\ know\ that,\ P(0,T)\ =\ P(0,t)\ x\ P(t,T) }}
+\DoxyCodeLine{00175\ \ \ \ \ \ \ \ \ \ \ \ \ result\ =\ (df\_T)\ /\ (df\_t) }
+\DoxyCodeLine{00176\  }
+\DoxyCodeLine{00177\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (self.DiscountingInterpolationMethod\ ==\ DiscountingInterpolationMethod.LINEAR\_ON\_RATES): }
+\DoxyCodeLine{00178\ \ \ \ \ \ \ \ \ \ \ \ \ rates\ =\ np.ndarray([self.rate(anchorDate,t)\ \textcolor{keywordflow}{for}\ i\ \textcolor{keywordflow}{in}\ len(self.dfs)]) }
+\DoxyCodeLine{00179\  }
+\DoxyCodeLine{00180\ \ \ \ \ \ \ \ \ \ \ \ \ interpolator\ =\ \mbox{\hyperlink{class_linear_interpolator_1_1_linear_interpolator}{LinearInterpolator.LinearInterpolator}}( }
+\DoxyCodeLine{00181\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ x\_values=self.dates, }
+\DoxyCodeLine{00182\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ y\_values=rates }
+\DoxyCodeLine{00183\ \ \ \ \ \ \ \ \ \ \ \ \ ) }
+\DoxyCodeLine{00184\  }
+\DoxyCodeLine{00185\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ The\ rate\ R(0,t) }}
+\DoxyCodeLine{00186\ \ \ \ \ \ \ \ \ \ \ \ \ r\_t\ =\ interpolator.value(t) }
+\DoxyCodeLine{00187\  }
+\DoxyCodeLine{00188\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ The\ rate\ R(0,T) }}
+\DoxyCodeLine{00189\ \ \ \ \ \ \ \ \ \ \ \ \ r\_T\ =\ interpolator.value(T) }
+\DoxyCodeLine{00190\  }
+\DoxyCodeLine{00191\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ We\ know\ that\ e\string^(R(t,T)tau(t,T))\ =\ e\string^(R(0,T)tau(0,T))/e\string^(R(0,t)tau(0,t)) }}
+\DoxyCodeLine{00192\ \ \ \ \ \ \ \ \ \ \ \ \ tau\_t\ =\ Actual365.yearFraction(anchorDate,\ t) }
+\DoxyCodeLine{00193\ \ \ \ \ \ \ \ \ \ \ \ \ tau\_T\ =\ Actual365.yearFraction(anchorDate,\ T) }
+\DoxyCodeLine{00194\  }
+\DoxyCodeLine{00195\ \ \ \ \ \ \ \ \ \ \ \ \ compoundFactor\ =\ np.exp(r\_T\ *\ tau\_T)\ /\ np.exp(r\_t\ *\ tau\_t) }
+\DoxyCodeLine{00196\ \ \ \ \ \ \ \ \ \ \ \ \ result\ =\ 1/compoundFactor }
+\DoxyCodeLine{00197\  }
+\DoxyCodeLine{00198\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (self.DiscountingInterpolationMethod\ ==\ DiscountingInterpolationMethod.LINEAR\_ON\_LOG\_OF\_RATES): }
+\DoxyCodeLine{00199\ \ \ \ \ \ \ \ \ \ \ \ \ logRates\ =\ np.ndarray([np.log(self.rate(anchorDate,\ t))\ \textcolor{keywordflow}{for}\ i\ \textcolor{keywordflow}{in}\ len(self.dfs)]) }
+\DoxyCodeLine{00200\  }
+\DoxyCodeLine{00201\ \ \ \ \ \ \ \ \ \ \ \ \ interpolator\ =\ \mbox{\hyperlink{class_linear_interpolator_1_1_linear_interpolator}{LinearInterpolator.LinearInterpolator}}( }
+\DoxyCodeLine{00202\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ x\_values=self.dates, }
+\DoxyCodeLine{00203\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ y\_values=logRates }
+\DoxyCodeLine{00204\ \ \ \ \ \ \ \ \ \ \ \ \ ) }
+\DoxyCodeLine{00205\  }
+\DoxyCodeLine{00206\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ log\ R(0,t) }}
+\DoxyCodeLine{00207\ \ \ \ \ \ \ \ \ \ \ \ \ logR\_t\ =\ interpolator.value(t) }
+\DoxyCodeLine{00208\  }
+\DoxyCodeLine{00209\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ log\ R(0,T) }}
+\DoxyCodeLine{00210\ \ \ \ \ \ \ \ \ \ \ \ \ logR\_T\ =\ interpolator.value(T) }
+\DoxyCodeLine{00211\  }
+\DoxyCodeLine{00212\ \ \ \ \ \ \ \ \ \ \ \ \ R\_t\ =\ np.exp(logR\_t) }
+\DoxyCodeLine{00213\ \ \ \ \ \ \ \ \ \ \ \ \ R\_T\ =\ np.exp(logR\_T) }
+\DoxyCodeLine{00214\  }
+\DoxyCodeLine{00215\ \ \ \ \ \ \ \ \ \ \ \ \ tau\_t\ =\ Actual365.yearFraction(anchorDate,\ t) }
+\DoxyCodeLine{00216\ \ \ \ \ \ \ \ \ \ \ \ \ tau\_T\ =\ Actual365.yearFraction(anchorDate,\ T) }
+\DoxyCodeLine{00217\  }
+\DoxyCodeLine{00218\ \ \ \ \ \ \ \ \ \ \ \ \ compoundFactor\ =\ np.exp(R\_t\ *\ tau\_T)\ /\ np.exp(R\_T\ *\ tau\_t) }
+\DoxyCodeLine{00219\ \ \ \ \ \ \ \ \ \ \ \ \ result\ =\ 1\ /\ compoundFactor }
+\DoxyCodeLine{00220\  }
+\DoxyCodeLine{00221\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (self.DiscountingInterpolationMethod\ ==\ DiscountingInterpolationMethod.LINEAR\_ON\_LOG\_OF\_DISCOUNT\_FACTORS): }
+\DoxyCodeLine{00222\ \ \ \ \ \ \ \ \ \ \ \ \ logDfs\ =\ np.log(self.dfs) }
+\DoxyCodeLine{00223\  }
+\DoxyCodeLine{00224\ \ \ \ \ \ \ \ \ \ \ \ \ interpolator\ =\ \mbox{\hyperlink{class_linear_interpolator_1_1_linear_interpolator}{LinearInterpolator.LinearInterpolator}}( }
+\DoxyCodeLine{00225\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ x\_values=self.dates, }
+\DoxyCodeLine{00226\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ y\_values=logDfs }
+\DoxyCodeLine{00227\ \ \ \ \ \ \ \ \ \ \ \ \ ) }
+\DoxyCodeLine{00228\  }
+\DoxyCodeLine{00229\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ log\ P(0,t) }}
+\DoxyCodeLine{00230\ \ \ \ \ \ \ \ \ \ \ \ \ logP\_t\ =\ interpolator.value(t) }
+\DoxyCodeLine{00231\  }
+\DoxyCodeLine{00232\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ log\ P(0,T) }}
+\DoxyCodeLine{00233\ \ \ \ \ \ \ \ \ \ \ \ \ logP\_T\ =\ interpolator.value(T) }
+\DoxyCodeLine{00234\  }
+\DoxyCodeLine{00235\ \ \ \ \ \ \ \ \ \ \ \ \ P\_t\ =\ np.exp(logP\_t) }
+\DoxyCodeLine{00236\ \ \ \ \ \ \ \ \ \ \ \ \ P\_T\ =\ np.exp(logP\_T) }
+\DoxyCodeLine{00237\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (P\_T/P\_t) }
+\DoxyCodeLine{00238\  }
+
+\end{DoxyCode}
+\Hypertarget{class_discounting_curve_1_1_discounting_curve_a71e8113eba9987e01cf915e15ea49aca}\label{class_discounting_curve_1_1_discounting_curve_a71e8113eba9987e01cf915e15ea49aca} 
+\index{DiscountingCurve.DiscountingCurve@{DiscountingCurve.DiscountingCurve}!forward@{forward}}
+\index{forward@{forward}!DiscountingCurve.DiscountingCurve@{DiscountingCurve.DiscountingCurve}}
+\doxysubsubsection{\texorpdfstring{forward()}{forward()}}
+{\footnotesize\ttfamily Discounting\+Curve.\+Discounting\+Curve.\+forward (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{date}]{t,  }\item[{date}]{T,  }\item[{date}]{S }\end{DoxyParamCaption})}
+
+
+
+Returns the simply compounded forward rate F(t;T,S) between times T and S, as observed on t. 
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00248\ \ \ \ \ \textcolor{keyword}{def\ }forward(self,\ t:date,\ T:date,\ S:date): }
+\DoxyCodeLine{00249\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ Utils.dfToForward(self.discountFactor(t,T),self.discountFactor(t,S),T,S) }
+\DoxyCodeLine{00250\  }
+
+\end{DoxyCode}
+\Hypertarget{class_discounting_curve_1_1_discounting_curve_a76f3c03a1da598eed660c09426b0b52e}\label{class_discounting_curve_1_1_discounting_curve_a76f3c03a1da598eed660c09426b0b52e} 
+\index{DiscountingCurve.DiscountingCurve@{DiscountingCurve.DiscountingCurve}!plotDFs@{plotDFs}}
+\index{plotDFs@{plotDFs}!DiscountingCurve.DiscountingCurve@{DiscountingCurve.DiscountingCurve}}
+\doxysubsubsection{\texorpdfstring{plotDFs()}{plotDFs()}}
+{\footnotesize\ttfamily Discounting\+Curve.\+Discounting\+Curve.\+plot\+DFs (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00128\ \ \ \ \ \textcolor{keyword}{def\ }plotDFs(self): }
+\DoxyCodeLine{00129\ \ \ \ \ \ \ \ \ startDate,\ dates,\ n\ =\ self.dateSetForPlot() }
+\DoxyCodeLine{00130\ \ \ \ \ \ \ \ \ discountFactors\ =\ [ }
+\DoxyCodeLine{00131\ \ \ \ \ \ \ \ \ \ \ \ \ self.discountFactor(startDate,\ dates[i])\ \textcolor{keywordflow}{for}\ i\ \textcolor{keywordflow}{in}\ range(n) }
+\DoxyCodeLine{00132\ \ \ \ \ \ \ \ \ ] }
+\DoxyCodeLine{00133\ \ \ \ \ \ \ \ \ Utils.draw(x=dates,y=discountFactors,xlabel=\textcolor{stringliteral}{r'Time\ \$t\$'},ylabel=\textcolor{stringliteral}{r'Discount\ factor\ \$P(0,t)\$'},title=\textcolor{stringliteral}{"{}Discount\ factor\ curve"{}}) }
+\DoxyCodeLine{00134\  }
+
+\end{DoxyCode}
+\Hypertarget{class_discounting_curve_1_1_discounting_curve_a9291be9005c72e6b728ad9d318d940f6}\label{class_discounting_curve_1_1_discounting_curve_a9291be9005c72e6b728ad9d318d940f6} 
+\index{DiscountingCurve.DiscountingCurve@{DiscountingCurve.DiscountingCurve}!plotForwardCurve@{plotForwardCurve}}
+\index{plotForwardCurve@{plotForwardCurve}!DiscountingCurve.DiscountingCurve@{DiscountingCurve.DiscountingCurve}}
+\doxysubsubsection{\texorpdfstring{plotForwardCurve()}{plotForwardCurve()}}
+{\footnotesize\ttfamily Discounting\+Curve.\+Discounting\+Curve.\+plot\+Forward\+Curve (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00149\ \ \ \ \ \textcolor{keyword}{def\ }plotForwardCurve(self): }
+\DoxyCodeLine{00150\ \ \ \ \ \ \ \ \ startDate,\ dates,\ n\ =\ self.dateSetForPlot() }
+\DoxyCodeLine{00151\ \ \ \ \ \ \ \ \ forwardRates\ =\ [ }
+\DoxyCodeLine{00152\ \ \ \ \ \ \ \ \ \ \ \ \ self.forward(startDate,\ dates[i],\ dates[i]\ +\ datetime.timedelta(days=365))\ \textcolor{keywordflow}{for}\ i\ \textcolor{keywordflow}{in}\ range(n) }
+\DoxyCodeLine{00153\ \ \ \ \ \ \ \ \ ] }
+\DoxyCodeLine{00154\ \ \ \ \ \ \ \ \ Utils.draw(x=dates,y=forwardRates,xlabel=\textcolor{stringliteral}{r'Time\ \$t\$'},ylabel=\textcolor{stringliteral}{r'Forward\ \$F(0,T,S)\$'},title=\textcolor{stringliteral}{"{}1y\ Forward\ curve"{}}) }
+\DoxyCodeLine{00155\  }
+
+\end{DoxyCode}
+\Hypertarget{class_discounting_curve_1_1_discounting_curve_a1aa705ab59a280993818e7baac3bb90b}\label{class_discounting_curve_1_1_discounting_curve_a1aa705ab59a280993818e7baac3bb90b} 
+\index{DiscountingCurve.DiscountingCurve@{DiscountingCurve.DiscountingCurve}!plotRates@{plotRates}}
+\index{plotRates@{plotRates}!DiscountingCurve.DiscountingCurve@{DiscountingCurve.DiscountingCurve}}
+\doxysubsubsection{\texorpdfstring{plotRates()}{plotRates()}}
+{\footnotesize\ttfamily Discounting\+Curve.\+Discounting\+Curve.\+plot\+Rates (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00135\ \ \ \ \ \textcolor{keyword}{def\ }plotRates(self): }
+\DoxyCodeLine{00136\ \ \ \ \ \ \ \ \ startDate,\ dates,\ n\ =\ self.dateSetForPlot() }
+\DoxyCodeLine{00137\ \ \ \ \ \ \ \ \ rates\ =\ [ }
+\DoxyCodeLine{00138\ \ \ \ \ \ \ \ \ \ \ \ \ self.rate(startDate,\ dates[i])\ \textcolor{keywordflow}{for}\ i\ \textcolor{keywordflow}{in}\ range(n) }
+\DoxyCodeLine{00139\ \ \ \ \ \ \ \ \ ] }
+\DoxyCodeLine{00140\ \ \ \ \ \ \ \ \ Utils.draw(x=dates,y=rates,xlabel=\textcolor{stringliteral}{r'Time\ \$t\$'},ylabel=\textcolor{stringliteral}{r'Rate\ \$R(0,t)\$'},title=\textcolor{stringliteral}{"{}Rates\ curve"{}}) }
+\DoxyCodeLine{00141\  }
+
+\end{DoxyCode}
+\Hypertarget{class_discounting_curve_1_1_discounting_curve_aa64973b5d5518c7c813d8458a01a657b}\label{class_discounting_curve_1_1_discounting_curve_aa64973b5d5518c7c813d8458a01a657b} 
+\index{DiscountingCurve.DiscountingCurve@{DiscountingCurve.DiscountingCurve}!plotZeroCouponCurve@{plotZeroCouponCurve}}
+\index{plotZeroCouponCurve@{plotZeroCouponCurve}!DiscountingCurve.DiscountingCurve@{DiscountingCurve.DiscountingCurve}}
+\doxysubsubsection{\texorpdfstring{plotZeroCouponCurve()}{plotZeroCouponCurve()}}
+{\footnotesize\ttfamily Discounting\+Curve.\+Discounting\+Curve.\+plot\+Zero\+Coupon\+Curve (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00142\ \ \ \ \ \textcolor{keyword}{def\ }plotZeroCouponCurve(self): }
+\DoxyCodeLine{00143\ \ \ \ \ \ \ \ \ startDate,\ dates,\ n\ =\ self.dateSetForPlot() }
+\DoxyCodeLine{00144\ \ \ \ \ \ \ \ \ zeroCouponRates\ =\ [ }
+\DoxyCodeLine{00145\ \ \ \ \ \ \ \ \ \ \ \ \ self.zero(startDate,\ dates[i])\ \textcolor{keywordflow}{for}\ i\ \textcolor{keywordflow}{in}\ range(n) }
+\DoxyCodeLine{00146\ \ \ \ \ \ \ \ \ ] }
+\DoxyCodeLine{00147\ \ \ \ \ \ \ \ \ Utils.draw(x=dates,y=zeroCouponRates,xlabel=\textcolor{stringliteral}{r'Time\ \$t\$'},ylabel=\textcolor{stringliteral}{r'Zero\ coupon\ \$Y(0,t)\$'},title=\textcolor{stringliteral}{"{}Zero\ Coupon\ curve"{}}) }
+\DoxyCodeLine{00148\  }
+
+\end{DoxyCode}
+\Hypertarget{class_discounting_curve_1_1_discounting_curve_a1378f103b8f17eb48cbbe1dfeac9027c}\label{class_discounting_curve_1_1_discounting_curve_a1378f103b8f17eb48cbbe1dfeac9027c} 
+\index{DiscountingCurve.DiscountingCurve@{DiscountingCurve.DiscountingCurve}!rate@{rate}}
+\index{rate@{rate}!DiscountingCurve.DiscountingCurve@{DiscountingCurve.DiscountingCurve}}
+\doxysubsubsection{\texorpdfstring{rate()}{rate()}}
+{\footnotesize\ttfamily Discounting\+Curve.\+Discounting\+Curve.\+rate (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{date}]{t,  }\item[{date}]{T }\end{DoxyParamCaption})}
+
+
+
+Returns the continuous compounded spot rate R(t,\+T) between times t and T. 
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00244\ \ \ \ \ \textcolor{keyword}{def\ }rate(self,\ t:date,\ T:date): }
+\DoxyCodeLine{00245\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ Utils.dfToRate(self.discountFactor(t,T),t,T) }
+\DoxyCodeLine{00246\  }
+
+\end{DoxyCode}
+\Hypertarget{class_discounting_curve_1_1_discounting_curve_ab82602e06a3578c101c6863577d49f19}\label{class_discounting_curve_1_1_discounting_curve_ab82602e06a3578c101c6863577d49f19} 
+\index{DiscountingCurve.DiscountingCurve@{DiscountingCurve.DiscountingCurve}!zero@{zero}}
+\index{zero@{zero}!DiscountingCurve.DiscountingCurve@{DiscountingCurve.DiscountingCurve}}
+\doxysubsubsection{\texorpdfstring{zero()}{zero()}}
+{\footnotesize\ttfamily Discounting\+Curve.\+Discounting\+Curve.\+zero (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{date}]{t,  }\item[{date}]{T }\end{DoxyParamCaption})}
+
+
+
+Returns the annual compounded spot interest rate(zero) Y(t,\+T) between times t and T. 
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00240\ \ \ \ \ \textcolor{keyword}{def\ }zero(self,\ t:date,\ T:date): }
+\DoxyCodeLine{00241\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ Utils.dfToZero(self.discountFactor(t,T),t,T) }
+\DoxyCodeLine{00242\  }
+
+\end{DoxyCode}
+
+
+\doxysubsection{Member Data Documentation}
+\Hypertarget{class_discounting_curve_1_1_discounting_curve_ad6b485e419c471c3f207de9bf9963cf3}\label{class_discounting_curve_1_1_discounting_curve_ad6b485e419c471c3f207de9bf9963cf3} 
+\index{DiscountingCurve.DiscountingCurve@{DiscountingCurve.DiscountingCurve}!dates@{dates}}
+\index{dates@{dates}!DiscountingCurve.DiscountingCurve@{DiscountingCurve.DiscountingCurve}}
+\doxysubsubsection{\texorpdfstring{dates}{dates}}
+{\footnotesize\ttfamily Discounting\+Curve.\+Discounting\+Curve.\+dates}
+
+\Hypertarget{class_discounting_curve_1_1_discounting_curve_aa372a53a24dfb7cda90e0e221bf7086c}\label{class_discounting_curve_1_1_discounting_curve_aa372a53a24dfb7cda90e0e221bf7086c} 
+\index{DiscountingCurve.DiscountingCurve@{DiscountingCurve.DiscountingCurve}!dfs@{dfs}}
+\index{dfs@{dfs}!DiscountingCurve.DiscountingCurve@{DiscountingCurve.DiscountingCurve}}
+\doxysubsubsection{\texorpdfstring{dfs}{dfs}}
+{\footnotesize\ttfamily Discounting\+Curve.\+Discounting\+Curve.\+dfs}
+
+\Hypertarget{class_discounting_curve_1_1_discounting_curve_a08c9ff5260556a0491e8a9c783842c5d}\label{class_discounting_curve_1_1_discounting_curve_a08c9ff5260556a0491e8a9c783842c5d} 
+\index{DiscountingCurve.DiscountingCurve@{DiscountingCurve.DiscountingCurve}!DiscountingInterpolationMethod@{DiscountingInterpolationMethod}}
+\index{DiscountingInterpolationMethod@{DiscountingInterpolationMethod}!DiscountingCurve.DiscountingCurve@{DiscountingCurve.DiscountingCurve}}
+\doxysubsubsection{\texorpdfstring{DiscountingInterpolationMethod}{DiscountingInterpolationMethod}}
+{\footnotesize\ttfamily Discounting\+Curve.\+Discounting\+Curve.\+Discounting\+Interpolation\+Method}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+market/\mbox{\hyperlink{_discounting_curve_8py}{Discounting\+Curve.\+py}}\end{DoxyCompactItemize}

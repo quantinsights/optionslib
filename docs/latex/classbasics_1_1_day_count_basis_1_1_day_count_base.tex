@@ -1,0 +1,38 @@
+\doxysection{basics.\+Day\+Count\+Basis.\+Day\+Count\+Base Class Reference}
+\hypertarget{classbasics_1_1_day_count_basis_1_1_day_count_base}{}\label{classbasics_1_1_day_count_basis_1_1_day_count_base}\index{basics.DayCountBasis.DayCountBase@{basics.DayCountBasis.DayCountBase}}
+Inheritance diagram for basics.\+Day\+Count\+Basis.\+Day\+Count\+Base\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=1.196581cm]{classbasics_1_1_day_count_basis_1_1_day_count_base}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classbasics_1_1_day_count_basis_1_1_day_count_base_a14ae5dcb186762c783ce7c494c7625d2}{days\+Between}} (date start\+Inclusive, date end\+Exlusive)
+\begin{DoxyCompactList}\small\item\em Returns the number of calendar days in the period \mbox{[}start\+Inclusive,end\+Exclusive). \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classbasics_1_1_day_count_basis_1_1_day_count_base_a14ae5dcb186762c783ce7c494c7625d2}\label{classbasics_1_1_day_count_basis_1_1_day_count_base_a14ae5dcb186762c783ce7c494c7625d2} 
+\index{basics.DayCountBasis.DayCountBase@{basics.DayCountBasis.DayCountBase}!daysBetween@{daysBetween}}
+\index{daysBetween@{daysBetween}!basics.DayCountBasis.DayCountBase@{basics.DayCountBasis.DayCountBase}}
+\doxysubsubsection{\texorpdfstring{daysBetween()}{daysBetween()}}
+{\footnotesize\ttfamily basics.\+Day\+Count\+Basis.\+Day\+Count\+Base.\+days\+Between (\begin{DoxyParamCaption}\item[{date}]{start\+Inclusive,  }\item[{date}]{end\+Exlusive }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Returns the number of calendar days in the period \mbox{[}start\+Inclusive,end\+Exclusive). 
+
+Refer here\+: \href{https://en.wikipedia.org/wiki/Day_count_convention}{\texttt{ https\+://en.\+wikipedia.\+org/wiki/\+Day\+\_\+count\+\_\+convention}}. 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00009\ \ \ \ \ \textcolor{keyword}{def\ }daysBetween(startInclusive\ :\ date,\ endExlusive\ :\ date): }
+\DoxyCodeLine{00010\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (endExlusive\ -\/\ startInclusive).days }
+\DoxyCodeLine{00011\  }
+
+\end{DoxyCode}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+basics/\mbox{\hyperlink{_day_count_basis_8py}{Day\+Count\+Basis.\+py}}\end{DoxyCompactItemize}

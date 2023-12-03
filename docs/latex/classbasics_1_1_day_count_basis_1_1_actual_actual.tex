@@ -1,0 +1,58 @@
+\doxysection{basics.\+Day\+Count\+Basis.\+Actual\+Actual Class Reference}
+\hypertarget{classbasics_1_1_day_count_basis_1_1_actual_actual}{}\label{classbasics_1_1_day_count_basis_1_1_actual_actual}\index{basics.DayCountBasis.ActualActual@{basics.DayCountBasis.ActualActual}}
+Inheritance diagram for basics.\+Day\+Count\+Basis.\+Actual\+Actual\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classbasics_1_1_day_count_basis_1_1_actual_actual}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classbasics_1_1_day_count_basis_1_1_actual_actual_a1b7b37e4b3eefeb509be6c643a038ffd}{year\+Fraction}} (date d1, date d2)
+\begin{DoxyCompactList}\small\item\em Returns the year fraction between \mbox{[}d1,d2) in the ACT/\+ACT day count convention. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions inherited from \mbox{\hyperlink{classbasics_1_1_day_count_basis_1_1_day_count_base}{basics.\+Day\+Count\+Basis.\+Day\+Count\+Base}}}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classbasics_1_1_day_count_basis_1_1_day_count_base_a14ae5dcb186762c783ce7c494c7625d2}{days\+Between}} (date start\+Inclusive, date end\+Exlusive)
+\begin{DoxyCompactList}\small\item\em Returns the number of calendar days in the period \mbox{[}start\+Inclusive,end\+Exclusive). \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classbasics_1_1_day_count_basis_1_1_actual_actual_a1b7b37e4b3eefeb509be6c643a038ffd}\label{classbasics_1_1_day_count_basis_1_1_actual_actual_a1b7b37e4b3eefeb509be6c643a038ffd} 
+\index{basics.DayCountBasis.ActualActual@{basics.DayCountBasis.ActualActual}!yearFraction@{yearFraction}}
+\index{yearFraction@{yearFraction}!basics.DayCountBasis.ActualActual@{basics.DayCountBasis.ActualActual}}
+\doxysubsubsection{\texorpdfstring{yearFraction()}{yearFraction()}}
+{\footnotesize\ttfamily basics.\+Day\+Count\+Basis.\+Actual\+Actual.\+year\+Fraction (\begin{DoxyParamCaption}\item[{date}]{d1,  }\item[{date}]{d2 }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Returns the year fraction between \mbox{[}d1,d2) in the ACT/\+ACT day count convention. 
+
+ACT/\+ACT assumes that a year consists of 365 or 366 days (in case of a leap year), and that the days between dates s and t, s prior to t, are counted as the actual number of calendar days between the two dates, including the first but not the second.
+
+If $s$ and $t$ are dates belonging to the same year and n is the actual number of days in the year, then the year fraction equals $(t - s)/n$.
+
+If $s$ and $t$ are dates belonging to two different years, let $J_i$ be the first of January of the second year, $J_f$ be the first of January of the final year, $n_i$ be the number of days in the first year, $n_f$ be the number of days of the final year, and $y$ the number of years between the first and the final year, then the year fraction equals \$\$(J\+\_\+i -\/ s)/n\+\_\+i + y + (t -\/ J\+\_\+f)/n\+\_\+f\$\$ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00040\ \ \ \ \ \textcolor{keyword}{def\ }yearFraction(d1:date,\ d2:date): }
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \ \ y1\ =\ d1.year }
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \ \ y2\ =\ d2.year }
+\DoxyCodeLine{00043\  }
+\DoxyCodeLine{00044\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ y1\ ==\ y2: }
+\DoxyCodeLine{00045\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (d2\ -\/\ d1).days/Utils.lengthOfYear(y1) }
+\DoxyCodeLine{00046\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}: }
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \ \ \ \ \ \ j\_i\ =\ date(y1+1,1,1) }
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \ \ \ \ \ \ j\_f\ =\ date(y2,1,1) }
+\DoxyCodeLine{00049\ \ \ \ \ \ \ \ \ \ \ \ \ n\_i\ =\ Utils.lengthOfYear(y1) }
+\DoxyCodeLine{00050\ \ \ \ \ \ \ \ \ \ \ \ \ n\_f\ =\ Utils.lengthOfYear(y2) }
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \ \ \ \ \ \ y\ =\ y2\ -\/\ y1 }
+\DoxyCodeLine{00052\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (j\_i\ -\/\ d1).days/n\_i\ +\ y\ +\ (d2\ -\/\ j\_f).days/n\_f }
+\DoxyCodeLine{00053\  }
+
+\end{DoxyCode}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+basics/\mbox{\hyperlink{_day_count_basis_8py}{Day\+Count\+Basis.\+py}}\end{DoxyCompactItemize}

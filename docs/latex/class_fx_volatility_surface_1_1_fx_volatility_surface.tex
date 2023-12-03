@@ -1,0 +1,142 @@
+\doxysection{Fx\+Volatility\+Surface.\+Fx\+Volatility\+Surface Class Reference}
+\hypertarget{class_fx_volatility_surface_1_1_fx_volatility_surface}{}\label{class_fx_volatility_surface_1_1_fx_volatility_surface}\index{FxVolatilitySurface.FxVolatilitySurface@{FxVolatilitySurface.FxVolatilitySurface}}
+
+
+An abstraction for the FX volatility surface for a currency pair.  
+
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_fx_volatility_surface_1_1_fx_volatility_surface_a5269c0abbee6488b864aa62055072af2}{\+\_\+\+\_\+init\+\_\+\+\_\+}} (self, \mbox{\hyperlink{class_fx_volatility_surface_1_1_fx_volatility_surface_addc55f034f82434882f8b340ce4df322}{foreign\+Currency}}, \mbox{\hyperlink{class_fx_volatility_surface_1_1_fx_volatility_surface_a9552804f1ab3fc590db4c7acee1039c2}{domestic\+Currency}}, List\mbox{[}\mbox{\hyperlink{class_european_vanilla_fx_option_quote_1_1_european_vanilla_fx_option_quote}{European\+Vanilla\+Fx\+Option\+Quote}}\mbox{]} \mbox{\hyperlink{class_fx_volatility_surface_1_1_fx_volatility_surface_a63778aa63b49773fc008e10031c4e254}{fx\+Option\+Market\+Quotes}}, \mbox{\hyperlink{classbasics_1_1_enums_1_1_fx_volatility_surface_parametric_model}{Fx\+Volatility\+Surface\+Parametric\+Model}} fx\+Volatility\+Surface\+Parametric\+Model)
+\item 
+Any \mbox{\hyperlink{class_fx_volatility_surface_1_1_fx_volatility_surface_abf63049e2dc0655c19039286b807a477}{get\+Vol\+Surface\+Model}} (self)
+\item 
+float \mbox{\hyperlink{class_fx_volatility_surface_1_1_fx_volatility_surface_ab9802d3df813c277fb68a8809f26485c}{get\+Volatility}} (self, float strike, datetime.\+date maturity)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_fx_volatility_surface_1_1_fx_volatility_surface_addc55f034f82434882f8b340ce4df322}{foreign\+Currency}}
+\item 
+\mbox{\hyperlink{class_fx_volatility_surface_1_1_fx_volatility_surface_a9552804f1ab3fc590db4c7acee1039c2}{domestic\+Currency}}
+\item 
+\mbox{\hyperlink{class_fx_volatility_surface_1_1_fx_volatility_surface_a63778aa63b49773fc008e10031c4e254}{fx\+Option\+Market\+Quotes}}
+\item 
+\mbox{\hyperlink{class_fx_volatility_surface_1_1_fx_volatility_surface_a93442ccad037a7d5f53ce387e6c6d1af}{valuation\+Date}}
+\item 
+\mbox{\hyperlink{class_fx_volatility_surface_1_1_fx_volatility_surface_a1603ecde552caf0156d9d5fa8c005d19}{fx\+Volatility\+Surface\+Parameteric\+Model\+Type}}
+\item 
+\mbox{\hyperlink{class_fx_volatility_surface_1_1_fx_volatility_surface_a1ca15bcaf5c7ce2e5f9899697bcceef6}{vol\+Surface\+Model}}
+\item 
+\mbox{\hyperlink{class_fx_volatility_surface_1_1_fx_volatility_surface_a5432a1f578dd62cad95fede608f7e525}{fx\+Volatility\+Surface\+Parameteric\+Model}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+An abstraction for the FX volatility surface for a currency pair. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_fx_volatility_surface_1_1_fx_volatility_surface_a5269c0abbee6488b864aa62055072af2}\label{class_fx_volatility_surface_1_1_fx_volatility_surface_a5269c0abbee6488b864aa62055072af2} 
+\index{FxVolatilitySurface.FxVolatilitySurface@{FxVolatilitySurface.FxVolatilitySurface}!\_\_init\_\_@{\_\_init\_\_}}
+\index{\_\_init\_\_@{\_\_init\_\_}!FxVolatilitySurface.FxVolatilitySurface@{FxVolatilitySurface.FxVolatilitySurface}}
+\doxysubsubsection{\texorpdfstring{\_\_init\_\_()}{\_\_init\_\_()}}
+{\footnotesize\ttfamily Fx\+Volatility\+Surface.\+Fx\+Volatility\+Surface.\+\_\+\+\_\+init\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{foreign\+Currency,  }\item[{}]{domestic\+Currency,  }\item[{List\mbox{[}\mbox{\hyperlink{class_european_vanilla_fx_option_quote_1_1_european_vanilla_fx_option_quote}{European\+Vanilla\+Fx\+Option\+Quote}}\mbox{]}}]{fx\+Option\+Market\+Quotes,  }\item[{\mbox{\hyperlink{classbasics_1_1_enums_1_1_fx_volatility_surface_parametric_model}{Fx\+Volatility\+Surface\+Parametric\+Model}}     }]{fx\+Volatility\+Surface\+Parametric\+Model }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00015\ \ \ \ \ ): }
+\DoxyCodeLine{00016\ \ \ \ \ \ \ \ \ self.foreignCurrency\ =\ foreignCurrency }
+\DoxyCodeLine{00017\ \ \ \ \ \ \ \ \ self.domesticCurrency\ =\ domesticCurrency }
+\DoxyCodeLine{00018\ \ \ \ \ \ \ \ \ self.fxOptionMarketQuotes\ =\ fxOptionMarketQuotes }
+\DoxyCodeLine{00019\  }
+\DoxyCodeLine{00020\ \ \ \ \ \ \ \ \ self.valuationDate\ =\ fxOptionMarketQuotes[0].asOfDate\ \textcolor{keywordflow}{if}\ len(fxOptionMarketQuotes)\ >\ 0\ \textcolor{keywordflow}{else}\ datetime.date.today() }
+\DoxyCodeLine{00021\  }
+\DoxyCodeLine{00022\ \ \ \ \ \ \ \ \ self.fxVolatilitySurfaceParametericModelType\ =\ fxVolatilitySurfaceParametricModel }
+\DoxyCodeLine{00023\ \ \ \ \ \ \ \ \ self.volSurfaceModel\ =\ self.getVolSurfaceModel() }
+\DoxyCodeLine{00024\  }
+
+\end{DoxyCode}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_fx_volatility_surface_1_1_fx_volatility_surface_ab9802d3df813c277fb68a8809f26485c}\label{class_fx_volatility_surface_1_1_fx_volatility_surface_ab9802d3df813c277fb68a8809f26485c} 
+\index{FxVolatilitySurface.FxVolatilitySurface@{FxVolatilitySurface.FxVolatilitySurface}!getVolatility@{getVolatility}}
+\index{getVolatility@{getVolatility}!FxVolatilitySurface.FxVolatilitySurface@{FxVolatilitySurface.FxVolatilitySurface}}
+\doxysubsubsection{\texorpdfstring{getVolatility()}{getVolatility()}}
+{\footnotesize\ttfamily float Fx\+Volatility\+Surface.\+Fx\+Volatility\+Surface.\+get\+Volatility (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{float}]{strike,  }\item[{datetime.\+date}]{maturity }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keyword}{def\ }getVolatility(self,\ strike:\ float,\ maturity:datetime.date)-\/>float: }
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{pass}}
+
+\end{DoxyCode}
+\Hypertarget{class_fx_volatility_surface_1_1_fx_volatility_surface_abf63049e2dc0655c19039286b807a477}\label{class_fx_volatility_surface_1_1_fx_volatility_surface_abf63049e2dc0655c19039286b807a477} 
+\index{FxVolatilitySurface.FxVolatilitySurface@{FxVolatilitySurface.FxVolatilitySurface}!getVolSurfaceModel@{getVolSurfaceModel}}
+\index{getVolSurfaceModel@{getVolSurfaceModel}!FxVolatilitySurface.FxVolatilitySurface@{FxVolatilitySurface.FxVolatilitySurface}}
+\doxysubsubsection{\texorpdfstring{getVolSurfaceModel()}{getVolSurfaceModel()}}
+{\footnotesize\ttfamily  Any Fx\+Volatility\+Surface.\+Fx\+Volatility\+Surface.\+get\+Vol\+Surface\+Model (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00025\ \ \ \ \ \textcolor{keyword}{def\ }getVolSurfaceModel(self)\ -\/>\ Any: }
+\DoxyCodeLine{00026\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ self.fxVolatilitySurfaceParametericModel\ ==\ FxVolatilitySurfaceParametricModel.VANNA\_VOLGA: }
+\DoxyCodeLine{00027\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Instantantiate\ the\ VannaVolga\ and\ calibrate\ the\ surface\ to\ market\ quotes }}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ of\ straddles,\ risk-\/reversals\ and\ fly's. }}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{namespace_vanna_volga}{VannaVolga}}( }
+\DoxyCodeLine{00030\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ self.fxOptionMarketQuotes }
+\DoxyCodeLine{00031\ \ \ \ \ \ \ \ \ \ \ \ \ ) }
+\DoxyCodeLine{00032\  }
+
+\end{DoxyCode}
+
+
+\doxysubsection{Member Data Documentation}
+\Hypertarget{class_fx_volatility_surface_1_1_fx_volatility_surface_a9552804f1ab3fc590db4c7acee1039c2}\label{class_fx_volatility_surface_1_1_fx_volatility_surface_a9552804f1ab3fc590db4c7acee1039c2} 
+\index{FxVolatilitySurface.FxVolatilitySurface@{FxVolatilitySurface.FxVolatilitySurface}!domesticCurrency@{domesticCurrency}}
+\index{domesticCurrency@{domesticCurrency}!FxVolatilitySurface.FxVolatilitySurface@{FxVolatilitySurface.FxVolatilitySurface}}
+\doxysubsubsection{\texorpdfstring{domesticCurrency}{domesticCurrency}}
+{\footnotesize\ttfamily Fx\+Volatility\+Surface.\+Fx\+Volatility\+Surface.\+domestic\+Currency}
+
+\Hypertarget{class_fx_volatility_surface_1_1_fx_volatility_surface_addc55f034f82434882f8b340ce4df322}\label{class_fx_volatility_surface_1_1_fx_volatility_surface_addc55f034f82434882f8b340ce4df322} 
+\index{FxVolatilitySurface.FxVolatilitySurface@{FxVolatilitySurface.FxVolatilitySurface}!foreignCurrency@{foreignCurrency}}
+\index{foreignCurrency@{foreignCurrency}!FxVolatilitySurface.FxVolatilitySurface@{FxVolatilitySurface.FxVolatilitySurface}}
+\doxysubsubsection{\texorpdfstring{foreignCurrency}{foreignCurrency}}
+{\footnotesize\ttfamily Fx\+Volatility\+Surface.\+Fx\+Volatility\+Surface.\+foreign\+Currency}
+
+\Hypertarget{class_fx_volatility_surface_1_1_fx_volatility_surface_a63778aa63b49773fc008e10031c4e254}\label{class_fx_volatility_surface_1_1_fx_volatility_surface_a63778aa63b49773fc008e10031c4e254} 
+\index{FxVolatilitySurface.FxVolatilitySurface@{FxVolatilitySurface.FxVolatilitySurface}!fxOptionMarketQuotes@{fxOptionMarketQuotes}}
+\index{fxOptionMarketQuotes@{fxOptionMarketQuotes}!FxVolatilitySurface.FxVolatilitySurface@{FxVolatilitySurface.FxVolatilitySurface}}
+\doxysubsubsection{\texorpdfstring{fxOptionMarketQuotes}{fxOptionMarketQuotes}}
+{\footnotesize\ttfamily Fx\+Volatility\+Surface.\+Fx\+Volatility\+Surface.\+fx\+Option\+Market\+Quotes}
+
+\Hypertarget{class_fx_volatility_surface_1_1_fx_volatility_surface_a5432a1f578dd62cad95fede608f7e525}\label{class_fx_volatility_surface_1_1_fx_volatility_surface_a5432a1f578dd62cad95fede608f7e525} 
+\index{FxVolatilitySurface.FxVolatilitySurface@{FxVolatilitySurface.FxVolatilitySurface}!fxVolatilitySurfaceParametericModel@{fxVolatilitySurfaceParametericModel}}
+\index{fxVolatilitySurfaceParametericModel@{fxVolatilitySurfaceParametericModel}!FxVolatilitySurface.FxVolatilitySurface@{FxVolatilitySurface.FxVolatilitySurface}}
+\doxysubsubsection{\texorpdfstring{fxVolatilitySurfaceParametericModel}{fxVolatilitySurfaceParametericModel}}
+{\footnotesize\ttfamily Fx\+Volatility\+Surface.\+Fx\+Volatility\+Surface.\+fx\+Volatility\+Surface\+Parameteric\+Model}
+
+\Hypertarget{class_fx_volatility_surface_1_1_fx_volatility_surface_a1603ecde552caf0156d9d5fa8c005d19}\label{class_fx_volatility_surface_1_1_fx_volatility_surface_a1603ecde552caf0156d9d5fa8c005d19} 
+\index{FxVolatilitySurface.FxVolatilitySurface@{FxVolatilitySurface.FxVolatilitySurface}!fxVolatilitySurfaceParametericModelType@{fxVolatilitySurfaceParametericModelType}}
+\index{fxVolatilitySurfaceParametericModelType@{fxVolatilitySurfaceParametericModelType}!FxVolatilitySurface.FxVolatilitySurface@{FxVolatilitySurface.FxVolatilitySurface}}
+\doxysubsubsection{\texorpdfstring{fxVolatilitySurfaceParametericModelType}{fxVolatilitySurfaceParametericModelType}}
+{\footnotesize\ttfamily Fx\+Volatility\+Surface.\+Fx\+Volatility\+Surface.\+fx\+Volatility\+Surface\+Parameteric\+Model\+Type}
+
+\Hypertarget{class_fx_volatility_surface_1_1_fx_volatility_surface_a93442ccad037a7d5f53ce387e6c6d1af}\label{class_fx_volatility_surface_1_1_fx_volatility_surface_a93442ccad037a7d5f53ce387e6c6d1af} 
+\index{FxVolatilitySurface.FxVolatilitySurface@{FxVolatilitySurface.FxVolatilitySurface}!valuationDate@{valuationDate}}
+\index{valuationDate@{valuationDate}!FxVolatilitySurface.FxVolatilitySurface@{FxVolatilitySurface.FxVolatilitySurface}}
+\doxysubsubsection{\texorpdfstring{valuationDate}{valuationDate}}
+{\footnotesize\ttfamily Fx\+Volatility\+Surface.\+Fx\+Volatility\+Surface.\+valuation\+Date}
+
+\Hypertarget{class_fx_volatility_surface_1_1_fx_volatility_surface_a1ca15bcaf5c7ce2e5f9899697bcceef6}\label{class_fx_volatility_surface_1_1_fx_volatility_surface_a1ca15bcaf5c7ce2e5f9899697bcceef6} 
+\index{FxVolatilitySurface.FxVolatilitySurface@{FxVolatilitySurface.FxVolatilitySurface}!volSurfaceModel@{volSurfaceModel}}
+\index{volSurfaceModel@{volSurfaceModel}!FxVolatilitySurface.FxVolatilitySurface@{FxVolatilitySurface.FxVolatilitySurface}}
+\doxysubsubsection{\texorpdfstring{volSurfaceModel}{volSurfaceModel}}
+{\footnotesize\ttfamily Fx\+Volatility\+Surface.\+Fx\+Volatility\+Surface.\+vol\+Surface\+Model}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+market/\mbox{\hyperlink{_fx_volatility_surface_8py}{Fx\+Volatility\+Surface.\+py}}\end{DoxyCompactItemize}

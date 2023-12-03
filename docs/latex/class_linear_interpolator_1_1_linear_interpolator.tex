@@ -1,0 +1,75 @@
+\doxysection{Linear\+Interpolator.\+Linear\+Interpolator Class Reference}
+\hypertarget{class_linear_interpolator_1_1_linear_interpolator}{}\label{class_linear_interpolator_1_1_linear_interpolator}\index{LinearInterpolator.LinearInterpolator@{LinearInterpolator.LinearInterpolator}}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_linear_interpolator_1_1_linear_interpolator_a9436ee4d20c2a5d4d73b88ebf9a5336a}{\+\_\+\+\_\+init\+\_\+\+\_\+}} (self, x\+\_\+values, y\+\_\+values)
+\item 
+\mbox{\hyperlink{class_linear_interpolator_1_1_linear_interpolator_a35f7228e28cfaa666587bdcfc8af0ec5}{value}} (self, x\+\_\+0)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_linear_interpolator_1_1_linear_interpolator_aa6f3d013c031c7db20754efe90aea5e3}{x}}
+\item 
+\mbox{\hyperlink{class_linear_interpolator_1_1_linear_interpolator_ae7ed7a20f2bc4e2061cf3e8cbf3eb953}{y}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_linear_interpolator_1_1_linear_interpolator_a9436ee4d20c2a5d4d73b88ebf9a5336a}\label{class_linear_interpolator_1_1_linear_interpolator_a9436ee4d20c2a5d4d73b88ebf9a5336a} 
+\index{LinearInterpolator.LinearInterpolator@{LinearInterpolator.LinearInterpolator}!\_\_init\_\_@{\_\_init\_\_}}
+\index{\_\_init\_\_@{\_\_init\_\_}!LinearInterpolator.LinearInterpolator@{LinearInterpolator.LinearInterpolator}}
+\doxysubsubsection{\texorpdfstring{\_\_init\_\_()}{\_\_init\_\_()}}
+{\footnotesize\ttfamily Linear\+Interpolator.\+Linear\+Interpolator.\+\_\+\+\_\+init\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{x\+\_\+values,  }\item[{}]{y\+\_\+values }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00005\ \ \ \ \ \textcolor{keyword}{def\ }\_\_init\_\_(self,\ x\_values,\ y\_values): }
+\DoxyCodeLine{00006\ \ \ \ \ \ \ \ \ self.x\ =\ x\_values }
+\DoxyCodeLine{00007\ \ \ \ \ \ \ \ \ self.y\ =\ y\_values }
+\DoxyCodeLine{00008\  }
+
+\end{DoxyCode}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_linear_interpolator_1_1_linear_interpolator_a35f7228e28cfaa666587bdcfc8af0ec5}\label{class_linear_interpolator_1_1_linear_interpolator_a35f7228e28cfaa666587bdcfc8af0ec5} 
+\index{LinearInterpolator.LinearInterpolator@{LinearInterpolator.LinearInterpolator}!value@{value}}
+\index{value@{value}!LinearInterpolator.LinearInterpolator@{LinearInterpolator.LinearInterpolator}}
+\doxysubsubsection{\texorpdfstring{value()}{value()}}
+{\footnotesize\ttfamily Linear\+Interpolator.\+Linear\+Interpolator.\+value (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{x\+\_\+0 }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00009\ \ \ \ \ \textcolor{keyword}{def\ }value(self,\ x\_0): }
+\DoxyCodeLine{00010\ \ \ \ \ \ \ \ \ n\ =\ len(self.x) }
+\DoxyCodeLine{00011\ \ \ \ \ \ \ \ \ i\ =\ 0 }
+\DoxyCodeLine{00012\  }
+\DoxyCodeLine{00013\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ i\ \textcolor{keywordflow}{in}\ range(n\ -\/\ 1): }
+\DoxyCodeLine{00014\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (self.x[i]\ <=\ x\_0)\ \textcolor{keywordflow}{and}\ (x\_0\ <\ self.x[i\ +\ 1]): }
+\DoxyCodeLine{00015\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break} }
+\DoxyCodeLine{00016\  }
+\DoxyCodeLine{00017\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (x\_0\ -\/\ self.x[i])\ /\ (self.x[i\ +\ 1]\ -\/\ self.x[i])\ *\ self.y[i\ +\ 1]\ +\ (self.x[i\ +\ 1]\ -\/\ x\_0)\ /\ (self.x[i\ +\ 1]\ -\/\ self.x[i])\ *\ self.y[i] }
+
+\end{DoxyCode}
+
+
+\doxysubsection{Member Data Documentation}
+\Hypertarget{class_linear_interpolator_1_1_linear_interpolator_aa6f3d013c031c7db20754efe90aea5e3}\label{class_linear_interpolator_1_1_linear_interpolator_aa6f3d013c031c7db20754efe90aea5e3} 
+\index{LinearInterpolator.LinearInterpolator@{LinearInterpolator.LinearInterpolator}!x@{x}}
+\index{x@{x}!LinearInterpolator.LinearInterpolator@{LinearInterpolator.LinearInterpolator}}
+\doxysubsubsection{\texorpdfstring{x}{x}}
+{\footnotesize\ttfamily Linear\+Interpolator.\+Linear\+Interpolator.\+x}
+
+\Hypertarget{class_linear_interpolator_1_1_linear_interpolator_ae7ed7a20f2bc4e2061cf3e8cbf3eb953}\label{class_linear_interpolator_1_1_linear_interpolator_ae7ed7a20f2bc4e2061cf3e8cbf3eb953} 
+\index{LinearInterpolator.LinearInterpolator@{LinearInterpolator.LinearInterpolator}!y@{y}}
+\index{y@{y}!LinearInterpolator.LinearInterpolator@{LinearInterpolator.LinearInterpolator}}
+\doxysubsubsection{\texorpdfstring{y}{y}}
+{\footnotesize\ttfamily Linear\+Interpolator.\+Linear\+Interpolator.\+y}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+algorithms/\mbox{\hyperlink{_linear_interpolator_8py}{Linear\+Interpolator.\+py}}\end{DoxyCompactItemize}

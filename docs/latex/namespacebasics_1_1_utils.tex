@@ -1,0 +1,154 @@
+\doxysection{basics.\+Utils Namespace Reference}
+\hypertarget{namespacebasics_1_1_utils}{}\label{namespacebasics_1_1_utils}\index{basics.Utils@{basics.Utils}}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{namespacebasics_1_1_utils_a489f87bdb357da17d354a71970928518}{df\+To\+Zero}} (float df, date t, date T)
+\begin{DoxyCompactList}\small\item\em Converts the discount factor P(t,\+T) to the annually compounded spot interest rate Y(t,\+T). \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespacebasics_1_1_utils_a8941fdad0c0907fe621069f76ccabdc5}{df\+To\+Rate}} (float df, date t, date T)
+\item 
+\mbox{\hyperlink{namespacebasics_1_1_utils_ab8cd68cfa248dd19163776ba1cce1773}{Zero\+To\+Df}} (float y, date t, date T)
+\begin{DoxyCompactList}\small\item\em Converts the annually compounded spot interest rate Y(t,\+T) to a discount factor P(t,\+T). \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespacebasics_1_1_utils_a5ec9e8291e00afc2ebd75396ca1b2e6a}{df\+To\+Forward}} (df1, df2, T, S)
+\begin{DoxyCompactList}\small\item\em Extracts the forward from a pair of discount factors. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespacebasics_1_1_utils_a5b154d2cc63e34fe5fa8c7d6e98e1c8e}{is\+Leap\+Year}} (int year)
+\begin{DoxyCompactList}\small\item\em Test if the given year is a leap year. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespacebasics_1_1_utils_aaef6555378afc9bbd9faf122ef67caf5}{length\+Of\+Year}} (int yy)
+\item 
+\mbox{\hyperlink{namespacebasics_1_1_utils_ade63aabd6a4035ba9f663d1afa3af6e0}{draw}} (Any x, Any y, str xlabel, str ylabel, str title)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\Hypertarget{namespacebasics_1_1_utils_a5ec9e8291e00afc2ebd75396ca1b2e6a}\label{namespacebasics_1_1_utils_a5ec9e8291e00afc2ebd75396ca1b2e6a} 
+\index{basics.Utils@{basics.Utils}!dfToForward@{dfToForward}}
+\index{dfToForward@{dfToForward}!basics.Utils@{basics.Utils}}
+\doxysubsubsection{\texorpdfstring{dfToForward()}{dfToForward()}}
+{\footnotesize\ttfamily basics.\+Utils.\+df\+To\+Forward (\begin{DoxyParamCaption}\item[{}]{df1,  }\item[{}]{df2,  }\item[{}]{T,  }\item[{}]{S }\end{DoxyParamCaption})}
+
+
+
+Extracts the forward from a pair of discount factors. 
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00038\ \textcolor{keyword}{def\ }dfToForward(df1,df2,T,S): }
+\DoxyCodeLine{00039\ \ \ \ \ tau\ =\ Actual365.yearFraction(T,S) }
+\DoxyCodeLine{00040\ \ \ \ \ \textcolor{keywordflow}{return}\ (1/tau)\ *\ (df1/df2\ -\/\ 1) }
+\DoxyCodeLine{00041\  }
+
+\end{DoxyCode}
+\Hypertarget{namespacebasics_1_1_utils_a8941fdad0c0907fe621069f76ccabdc5}\label{namespacebasics_1_1_utils_a8941fdad0c0907fe621069f76ccabdc5} 
+\index{basics.Utils@{basics.Utils}!dfToRate@{dfToRate}}
+\index{dfToRate@{dfToRate}!basics.Utils@{basics.Utils}}
+\doxysubsubsection{\texorpdfstring{dfToRate()}{dfToRate()}}
+{\footnotesize\ttfamily basics.\+Utils.\+df\+To\+Rate (\begin{DoxyParamCaption}\item[{float}]{df,  }\item[{date}]{t,  }\item[{date}]{T }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00019\ \textcolor{keyword}{def\ }dfToRate(df:float,\ t:date,\ T:date): }
+\DoxyCodeLine{00020\ \ \ \ \ tau\ =\ Actual365.yearFraction(t,\ T) }
+\DoxyCodeLine{00021\ \ \ \ \ \textcolor{keywordflow}{if}\ tau\ ==\ 0.0: }
+\DoxyCodeLine{00022\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 0.0 }
+\DoxyCodeLine{00023\ \ \ \ \ \textcolor{keywordflow}{else}: }
+\DoxyCodeLine{00024\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ -\/(np.log(df))/tau }
+\DoxyCodeLine{00025\  }
+
+\end{DoxyCode}
+\Hypertarget{namespacebasics_1_1_utils_a489f87bdb357da17d354a71970928518}\label{namespacebasics_1_1_utils_a489f87bdb357da17d354a71970928518} 
+\index{basics.Utils@{basics.Utils}!dfToZero@{dfToZero}}
+\index{dfToZero@{dfToZero}!basics.Utils@{basics.Utils}}
+\doxysubsubsection{\texorpdfstring{dfToZero()}{dfToZero()}}
+{\footnotesize\ttfamily basics.\+Utils.\+df\+To\+Zero (\begin{DoxyParamCaption}\item[{float}]{df,  }\item[{date}]{t,  }\item[{date}]{T }\end{DoxyParamCaption})}
+
+
+
+Converts the discount factor P(t,\+T) to the annually compounded spot interest rate Y(t,\+T). 
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00008\ \textcolor{keyword}{def\ }dfToZero(df:\ float,\ t:date,\ T:date): }
+\DoxyCodeLine{00009\ \ \ \ \ zeroRate\ =\ 0.0 }
+\DoxyCodeLine{00010\ \ \ \ \ tau\ =\ Actual365.yearFraction(t,T) }
+\DoxyCodeLine{00011\ \ \ \ \ \textcolor{keywordflow}{if}\ (tau\ ==\ 0.0): }
+\DoxyCodeLine{00012\ \ \ \ \ \ \ \ \ zeroRate\ =\ 0.0 }
+\DoxyCodeLine{00013\ \ \ \ \ \textcolor{comment}{\#elif\ (tau\ <=\ 1.0): }}
+\DoxyCodeLine{00014\ \ \ \ \ \textcolor{comment}{\#\ \ \ \ zeroRate\ =\ (1\ -\/\ df)/(df\ *\ tau) }}
+\DoxyCodeLine{00015\ \ \ \ \ \textcolor{keywordflow}{else}: }
+\DoxyCodeLine{00016\ \ \ \ \ \ \ \ \ zeroRate\ =\ 1/((df)**(1/tau))-\/1 }
+\DoxyCodeLine{00017\ \ \ \ \ \textcolor{keywordflow}{return}\ zeroRate }
+\DoxyCodeLine{00018\  }
+
+\end{DoxyCode}
+\Hypertarget{namespacebasics_1_1_utils_ade63aabd6a4035ba9f663d1afa3af6e0}\label{namespacebasics_1_1_utils_ade63aabd6a4035ba9f663d1afa3af6e0} 
+\index{basics.Utils@{basics.Utils}!draw@{draw}}
+\index{draw@{draw}!basics.Utils@{basics.Utils}}
+\doxysubsubsection{\texorpdfstring{draw()}{draw()}}
+{\footnotesize\ttfamily basics.\+Utils.\+draw (\begin{DoxyParamCaption}\item[{Any}]{x,  }\item[{Any}]{y,  }\item[{str}]{xlabel,  }\item[{str}]{ylabel,  }\item[{str}]{title }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00049\ \textcolor{keyword}{def\ }draw(x:Any,\ y:Any,\ xlabel:\ str,\ ylabel:\ str,\ title:str): }
+\DoxyCodeLine{00050\ \ \ \ \ plt.style.use(\textcolor{stringliteral}{'seaborn-\/v0\_8-\/whitegrid'}) }
+\DoxyCodeLine{00051\ \ \ \ \ plt.grid(\textcolor{keyword}{True}) }
+\DoxyCodeLine{00052\ \ \ \ \ plt.xlabel(xlabel) }
+\DoxyCodeLine{00053\ \ \ \ \ plt.ylabel(ylabel) }
+\DoxyCodeLine{00054\ \ \ \ \ plt.title(title) }
+\DoxyCodeLine{00055\ \ \ \ \ plt.plot(x,y,alpha=0.75,linewidth=0.80) }
+\DoxyCodeLine{00056\ \ \ \ \ plt.show()}
+
+\end{DoxyCode}
+\Hypertarget{namespacebasics_1_1_utils_a5b154d2cc63e34fe5fa8c7d6e98e1c8e}\label{namespacebasics_1_1_utils_a5b154d2cc63e34fe5fa8c7d6e98e1c8e} 
+\index{basics.Utils@{basics.Utils}!isLeapYear@{isLeapYear}}
+\index{isLeapYear@{isLeapYear}!basics.Utils@{basics.Utils}}
+\doxysubsubsection{\texorpdfstring{isLeapYear()}{isLeapYear()}}
+{\footnotesize\ttfamily basics.\+Utils.\+is\+Leap\+Year (\begin{DoxyParamCaption}\item[{int}]{year }\end{DoxyParamCaption})}
+
+
+
+Test if the given year is a leap year. 
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00043\ \textcolor{keyword}{def\ }isLeapYear(year:int): }
+\DoxyCodeLine{00044\ \ \ \ \ \textcolor{keywordflow}{return}\ ((year\ \%\ 4\ ==\ 0)\ \textcolor{keywordflow}{and}\ (not(year\ \%\ 100\ ==\ 0)))\ \textcolor{keywordflow}{or}\ (year\ \%\ 400\ ==\ 0); }
+\DoxyCodeLine{00045\  }
+
+\end{DoxyCode}
+\Hypertarget{namespacebasics_1_1_utils_aaef6555378afc9bbd9faf122ef67caf5}\label{namespacebasics_1_1_utils_aaef6555378afc9bbd9faf122ef67caf5} 
+\index{basics.Utils@{basics.Utils}!lengthOfYear@{lengthOfYear}}
+\index{lengthOfYear@{lengthOfYear}!basics.Utils@{basics.Utils}}
+\doxysubsubsection{\texorpdfstring{lengthOfYear()}{lengthOfYear()}}
+{\footnotesize\ttfamily basics.\+Utils.\+length\+Of\+Year (\begin{DoxyParamCaption}\item[{int}]{yy }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00046\ \textcolor{keyword}{def\ }lengthOfYear(yy:int): }
+\DoxyCodeLine{00047\ \ \ \ \ \textcolor{keywordflow}{return}\ 366\ \textcolor{keywordflow}{if}\ isLeapYear(yy)\ \textcolor{keywordflow}{else}\ 365 }
+\DoxyCodeLine{00048\  }
+
+\end{DoxyCode}
+\Hypertarget{namespacebasics_1_1_utils_ab8cd68cfa248dd19163776ba1cce1773}\label{namespacebasics_1_1_utils_ab8cd68cfa248dd19163776ba1cce1773} 
+\index{basics.Utils@{basics.Utils}!ZeroToDf@{ZeroToDf}}
+\index{ZeroToDf@{ZeroToDf}!basics.Utils@{basics.Utils}}
+\doxysubsubsection{\texorpdfstring{ZeroToDf()}{ZeroToDf()}}
+{\footnotesize\ttfamily basics.\+Utils.\+Zero\+To\+Df (\begin{DoxyParamCaption}\item[{float}]{y,  }\item[{date}]{t,  }\item[{date}]{T }\end{DoxyParamCaption})}
+
+
+
+Converts the annually compounded spot interest rate Y(t,\+T) to a discount factor P(t,\+T). 
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00027\ \textcolor{keyword}{def\ }ZeroToDf(y:float,\ t:date,\ T:date): }
+\DoxyCodeLine{00028\ \ \ \ \ df\ =\ 1.0 }
+\DoxyCodeLine{00029\ \ \ \ \ tau\ =\ Actual365.yearFraction(t,T) }
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keywordflow}{if}\ (tau\ ==\ 0.0): }
+\DoxyCodeLine{00031\ \ \ \ \ \ \ \ \ df\ =\ 1.0 }
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{comment}{\#elif\ (tau<=\ 1.0): }}
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{comment}{\#\ \ \ \ df\ =\ 1/(1\ +\ y*tau) }}
+\DoxyCodeLine{00034\ \ \ \ \ \textcolor{keywordflow}{else}: }
+\DoxyCodeLine{00035\ \ \ \ \ \ \ \ \ df\ =\ 1/((1\ +\ y)**tau) }
+\DoxyCodeLine{00036\  }
+
+\end{DoxyCode}

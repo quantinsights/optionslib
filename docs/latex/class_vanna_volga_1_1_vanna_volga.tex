@@ -1,0 +1,356 @@
+\doxysection{Vanna\+Volga.\+Vanna\+Volga Class Reference}
+\hypertarget{class_vanna_volga_1_1_vanna_volga}{}\label{class_vanna_volga_1_1_vanna_volga}\index{VannaVolga.VannaVolga@{VannaVolga.VannaVolga}}
+
+
+An implementation of the Vanna-\/\+Volga method.  
+
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_vanna_volga_1_1_vanna_volga_ab86627c107acc527ade7ea4dfe2c3765}{\+\_\+\+\_\+init\+\_\+\+\_\+}} (self, List\mbox{[}European\+Vanilla\+Fx\+Option\+Quote\mbox{]} \mbox{\hyperlink{class_vanna_volga_1_1_vanna_volga_a8759711bf0fbd44c00ba0233d491ff69}{fx\+Option\+Market\+Quotes}}, float \mbox{\hyperlink{class_vanna_volga_1_1_vanna_volga_a40cfdd946abb191ecef79ae666fb87f9}{S\+\_\+t}}, Discounting\+Curve foreign\+Ccy\+Discounting\+Curve, Discounting\+Curve domestic\+Ccy\+Discounting\+Curve)
+\item 
+\mbox{\hyperlink{class_vanna_volga_1_1_vanna_volga_a053e083eae6e2fd45c04ac91ba06d3dd}{forward}} (self, date t, date T)
+\item 
+\mbox{\hyperlink{class_vanna_volga_1_1_vanna_volga_a4ec06356f8614ffaeb969f72f238912d}{first\+Order\+Approximation}} (self, float K, date T)
+\item 
+\mbox{\hyperlink{class_vanna_volga_1_1_vanna_volga_a114742205073d2b8262e20abc05dcbda}{second\+Order\+Approximation}} (self, float K, date T)
+\item 
+\mbox{\hyperlink{class_vanna_volga_1_1_vanna_volga_ae84e2e58c49b0e50bc378ae64280d0b4}{d\+Plus}} (self, F, K, tau, sigma)
+\item 
+\mbox{\hyperlink{class_vanna_volga_1_1_vanna_volga_a254d838733be6192de1d1e1825317c1d}{d\+Minus}} (self, F, K, tau, sigma)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_vanna_volga_1_1_vanna_volga_a8759711bf0fbd44c00ba0233d491ff69}{fx\+Option\+Market\+Quotes}}
+\item 
+\mbox{\hyperlink{class_vanna_volga_1_1_vanna_volga_a40cfdd946abb191ecef79ae666fb87f9}{S\+\_\+t}}
+\item 
+\mbox{\hyperlink{class_vanna_volga_1_1_vanna_volga_ac137c8c4dcc6a12ede1c26f85579feb7}{foreign\+Discounting\+Curve}}
+\item 
+\mbox{\hyperlink{class_vanna_volga_1_1_vanna_volga_a6fcd320f5d1926489aed15ea805cd752}{domestic\+Discounting\+Curve}}
+\item 
+\mbox{\hyperlink{class_vanna_volga_1_1_vanna_volga_a29d1e25c902682916c9075cd2226aa5e}{valuation\+Date}}
+\item 
+\mbox{\hyperlink{class_vanna_volga_1_1_vanna_volga_a0a940f15b18561bd4dadb085f579efb4}{rr}}
+\item 
+\mbox{\hyperlink{class_vanna_volga_1_1_vanna_volga_aa5647564b15e65f8fddc37cb139399b7}{exp\+Dates}}
+\item 
+\mbox{\hyperlink{class_vanna_volga_1_1_vanna_volga_a9332c835163b5a10c8c531e63c86391a}{time\+To\+Expiries}}
+\item 
+\mbox{\hyperlink{class_vanna_volga_1_1_vanna_volga_a6d601150f6d1f4c0bed1eeefe072cc6b}{sigma\+ATM}}
+\item 
+\mbox{\hyperlink{class_vanna_volga_1_1_vanna_volga_a220ae1f9e3809093e9d71ce75e258f47}{sigma25\+DCall}}
+\item 
+\mbox{\hyperlink{class_vanna_volga_1_1_vanna_volga_aa97ea5d89fddde029f5df01de6d96c61}{sigma25\+DPut}}
+\item 
+\mbox{\hyperlink{class_vanna_volga_1_1_vanna_volga_ae5468c6983f104515e9d480c36c1d444}{F\+\_\+T}}
+\item 
+\mbox{\hyperlink{class_vanna_volga_1_1_vanna_volga_afe2a95585939f66e29f586591e373063}{KATM}}
+\item 
+\mbox{\hyperlink{class_vanna_volga_1_1_vanna_volga_acee2b38d69ba5f4ff16488d9a8dafae3}{compound\+Factors}}
+\item 
+\mbox{\hyperlink{class_vanna_volga_1_1_vanna_volga_aeb048ca28b8ef2b61b5aeb95810c551b}{alpha}}
+\item 
+\mbox{\hyperlink{class_vanna_volga_1_1_vanna_volga_a33ffc9fffa1e4c58a19a22df090719c3}{K25\+DCall}}
+\item 
+\mbox{\hyperlink{class_vanna_volga_1_1_vanna_volga_a364f3e69e770a30175c9108ce8d4c74b}{K25\+DPut}}
+\item 
+\mbox{\hyperlink{class_vanna_volga_1_1_vanna_volga_ad86066db0cf370ac0434bb4151579599}{data\+By\+Expiry}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+An implementation of the Vanna-\/\+Volga method. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_vanna_volga_1_1_vanna_volga_ab86627c107acc527ade7ea4dfe2c3765}\label{class_vanna_volga_1_1_vanna_volga_ab86627c107acc527ade7ea4dfe2c3765} 
+\index{VannaVolga.VannaVolga@{VannaVolga.VannaVolga}!\_\_init\_\_@{\_\_init\_\_}}
+\index{\_\_init\_\_@{\_\_init\_\_}!VannaVolga.VannaVolga@{VannaVolga.VannaVolga}}
+\doxysubsubsection{\texorpdfstring{\_\_init\_\_()}{\_\_init\_\_()}}
+{\footnotesize\ttfamily Vanna\+Volga.\+Vanna\+Volga.\+\_\+\+\_\+init\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{List\mbox{[}European\+Vanilla\+Fx\+Option\+Quote\mbox{]}}]{fx\+Option\+Market\+Quotes,  }\item[{float}]{S\+\_\+t,  }\item[{Discounting\+Curve}]{foreign\+Ccy\+Discounting\+Curve,  }\item[{Discounting\+Curve     }]{domestic\+Ccy\+Discounting\+Curve }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00018\ \ \ \ \ ): }
+\DoxyCodeLine{00019\ \ \ \ \ \ \ \ \ self.fxOptionMarketQuotes\ =\ fxOptionMarketQuotes }
+\DoxyCodeLine{00020\ \ \ \ \ \ \ \ \ self.S\_t\ =\ S\_t }
+\DoxyCodeLine{00021\ \ \ \ \ \ \ \ \ self.foreignDiscountingCurve\ =\ foreignCcyDiscountingCurve }
+\DoxyCodeLine{00022\ \ \ \ \ \ \ \ \ self.domesticDiscountingCurve\ =\ domesticCcyDiscountingCurve }
+\DoxyCodeLine{00023\  }
+\DoxyCodeLine{00024\ \ \ \ \ \ \ \ \ self.valuationDate\ =\ fxOptionMarketQuotes[0].asOfDate\ \(\backslash\) }
+\DoxyCodeLine{00025\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ len(fxOptionMarketQuotes)\ >\ 0\ \textcolor{keywordflow}{else}\ date.today() }
+\DoxyCodeLine{00026\  }
+\DoxyCodeLine{00027\ \ \ \ \ \ \ \ \ self.rr\ =\ \{\};\ self.stdl\ =\ \{\};\ self.vwb\ =\ \{\} }
+\DoxyCodeLine{00028\  }
+\DoxyCodeLine{00029\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ i\ \textcolor{keywordflow}{in}\ range(len(fxOptionMarketQuotes)): }
+\DoxyCodeLine{00030\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ fxOptionMarketQuotes[i].quoteType\ ==\ FxOptionsMarketQuoteType.ATM\_STRADDLE: }
+\DoxyCodeLine{00031\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ self.stdl[fxOptionMarketQuotes[i].expiryDate]\ =\ fxOptionMarketQuotes[i].vol }
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{elif}\ fxOptionMarketQuotes[i].quoteType\ ==\ FxOptionsMarketQuoteType.TWENTY\_FIVE\_DELTA\_RISK\_REVERSAL: }
+\DoxyCodeLine{00033\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ self.rr[fxOptionMarketQuotes[i].expiryDate]\ =\ fxOptionMarketQuotes[i].vol }
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{elif}\ fxOptionMarketQuotes[i].quoteType\ ==\ FxOptionsMarketQuoteType.TWENTY\_FIVE\_DELTA\_VEGA\_WEIGHTED\_BUTTERFLY: }
+\DoxyCodeLine{00035\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ self.vwb[fxOptionMarketQuotes[i].expiryDate]\ =\ fxOptionMarketQuotes[i].vol }
+\DoxyCodeLine{00036\  }
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \ \ self.expDates\ =\ np.array(self.stdl.keys()) }
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ self.timeToExpiries\ =\ np.array([Actual365(self.valuationDate,expDate)\ \textcolor{keywordflow}{for}\ expDate\ \textcolor{keywordflow}{in}\ self.expDates]) }
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \ \ N\ =\ len(self.timeToExpiries) }
+\DoxyCodeLine{00040\  }
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Calculate\ the\ ATM,\ 25-\/Delta\ call\ and\ 25-\/Delta\ Put\ (pivot\ option)\ quotes }}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \ \ sigmaATM\ =\ np.array(self.stdl.values()) }
+\DoxyCodeLine{00043\ \ \ \ \ \ \ \ \ sigma25DRR\ =\ np.array(self.rr.values()) }
+\DoxyCodeLine{00044\ \ \ \ \ \ \ \ \ sigma25DFly\ =\ np.array(self.vwb.values()) }
+\DoxyCodeLine{00045\  }
+\DoxyCodeLine{00046\ \ \ \ \ \ \ \ \ self.sigmaATM\ =\ sigmaATM }
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \ \ self.sigma25DCall\ =\ (sigma25DFly\ +\ sigmaATM)\ +\ 0.50\ *\ sigma25DRR }
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \ \ self.sigma25DPut\ =\ (sigma25DFly\ +\ sigmaATM)\ -\/\ 0.50\ *\ sigma25DRR }
+\DoxyCodeLine{00049\  }
+\DoxyCodeLine{00050\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Calculate\ the\ ATM,\ 25-\/Delta\ call\ and\ 25-\/Delta\ put\ strikes }}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ for\ each\ expiry. }}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ \ \ self.F\_T\ =\ np.array([self.forward(self.valuationDate,expDate)\ \textcolor{keywordflow}{for}\ expDate\ \textcolor{keywordflow}{in}\ self.expDates]) }
+\DoxyCodeLine{00053\ \ \ \ \ \ \ \ \ self.KATM\ =\ self.F\_T\ *\ np.exp((self.sigmaATM**2)/2\ *\ self.timeToExpiries) }
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \ \ self.compoundFactors\ =\ np.array([1/self.domesticDiscountingCurve.discountFactor(self.valuationDate,expDate) }
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ expDate\ \textcolor{keywordflow}{in}\ self.expDates]) }
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \ \ self.alpha\ =\ np.array([-\/norm.ppf(0.25*compoundFactor)\ \textcolor{keywordflow}{for}\ compoundFactor\ \textcolor{keywordflow}{in}\ self.compoundFactors]) }
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \ \ self.K25DCall\ =\ self.F\_T\ *\ np.exp( }
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \ \ \ \ \ \ self.alpha\ *\ self.sigma25DCall\ *\ np.sqrt(self.timeToExpiries)\ + }
+\DoxyCodeLine{00059\ \ \ \ \ \ \ \ \ \ \ \ \ 0.50\ *\ (self.sigma25DCall**2)\ *\ self.timeToExpiries }
+\DoxyCodeLine{00060\ \ \ \ \ \ \ \ \ ) }
+\DoxyCodeLine{00061\ \ \ \ \ \ \ \ \ self.K25DPut\ =\ self.F\_T\ *\ np.exp( }
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \ \ \ \ \ \ -\/self.alpha\ *\ self.sigma25DPut\ *\ np.sqrt(self.timeToExpiries)\ + }
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \ \ \ \ \ \ 0.50\ *\ (self.sigma25DPut**2)\ *\ self.timeToExpiries }
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \ \ ) }
+\DoxyCodeLine{00065\  }
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \ \ self.dataByExpiry\ =\ \{\} }
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ i\ \textcolor{keywordflow}{in}\ len(self.expDates): }
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \ \ \ \ \ \ self.dataByExpiry[self.expDates[i]]\ =\ ( }
+\DoxyCodeLine{00069\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ self.timeToExpiries[i], }
+\DoxyCodeLine{00070\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ self.sigmaATM[i], }
+\DoxyCodeLine{00071\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ self.sigma25DCall[i], }
+\DoxyCodeLine{00072\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ self.sigma25DPut[i], }
+\DoxyCodeLine{00073\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ self.F\_T[i], }
+\DoxyCodeLine{00074\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ self.KATM[i], }
+\DoxyCodeLine{00075\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ self.K25DCall[i], }
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ self.K25DPut[i] }
+\DoxyCodeLine{00077\ \ \ \ \ \ \ \ \ \ \ \ \ ) }
+\DoxyCodeLine{00078\  }
+
+\end{DoxyCode}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_vanna_volga_1_1_vanna_volga_a254d838733be6192de1d1e1825317c1d}\label{class_vanna_volga_1_1_vanna_volga_a254d838733be6192de1d1e1825317c1d} 
+\index{VannaVolga.VannaVolga@{VannaVolga.VannaVolga}!dMinus@{dMinus}}
+\index{dMinus@{dMinus}!VannaVolga.VannaVolga@{VannaVolga.VannaVolga}}
+\doxysubsubsection{\texorpdfstring{dMinus()}{dMinus()}}
+{\footnotesize\ttfamily Vanna\+Volga.\+Vanna\+Volga.\+d\+Minus (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{F,  }\item[{}]{K,  }\item[{}]{tau,  }\item[{}]{sigma }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00126\ \ \ \ \ \textcolor{keyword}{def\ }dMinus(self,\ F,\ K,\ tau,\ sigma): }
+\DoxyCodeLine{00127\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (np.log(F\ /\ K)\ -\/\ tau\ *\ (sigma\ **\ 2)\ /\ 2)\ /\ (sigma\ *\ np.sqrt(tau))}
+
+\end{DoxyCode}
+\Hypertarget{class_vanna_volga_1_1_vanna_volga_ae84e2e58c49b0e50bc378ae64280d0b4}\label{class_vanna_volga_1_1_vanna_volga_ae84e2e58c49b0e50bc378ae64280d0b4} 
+\index{VannaVolga.VannaVolga@{VannaVolga.VannaVolga}!dPlus@{dPlus}}
+\index{dPlus@{dPlus}!VannaVolga.VannaVolga@{VannaVolga.VannaVolga}}
+\doxysubsubsection{\texorpdfstring{dPlus()}{dPlus()}}
+{\footnotesize\ttfamily Vanna\+Volga.\+Vanna\+Volga.\+d\+Plus (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{F,  }\item[{}]{K,  }\item[{}]{tau,  }\item[{}]{sigma }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00123\ \ \ \ \ \textcolor{keyword}{def\ }dPlus(self,\ F,\ K,\ tau,\ sigma): }
+\DoxyCodeLine{00124\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (np.log(F\ /\ K)\ +\ tau\ *\ (sigma\ **\ 2)\ /\ 2)\ /\ (sigma\ *\ np.sqrt(tau)) }
+\DoxyCodeLine{00125\  }
+
+\end{DoxyCode}
+\Hypertarget{class_vanna_volga_1_1_vanna_volga_a4ec06356f8614ffaeb969f72f238912d}\label{class_vanna_volga_1_1_vanna_volga_a4ec06356f8614ffaeb969f72f238912d} 
+\index{VannaVolga.VannaVolga@{VannaVolga.VannaVolga}!firstOrderApproximation@{firstOrderApproximation}}
+\index{firstOrderApproximation@{firstOrderApproximation}!VannaVolga.VannaVolga@{VannaVolga.VannaVolga}}
+\doxysubsubsection{\texorpdfstring{firstOrderApproximation()}{firstOrderApproximation()}}
+{\footnotesize\ttfamily Vanna\+Volga.\+Vanna\+Volga.\+first\+Order\+Approximation (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{float}]{K,  }\item[{date}]{T }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00086\ \ \ \ \ \textcolor{keyword}{def\ }firstOrderApproximation(self,\ K:float,\ T:date): }
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ T\ \textcolor{keywordflow}{in}\ self.dataByExpiry.keys(): }
+\DoxyCodeLine{00088\ \ \ \ \ \ \ \ \ \ \ \ \ tau,\ sigma2,\ sigma3,\ sigma1,\ F\_T,\ K2,\ K3,\ K1\ =\ self.dataByExpiry[T] }
+\DoxyCodeLine{00089\ \ \ \ \ \ \ \ \ \ \ \ \ y1\ =\ (np.log(K2/K)\ *\ np.log(K3/K))/(np.log(K3/K1)\ *\ np.log(K2/K1)) }
+\DoxyCodeLine{00090\ \ \ \ \ \ \ \ \ \ \ \ \ y2\ =\ (np.log(K/K1)\ *\ np.log(K3/K))/(np.log(K2/K1)\ *\ np.log(K3/K2)) }
+\DoxyCodeLine{00091\ \ \ \ \ \ \ \ \ \ \ \ \ y3\ =\ (np.log(K/K1)\ *\ np.log(K/K2))/(np.log(K3/K1)\ *\ np.log(K3/K2)) }
+\DoxyCodeLine{00092\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ y1\ *\ sigma1\ +\ y2\ *\ sigma2\ +\ y3\ *\ sigma3 }
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}: }
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{raise}\ Exception(f\textcolor{stringliteral}{"{}Market\ quotes\ for\ the\ expiry\ \{date.strftime(T,'\%Y-\/\%m-\/\%d')\}\ "{}} }
+\DoxyCodeLine{00095\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ f\textcolor{stringliteral}{"{}were\ not\ supplied\ during\ VV\ calibration!"{}}) }
+\DoxyCodeLine{00096\  }
+
+\end{DoxyCode}
+\Hypertarget{class_vanna_volga_1_1_vanna_volga_a053e083eae6e2fd45c04ac91ba06d3dd}\label{class_vanna_volga_1_1_vanna_volga_a053e083eae6e2fd45c04ac91ba06d3dd} 
+\index{VannaVolga.VannaVolga@{VannaVolga.VannaVolga}!forward@{forward}}
+\index{forward@{forward}!VannaVolga.VannaVolga@{VannaVolga.VannaVolga}}
+\doxysubsubsection{\texorpdfstring{forward()}{forward()}}
+{\footnotesize\ttfamily Vanna\+Volga.\+Vanna\+Volga.\+forward (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{date}]{t,  }\item[{date}]{T }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00079\ \ \ \ \ \textcolor{keyword}{def\ }forward(self,t:date,T:date): }
+\DoxyCodeLine{00080\ \ \ \ \ \ \ \ \ foreignDF\ =\ self.foreignDiscountingCurve.discountFactor(t,T) }
+\DoxyCodeLine{00081\ \ \ \ \ \ \ \ \ domesticDF\ =\ self.domesticDiscountingCurve.discountFactor(t,T) }
+\DoxyCodeLine{00082\ \ \ \ \ \ \ \ \ fwdPoints\ =\ foreignDF\ /\ domesticDF }
+\DoxyCodeLine{00083\ \ \ \ \ \ \ \ \ F\ =\ fwdPoints\ *\ self.S\_t }
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ F }
+\DoxyCodeLine{00085\  }
+
+\end{DoxyCode}
+\Hypertarget{class_vanna_volga_1_1_vanna_volga_a114742205073d2b8262e20abc05dcbda}\label{class_vanna_volga_1_1_vanna_volga_a114742205073d2b8262e20abc05dcbda} 
+\index{VannaVolga.VannaVolga@{VannaVolga.VannaVolga}!secondOrderApproximation@{secondOrderApproximation}}
+\index{secondOrderApproximation@{secondOrderApproximation}!VannaVolga.VannaVolga@{VannaVolga.VannaVolga}}
+\doxysubsubsection{\texorpdfstring{secondOrderApproximation()}{secondOrderApproximation()}}
+{\footnotesize\ttfamily Vanna\+Volga.\+Vanna\+Volga.\+second\+Order\+Approximation (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{float}]{K,  }\item[{date}]{T }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00097\ \ \ \ \ \textcolor{keyword}{def\ }secondOrderApproximation(self,\ K:float,\ T:date): }
+\DoxyCodeLine{00098\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ T\ \textcolor{keywordflow}{in}\ self.dataByExpiry.keys(): }
+\DoxyCodeLine{00099\ \ \ \ \ \ \ \ \ \ \ \ \ tau,\ sigma2,\ sigma3,\ sigma1,\ F\_T,\ K2,\ K3,\ K1\ =\ self.dataByExpiry[T] }
+\DoxyCodeLine{00100\ \ \ \ \ \ \ \ \ \ \ \ \ xi1\ =\ self.firstOrderApproximation(K,T) }
+\DoxyCodeLine{00101\ \ \ \ \ \ \ \ \ \ \ \ \ D1\_K\ =\ xi1\ -\/\ sigma2 }
+\DoxyCodeLine{00102\  }
+\DoxyCodeLine{00103\ \ \ \ \ \ \ \ \ \ \ \ \ d\_plus\_K\ =\ self.dPlus(F\_T,K,sigma2,tau) }
+\DoxyCodeLine{00104\ \ \ \ \ \ \ \ \ \ \ \ \ d\_minus\_K\ =\ self.dMinus(F\_T,K,sigma2,tau) }
+\DoxyCodeLine{00105\  }
+\DoxyCodeLine{00106\ \ \ \ \ \ \ \ \ \ \ \ \ d\_plus\_K1\ =\ self.dPlus(F\_T,K1,sigma2,tau) }
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \ \ \ \ \ \ d\_minus\_K1\ =\ self.dMinus(F\_T,\ K1,\ sigma2,\ tau) }
+\DoxyCodeLine{00108\  }
+\DoxyCodeLine{00109\ \ \ \ \ \ \ \ \ \ \ \ \ d\_plus\_K3\ =\ self.dPlus(F\_T,\ K3,\ sigma2,\ tau) }
+\DoxyCodeLine{00110\ \ \ \ \ \ \ \ \ \ \ \ \ d\_minus\_K3\ =\ self.dMinus(F\_T,\ K3,\ sigma2,\ tau) }
+\DoxyCodeLine{00111\  }
+\DoxyCodeLine{00112\ \ \ \ \ \ \ \ \ \ \ \ \ D2\_K\ =\ ((d\_plus\_K1\ *\ d\_minus\_K1\ *\ (np.log(K3/K)\ *\ np.log(K2/K))/(np.log(K3/K1)\ *\ np.log(K2/K1))\ * }
+\DoxyCodeLine{00113\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (sigma1\ -\/\ sigma2)**2\ + }
+\DoxyCodeLine{00114\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ d\_plus\_K3\ *\ d\_minus\_K3\ *\ (np.log(K/K1)\ *\ np.log(K/K2))/(np.log(K3/K1)\ *\ np.log(K3/K2)))\ * }
+\DoxyCodeLine{00115\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (sigma3\ -\/\ sigma2)**2) }
+\DoxyCodeLine{00116\  }
+\DoxyCodeLine{00117\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (sigma2\ +\ (-\/sigma2\ +\ np.sqrt(sigma2**2\ -\/\ d\_plus\_K\ *\ d\_minus\_K\ *\ (2*sigma2*D1\_K\ +\ D2\_K)))/ }
+\DoxyCodeLine{00118\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (d\_plus\_K\ *\ d\_minus\_K)) }
+\DoxyCodeLine{00119\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}: }
+\DoxyCodeLine{00120\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{raise}\ Exception(f\textcolor{stringliteral}{"{}Market\ quotes\ for\ the\ expiry\ \{date.strftime(T,'\%Y-\/\%m-\/\%d')\}\ "{}} }
+\DoxyCodeLine{00121\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ f\textcolor{stringliteral}{"{}were\ not\ supplied\ during\ VV\ calibration!"{}}) }
+\DoxyCodeLine{00122\  }
+
+\end{DoxyCode}
+
+
+\doxysubsection{Member Data Documentation}
+\Hypertarget{class_vanna_volga_1_1_vanna_volga_aeb048ca28b8ef2b61b5aeb95810c551b}\label{class_vanna_volga_1_1_vanna_volga_aeb048ca28b8ef2b61b5aeb95810c551b} 
+\index{VannaVolga.VannaVolga@{VannaVolga.VannaVolga}!alpha@{alpha}}
+\index{alpha@{alpha}!VannaVolga.VannaVolga@{VannaVolga.VannaVolga}}
+\doxysubsubsection{\texorpdfstring{alpha}{alpha}}
+{\footnotesize\ttfamily Vanna\+Volga.\+Vanna\+Volga.\+alpha}
+
+\Hypertarget{class_vanna_volga_1_1_vanna_volga_acee2b38d69ba5f4ff16488d9a8dafae3}\label{class_vanna_volga_1_1_vanna_volga_acee2b38d69ba5f4ff16488d9a8dafae3} 
+\index{VannaVolga.VannaVolga@{VannaVolga.VannaVolga}!compoundFactors@{compoundFactors}}
+\index{compoundFactors@{compoundFactors}!VannaVolga.VannaVolga@{VannaVolga.VannaVolga}}
+\doxysubsubsection{\texorpdfstring{compoundFactors}{compoundFactors}}
+{\footnotesize\ttfamily Vanna\+Volga.\+Vanna\+Volga.\+compound\+Factors}
+
+\Hypertarget{class_vanna_volga_1_1_vanna_volga_ad86066db0cf370ac0434bb4151579599}\label{class_vanna_volga_1_1_vanna_volga_ad86066db0cf370ac0434bb4151579599} 
+\index{VannaVolga.VannaVolga@{VannaVolga.VannaVolga}!dataByExpiry@{dataByExpiry}}
+\index{dataByExpiry@{dataByExpiry}!VannaVolga.VannaVolga@{VannaVolga.VannaVolga}}
+\doxysubsubsection{\texorpdfstring{dataByExpiry}{dataByExpiry}}
+{\footnotesize\ttfamily Vanna\+Volga.\+Vanna\+Volga.\+data\+By\+Expiry}
+
+\Hypertarget{class_vanna_volga_1_1_vanna_volga_a6fcd320f5d1926489aed15ea805cd752}\label{class_vanna_volga_1_1_vanna_volga_a6fcd320f5d1926489aed15ea805cd752} 
+\index{VannaVolga.VannaVolga@{VannaVolga.VannaVolga}!domesticDiscountingCurve@{domesticDiscountingCurve}}
+\index{domesticDiscountingCurve@{domesticDiscountingCurve}!VannaVolga.VannaVolga@{VannaVolga.VannaVolga}}
+\doxysubsubsection{\texorpdfstring{domesticDiscountingCurve}{domesticDiscountingCurve}}
+{\footnotesize\ttfamily Vanna\+Volga.\+Vanna\+Volga.\+domestic\+Discounting\+Curve}
+
+\Hypertarget{class_vanna_volga_1_1_vanna_volga_aa5647564b15e65f8fddc37cb139399b7}\label{class_vanna_volga_1_1_vanna_volga_aa5647564b15e65f8fddc37cb139399b7} 
+\index{VannaVolga.VannaVolga@{VannaVolga.VannaVolga}!expDates@{expDates}}
+\index{expDates@{expDates}!VannaVolga.VannaVolga@{VannaVolga.VannaVolga}}
+\doxysubsubsection{\texorpdfstring{expDates}{expDates}}
+{\footnotesize\ttfamily Vanna\+Volga.\+Vanna\+Volga.\+exp\+Dates}
+
+\Hypertarget{class_vanna_volga_1_1_vanna_volga_ae5468c6983f104515e9d480c36c1d444}\label{class_vanna_volga_1_1_vanna_volga_ae5468c6983f104515e9d480c36c1d444} 
+\index{VannaVolga.VannaVolga@{VannaVolga.VannaVolga}!F\_T@{F\_T}}
+\index{F\_T@{F\_T}!VannaVolga.VannaVolga@{VannaVolga.VannaVolga}}
+\doxysubsubsection{\texorpdfstring{F\_T}{F\_T}}
+{\footnotesize\ttfamily Vanna\+Volga.\+Vanna\+Volga.\+F\+\_\+T}
+
+\Hypertarget{class_vanna_volga_1_1_vanna_volga_ac137c8c4dcc6a12ede1c26f85579feb7}\label{class_vanna_volga_1_1_vanna_volga_ac137c8c4dcc6a12ede1c26f85579feb7} 
+\index{VannaVolga.VannaVolga@{VannaVolga.VannaVolga}!foreignDiscountingCurve@{foreignDiscountingCurve}}
+\index{foreignDiscountingCurve@{foreignDiscountingCurve}!VannaVolga.VannaVolga@{VannaVolga.VannaVolga}}
+\doxysubsubsection{\texorpdfstring{foreignDiscountingCurve}{foreignDiscountingCurve}}
+{\footnotesize\ttfamily Vanna\+Volga.\+Vanna\+Volga.\+foreign\+Discounting\+Curve}
+
+\Hypertarget{class_vanna_volga_1_1_vanna_volga_a8759711bf0fbd44c00ba0233d491ff69}\label{class_vanna_volga_1_1_vanna_volga_a8759711bf0fbd44c00ba0233d491ff69} 
+\index{VannaVolga.VannaVolga@{VannaVolga.VannaVolga}!fxOptionMarketQuotes@{fxOptionMarketQuotes}}
+\index{fxOptionMarketQuotes@{fxOptionMarketQuotes}!VannaVolga.VannaVolga@{VannaVolga.VannaVolga}}
+\doxysubsubsection{\texorpdfstring{fxOptionMarketQuotes}{fxOptionMarketQuotes}}
+{\footnotesize\ttfamily Vanna\+Volga.\+Vanna\+Volga.\+fx\+Option\+Market\+Quotes}
+
+\Hypertarget{class_vanna_volga_1_1_vanna_volga_a33ffc9fffa1e4c58a19a22df090719c3}\label{class_vanna_volga_1_1_vanna_volga_a33ffc9fffa1e4c58a19a22df090719c3} 
+\index{VannaVolga.VannaVolga@{VannaVolga.VannaVolga}!K25DCall@{K25DCall}}
+\index{K25DCall@{K25DCall}!VannaVolga.VannaVolga@{VannaVolga.VannaVolga}}
+\doxysubsubsection{\texorpdfstring{K25DCall}{K25DCall}}
+{\footnotesize\ttfamily Vanna\+Volga.\+Vanna\+Volga.\+K25\+DCall}
+
+\Hypertarget{class_vanna_volga_1_1_vanna_volga_a364f3e69e770a30175c9108ce8d4c74b}\label{class_vanna_volga_1_1_vanna_volga_a364f3e69e770a30175c9108ce8d4c74b} 
+\index{VannaVolga.VannaVolga@{VannaVolga.VannaVolga}!K25DPut@{K25DPut}}
+\index{K25DPut@{K25DPut}!VannaVolga.VannaVolga@{VannaVolga.VannaVolga}}
+\doxysubsubsection{\texorpdfstring{K25DPut}{K25DPut}}
+{\footnotesize\ttfamily Vanna\+Volga.\+Vanna\+Volga.\+K25\+DPut}
+
+\Hypertarget{class_vanna_volga_1_1_vanna_volga_afe2a95585939f66e29f586591e373063}\label{class_vanna_volga_1_1_vanna_volga_afe2a95585939f66e29f586591e373063} 
+\index{VannaVolga.VannaVolga@{VannaVolga.VannaVolga}!KATM@{KATM}}
+\index{KATM@{KATM}!VannaVolga.VannaVolga@{VannaVolga.VannaVolga}}
+\doxysubsubsection{\texorpdfstring{KATM}{KATM}}
+{\footnotesize\ttfamily Vanna\+Volga.\+Vanna\+Volga.\+KATM}
+
+\Hypertarget{class_vanna_volga_1_1_vanna_volga_a0a940f15b18561bd4dadb085f579efb4}\label{class_vanna_volga_1_1_vanna_volga_a0a940f15b18561bd4dadb085f579efb4} 
+\index{VannaVolga.VannaVolga@{VannaVolga.VannaVolga}!rr@{rr}}
+\index{rr@{rr}!VannaVolga.VannaVolga@{VannaVolga.VannaVolga}}
+\doxysubsubsection{\texorpdfstring{rr}{rr}}
+{\footnotesize\ttfamily Vanna\+Volga.\+Vanna\+Volga.\+rr}
+
+\Hypertarget{class_vanna_volga_1_1_vanna_volga_a40cfdd946abb191ecef79ae666fb87f9}\label{class_vanna_volga_1_1_vanna_volga_a40cfdd946abb191ecef79ae666fb87f9} 
+\index{VannaVolga.VannaVolga@{VannaVolga.VannaVolga}!S\_t@{S\_t}}
+\index{S\_t@{S\_t}!VannaVolga.VannaVolga@{VannaVolga.VannaVolga}}
+\doxysubsubsection{\texorpdfstring{S\_t}{S\_t}}
+{\footnotesize\ttfamily Vanna\+Volga.\+Vanna\+Volga.\+S\+\_\+t}
+
+\Hypertarget{class_vanna_volga_1_1_vanna_volga_a220ae1f9e3809093e9d71ce75e258f47}\label{class_vanna_volga_1_1_vanna_volga_a220ae1f9e3809093e9d71ce75e258f47} 
+\index{VannaVolga.VannaVolga@{VannaVolga.VannaVolga}!sigma25DCall@{sigma25DCall}}
+\index{sigma25DCall@{sigma25DCall}!VannaVolga.VannaVolga@{VannaVolga.VannaVolga}}
+\doxysubsubsection{\texorpdfstring{sigma25DCall}{sigma25DCall}}
+{\footnotesize\ttfamily Vanna\+Volga.\+Vanna\+Volga.\+sigma25\+DCall}
+
+\Hypertarget{class_vanna_volga_1_1_vanna_volga_aa97ea5d89fddde029f5df01de6d96c61}\label{class_vanna_volga_1_1_vanna_volga_aa97ea5d89fddde029f5df01de6d96c61} 
+\index{VannaVolga.VannaVolga@{VannaVolga.VannaVolga}!sigma25DPut@{sigma25DPut}}
+\index{sigma25DPut@{sigma25DPut}!VannaVolga.VannaVolga@{VannaVolga.VannaVolga}}
+\doxysubsubsection{\texorpdfstring{sigma25DPut}{sigma25DPut}}
+{\footnotesize\ttfamily Vanna\+Volga.\+Vanna\+Volga.\+sigma25\+DPut}
+
+\Hypertarget{class_vanna_volga_1_1_vanna_volga_a6d601150f6d1f4c0bed1eeefe072cc6b}\label{class_vanna_volga_1_1_vanna_volga_a6d601150f6d1f4c0bed1eeefe072cc6b} 
+\index{VannaVolga.VannaVolga@{VannaVolga.VannaVolga}!sigmaATM@{sigmaATM}}
+\index{sigmaATM@{sigmaATM}!VannaVolga.VannaVolga@{VannaVolga.VannaVolga}}
+\doxysubsubsection{\texorpdfstring{sigmaATM}{sigmaATM}}
+{\footnotesize\ttfamily Vanna\+Volga.\+Vanna\+Volga.\+sigma\+ATM}
+
+\Hypertarget{class_vanna_volga_1_1_vanna_volga_a9332c835163b5a10c8c531e63c86391a}\label{class_vanna_volga_1_1_vanna_volga_a9332c835163b5a10c8c531e63c86391a} 
+\index{VannaVolga.VannaVolga@{VannaVolga.VannaVolga}!timeToExpiries@{timeToExpiries}}
+\index{timeToExpiries@{timeToExpiries}!VannaVolga.VannaVolga@{VannaVolga.VannaVolga}}
+\doxysubsubsection{\texorpdfstring{timeToExpiries}{timeToExpiries}}
+{\footnotesize\ttfamily Vanna\+Volga.\+Vanna\+Volga.\+time\+To\+Expiries}
+
+\Hypertarget{class_vanna_volga_1_1_vanna_volga_a29d1e25c902682916c9075cd2226aa5e}\label{class_vanna_volga_1_1_vanna_volga_a29d1e25c902682916c9075cd2226aa5e} 
+\index{VannaVolga.VannaVolga@{VannaVolga.VannaVolga}!valuationDate@{valuationDate}}
+\index{valuationDate@{valuationDate}!VannaVolga.VannaVolga@{VannaVolga.VannaVolga}}
+\doxysubsubsection{\texorpdfstring{valuationDate}{valuationDate}}
+{\footnotesize\ttfamily Vanna\+Volga.\+Vanna\+Volga.\+valuation\+Date}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+models/\mbox{\hyperlink{_vanna_volga_8py}{Vanna\+Volga.\+py}}\end{DoxyCompactItemize}

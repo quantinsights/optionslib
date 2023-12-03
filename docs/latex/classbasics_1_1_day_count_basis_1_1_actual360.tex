@@ -1,0 +1,39 @@
+\doxysection{basics.\+Day\+Count\+Basis.\+Actual360 Class Reference}
+\hypertarget{classbasics_1_1_day_count_basis_1_1_actual360}{}\label{classbasics_1_1_day_count_basis_1_1_actual360}\index{basics.DayCountBasis.Actual360@{basics.DayCountBasis.Actual360}}
+Inheritance diagram for basics.\+Day\+Count\+Basis.\+Actual360\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classbasics_1_1_day_count_basis_1_1_actual360}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classbasics_1_1_day_count_basis_1_1_actual360_a9f1689d9a5db04191f666c741ad11ea9}{year\+Fraction}} (date d1, date d2)
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions inherited from \mbox{\hyperlink{classbasics_1_1_day_count_basis_1_1_day_count_base}{basics.\+Day\+Count\+Basis.\+Day\+Count\+Base}}}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classbasics_1_1_day_count_basis_1_1_day_count_base_a14ae5dcb186762c783ce7c494c7625d2}{days\+Between}} (date start\+Inclusive, date end\+Exlusive)
+\begin{DoxyCompactList}\small\item\em Returns the number of calendar days in the period \mbox{[}start\+Inclusive,end\+Exclusive). \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classbasics_1_1_day_count_basis_1_1_actual360_a9f1689d9a5db04191f666c741ad11ea9}\label{classbasics_1_1_day_count_basis_1_1_actual360_a9f1689d9a5db04191f666c741ad11ea9} 
+\index{basics.DayCountBasis.Actual360@{basics.DayCountBasis.Actual360}!yearFraction@{yearFraction}}
+\index{yearFraction@{yearFraction}!basics.DayCountBasis.Actual360@{basics.DayCountBasis.Actual360}}
+\doxysubsubsection{\texorpdfstring{yearFraction()}{yearFraction()}}
+{\footnotesize\ttfamily basics.\+Day\+Count\+Basis.\+Actual360.\+year\+Fraction (\begin{DoxyParamCaption}\item[{date}]{d1,  }\item[{date}]{d2 }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00014\ \ \ \ \ \textcolor{keyword}{def\ }yearFraction(d1:date,\ d2:date): }
+\DoxyCodeLine{00015\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ DayCountBase.daysBetween(d1,d2)/360 }
+\DoxyCodeLine{00016\  }
+
+\end{DoxyCode}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+basics/\mbox{\hyperlink{_day_count_basis_8py}{Day\+Count\+Basis.\+py}}\end{DoxyCompactItemize}

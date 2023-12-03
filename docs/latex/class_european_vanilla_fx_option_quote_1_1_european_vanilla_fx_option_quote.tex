@@ -1,0 +1,95 @@
+\doxysection{European\+Vanilla\+Fx\+Option\+Quote.\+European\+Vanilla\+Fx\+Option\+Quote Class Reference}
+\hypertarget{class_european_vanilla_fx_option_quote_1_1_european_vanilla_fx_option_quote}{}\label{class_european_vanilla_fx_option_quote_1_1_european_vanilla_fx_option_quote}\index{EuropeanVanillaFxOptionQuote.EuropeanVanillaFxOptionQuote@{EuropeanVanillaFxOptionQuote.EuropeanVanillaFxOptionQuote}}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_european_vanilla_fx_option_quote_1_1_european_vanilla_fx_option_quote_a7f0e934b68c60bb6e548d6a5c105666e}{\+\_\+\+\_\+init\+\_\+\+\_\+}} (self, str foreign\+Currency, str domestic\+Currency, date \mbox{\hyperlink{class_european_vanilla_fx_option_quote_1_1_european_vanilla_fx_option_quote_a6680e2054686ded48b5c505c7e820c01}{as\+Of\+Date}}, date \mbox{\hyperlink{class_european_vanilla_fx_option_quote_1_1_european_vanilla_fx_option_quote_a1287f5bb7a042e7558ee699b0b45a23c}{expiry\+Date}}, float \mbox{\hyperlink{class_european_vanilla_fx_option_quote_1_1_european_vanilla_fx_option_quote_adaa2f3b0e9a4b2aa9d556d6abb53a0cf}{strike}}, float \mbox{\hyperlink{class_european_vanilla_fx_option_quote_1_1_european_vanilla_fx_option_quote_a2b15be128e673aac3f6aa3d30801fd08}{vol}}, \mbox{\hyperlink{classbasics_1_1_enums_1_1_fx_options_market_quote_type}{Fx\+Options\+Market\+Quote\+Type}} \mbox{\hyperlink{class_european_vanilla_fx_option_quote_1_1_european_vanilla_fx_option_quote_adb8852d7e32a32ae89f6893f223a7dd8}{quote\+Type}})
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_european_vanilla_fx_option_quote_1_1_european_vanilla_fx_option_quote_a2b5f15f4c502ac2c436ecf3acdf1d6f8}{foreign\+Ccy}}
+\item 
+\mbox{\hyperlink{class_european_vanilla_fx_option_quote_1_1_european_vanilla_fx_option_quote_af679bb5b8f1f32f1c7a11be0dde0b2c7}{domestic\+Ccy}}
+\item 
+\mbox{\hyperlink{class_european_vanilla_fx_option_quote_1_1_european_vanilla_fx_option_quote_a6680e2054686ded48b5c505c7e820c01}{as\+Of\+Date}}
+\item 
+\mbox{\hyperlink{class_european_vanilla_fx_option_quote_1_1_european_vanilla_fx_option_quote_a1287f5bb7a042e7558ee699b0b45a23c}{expiry\+Date}}
+\item 
+\mbox{\hyperlink{class_european_vanilla_fx_option_quote_1_1_european_vanilla_fx_option_quote_adaa2f3b0e9a4b2aa9d556d6abb53a0cf}{strike}}
+\item 
+\mbox{\hyperlink{class_european_vanilla_fx_option_quote_1_1_european_vanilla_fx_option_quote_a2b15be128e673aac3f6aa3d30801fd08}{vol}}
+\item 
+\mbox{\hyperlink{class_european_vanilla_fx_option_quote_1_1_european_vanilla_fx_option_quote_adb8852d7e32a32ae89f6893f223a7dd8}{quote\+Type}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_european_vanilla_fx_option_quote_1_1_european_vanilla_fx_option_quote_a7f0e934b68c60bb6e548d6a5c105666e}\label{class_european_vanilla_fx_option_quote_1_1_european_vanilla_fx_option_quote_a7f0e934b68c60bb6e548d6a5c105666e} 
+\index{EuropeanVanillaFxOptionQuote.EuropeanVanillaFxOptionQuote@{EuropeanVanillaFxOptionQuote.EuropeanVanillaFxOptionQuote}!\_\_init\_\_@{\_\_init\_\_}}
+\index{\_\_init\_\_@{\_\_init\_\_}!EuropeanVanillaFxOptionQuote.EuropeanVanillaFxOptionQuote@{EuropeanVanillaFxOptionQuote.EuropeanVanillaFxOptionQuote}}
+\doxysubsubsection{\texorpdfstring{\_\_init\_\_()}{\_\_init\_\_()}}
+{\footnotesize\ttfamily European\+Vanilla\+Fx\+Option\+Quote.\+European\+Vanilla\+Fx\+Option\+Quote.\+\_\+\+\_\+init\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{str}]{foreign\+Currency,  }\item[{str}]{domestic\+Currency,  }\item[{date}]{as\+Of\+Date,  }\item[{date}]{expiry\+Date,  }\item[{float}]{strike,  }\item[{float}]{vol,  }\item[{\mbox{\hyperlink{classbasics_1_1_enums_1_1_fx_options_market_quote_type}{Fx\+Options\+Market\+Quote\+Type}}     }]{quote\+Type }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00013\ \ \ \ \ ): }
+\DoxyCodeLine{00014\ \ \ \ \ \ \ \ \ self.foreignCcy\ =\ foreignCurrency }
+\DoxyCodeLine{00015\ \ \ \ \ \ \ \ \ self.domesticCcy\ =\ domesticCurrency }
+\DoxyCodeLine{00016\ \ \ \ \ \ \ \ \ self.asOfDate\ =\ asOfDate }
+\DoxyCodeLine{00017\ \ \ \ \ \ \ \ \ self.expiryDate\ =\ expiryDate }
+\DoxyCodeLine{00018\ \ \ \ \ \ \ \ \ self.strike\ =\ strike }
+\DoxyCodeLine{00019\ \ \ \ \ \ \ \ \ self.vol\ =\ vol }
+\DoxyCodeLine{00020\ \ \ \ \ \ \ \ \ self.quoteType\ =\ quoteType}
+
+\end{DoxyCode}
+
+
+\doxysubsection{Member Data Documentation}
+\Hypertarget{class_european_vanilla_fx_option_quote_1_1_european_vanilla_fx_option_quote_a6680e2054686ded48b5c505c7e820c01}\label{class_european_vanilla_fx_option_quote_1_1_european_vanilla_fx_option_quote_a6680e2054686ded48b5c505c7e820c01} 
+\index{EuropeanVanillaFxOptionQuote.EuropeanVanillaFxOptionQuote@{EuropeanVanillaFxOptionQuote.EuropeanVanillaFxOptionQuote}!asOfDate@{asOfDate}}
+\index{asOfDate@{asOfDate}!EuropeanVanillaFxOptionQuote.EuropeanVanillaFxOptionQuote@{EuropeanVanillaFxOptionQuote.EuropeanVanillaFxOptionQuote}}
+\doxysubsubsection{\texorpdfstring{asOfDate}{asOfDate}}
+{\footnotesize\ttfamily European\+Vanilla\+Fx\+Option\+Quote.\+European\+Vanilla\+Fx\+Option\+Quote.\+as\+Of\+Date}
+
+\Hypertarget{class_european_vanilla_fx_option_quote_1_1_european_vanilla_fx_option_quote_af679bb5b8f1f32f1c7a11be0dde0b2c7}\label{class_european_vanilla_fx_option_quote_1_1_european_vanilla_fx_option_quote_af679bb5b8f1f32f1c7a11be0dde0b2c7} 
+\index{EuropeanVanillaFxOptionQuote.EuropeanVanillaFxOptionQuote@{EuropeanVanillaFxOptionQuote.EuropeanVanillaFxOptionQuote}!domesticCcy@{domesticCcy}}
+\index{domesticCcy@{domesticCcy}!EuropeanVanillaFxOptionQuote.EuropeanVanillaFxOptionQuote@{EuropeanVanillaFxOptionQuote.EuropeanVanillaFxOptionQuote}}
+\doxysubsubsection{\texorpdfstring{domesticCcy}{domesticCcy}}
+{\footnotesize\ttfamily European\+Vanilla\+Fx\+Option\+Quote.\+European\+Vanilla\+Fx\+Option\+Quote.\+domestic\+Ccy}
+
+\Hypertarget{class_european_vanilla_fx_option_quote_1_1_european_vanilla_fx_option_quote_a1287f5bb7a042e7558ee699b0b45a23c}\label{class_european_vanilla_fx_option_quote_1_1_european_vanilla_fx_option_quote_a1287f5bb7a042e7558ee699b0b45a23c} 
+\index{EuropeanVanillaFxOptionQuote.EuropeanVanillaFxOptionQuote@{EuropeanVanillaFxOptionQuote.EuropeanVanillaFxOptionQuote}!expiryDate@{expiryDate}}
+\index{expiryDate@{expiryDate}!EuropeanVanillaFxOptionQuote.EuropeanVanillaFxOptionQuote@{EuropeanVanillaFxOptionQuote.EuropeanVanillaFxOptionQuote}}
+\doxysubsubsection{\texorpdfstring{expiryDate}{expiryDate}}
+{\footnotesize\ttfamily European\+Vanilla\+Fx\+Option\+Quote.\+European\+Vanilla\+Fx\+Option\+Quote.\+expiry\+Date}
+
+\Hypertarget{class_european_vanilla_fx_option_quote_1_1_european_vanilla_fx_option_quote_a2b5f15f4c502ac2c436ecf3acdf1d6f8}\label{class_european_vanilla_fx_option_quote_1_1_european_vanilla_fx_option_quote_a2b5f15f4c502ac2c436ecf3acdf1d6f8} 
+\index{EuropeanVanillaFxOptionQuote.EuropeanVanillaFxOptionQuote@{EuropeanVanillaFxOptionQuote.EuropeanVanillaFxOptionQuote}!foreignCcy@{foreignCcy}}
+\index{foreignCcy@{foreignCcy}!EuropeanVanillaFxOptionQuote.EuropeanVanillaFxOptionQuote@{EuropeanVanillaFxOptionQuote.EuropeanVanillaFxOptionQuote}}
+\doxysubsubsection{\texorpdfstring{foreignCcy}{foreignCcy}}
+{\footnotesize\ttfamily European\+Vanilla\+Fx\+Option\+Quote.\+European\+Vanilla\+Fx\+Option\+Quote.\+foreign\+Ccy}
+
+\Hypertarget{class_european_vanilla_fx_option_quote_1_1_european_vanilla_fx_option_quote_adb8852d7e32a32ae89f6893f223a7dd8}\label{class_european_vanilla_fx_option_quote_1_1_european_vanilla_fx_option_quote_adb8852d7e32a32ae89f6893f223a7dd8} 
+\index{EuropeanVanillaFxOptionQuote.EuropeanVanillaFxOptionQuote@{EuropeanVanillaFxOptionQuote.EuropeanVanillaFxOptionQuote}!quoteType@{quoteType}}
+\index{quoteType@{quoteType}!EuropeanVanillaFxOptionQuote.EuropeanVanillaFxOptionQuote@{EuropeanVanillaFxOptionQuote.EuropeanVanillaFxOptionQuote}}
+\doxysubsubsection{\texorpdfstring{quoteType}{quoteType}}
+{\footnotesize\ttfamily European\+Vanilla\+Fx\+Option\+Quote.\+European\+Vanilla\+Fx\+Option\+Quote.\+quote\+Type}
+
+\Hypertarget{class_european_vanilla_fx_option_quote_1_1_european_vanilla_fx_option_quote_adaa2f3b0e9a4b2aa9d556d6abb53a0cf}\label{class_european_vanilla_fx_option_quote_1_1_european_vanilla_fx_option_quote_adaa2f3b0e9a4b2aa9d556d6abb53a0cf} 
+\index{EuropeanVanillaFxOptionQuote.EuropeanVanillaFxOptionQuote@{EuropeanVanillaFxOptionQuote.EuropeanVanillaFxOptionQuote}!strike@{strike}}
+\index{strike@{strike}!EuropeanVanillaFxOptionQuote.EuropeanVanillaFxOptionQuote@{EuropeanVanillaFxOptionQuote.EuropeanVanillaFxOptionQuote}}
+\doxysubsubsection{\texorpdfstring{strike}{strike}}
+{\footnotesize\ttfamily European\+Vanilla\+Fx\+Option\+Quote.\+European\+Vanilla\+Fx\+Option\+Quote.\+strike}
+
+\Hypertarget{class_european_vanilla_fx_option_quote_1_1_european_vanilla_fx_option_quote_a2b15be128e673aac3f6aa3d30801fd08}\label{class_european_vanilla_fx_option_quote_1_1_european_vanilla_fx_option_quote_a2b15be128e673aac3f6aa3d30801fd08} 
+\index{EuropeanVanillaFxOptionQuote.EuropeanVanillaFxOptionQuote@{EuropeanVanillaFxOptionQuote.EuropeanVanillaFxOptionQuote}!vol@{vol}}
+\index{vol@{vol}!EuropeanVanillaFxOptionQuote.EuropeanVanillaFxOptionQuote@{EuropeanVanillaFxOptionQuote.EuropeanVanillaFxOptionQuote}}
+\doxysubsubsection{\texorpdfstring{vol}{vol}}
+{\footnotesize\ttfamily European\+Vanilla\+Fx\+Option\+Quote.\+European\+Vanilla\+Fx\+Option\+Quote.\+vol}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+market/\mbox{\hyperlink{_european_vanilla_fx_option_quote_8py}{European\+Vanilla\+Fx\+Option\+Quote.\+py}}\end{DoxyCompactItemize}

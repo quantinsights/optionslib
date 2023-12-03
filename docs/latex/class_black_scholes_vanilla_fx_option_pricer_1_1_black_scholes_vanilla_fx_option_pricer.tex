@@ -1,0 +1,346 @@
+\doxysection{Black\+Scholes\+Vanilla\+Fx\+Option\+Pricer.\+Black\+Scholes\+Vanilla\+Fx\+Option\+Pricer Class Reference}
+\hypertarget{class_black_scholes_vanilla_fx_option_pricer_1_1_black_scholes_vanilla_fx_option_pricer}{}\label{class_black_scholes_vanilla_fx_option_pricer_1_1_black_scholes_vanilla_fx_option_pricer}\index{BlackScholesVanillaFxOptionPricer.BlackScholesVanillaFxOptionPricer@{BlackScholesVanillaFxOptionPricer.BlackScholesVanillaFxOptionPricer}}
+
+
+Standard BS-\/analytic price for a Vanilla FX option.  
+
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_black_scholes_vanilla_fx_option_pricer_1_1_black_scholes_vanilla_fx_option_pricer_a38c917029f318b5542bda268fe2a18a8}{\+\_\+\+\_\+init\+\_\+\+\_\+}} (self, date valuation\+Date, European\+Vanilla\+Fx\+Option \mbox{\hyperlink{class_black_scholes_vanilla_fx_option_pricer_1_1_black_scholes_vanilla_fx_option_pricer_ae5fbb48b5bdfdc86d7c52ed738ee6995}{european\+Vanilla\+Fx\+Option}}, float fx\+Spot, Discounting\+Curve \mbox{\hyperlink{class_black_scholes_vanilla_fx_option_pricer_1_1_black_scholes_vanilla_fx_option_pricer_ac7ff976c0a812429f23ce46c892f70e8}{foreign\+Discounting\+Curve}}, Discounting\+Curve \mbox{\hyperlink{class_black_scholes_vanilla_fx_option_pricer_1_1_black_scholes_vanilla_fx_option_pricer_a4b480860c497d129ee4078503926a35f}{domestic\+Discounting\+Curve}}, Fx\+Volatility\+Surface \mbox{\hyperlink{class_black_scholes_vanilla_fx_option_pricer_1_1_black_scholes_vanilla_fx_option_pricer_a8e6e7ac4d4b3fb970831e0de5a324c87}{fx\+Volatility\+Surface}})
+\item 
+\mbox{\hyperlink{class_black_scholes_vanilla_fx_option_pricer_1_1_black_scholes_vanilla_fx_option_pricer_aeeb409dea4cec417a31f9db24dbb8f80}{at\+The\+Money\+Forward}} (self)
+\begin{DoxyCompactList}\small\item\em Returns the forward contract strike F(0,\+T) \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_black_scholes_vanilla_fx_option_pricer_1_1_black_scholes_vanilla_fx_option_pricer_a05ebabbbe3ce1f56be5727bbfa7c3608}{d\+Plus}} (self)
+\item 
+\mbox{\hyperlink{class_black_scholes_vanilla_fx_option_pricer_1_1_black_scholes_vanilla_fx_option_pricer_a8bacd5d60ddfad46b2938a379ce48fec}{d\+Minus}} (self)
+\item 
+\mbox{\hyperlink{class_black_scholes_vanilla_fx_option_pricer_1_1_black_scholes_vanilla_fx_option_pricer_a41dfe1528073e52ee15596f2e7f9d1d1}{value}} (self, \mbox{\hyperlink{classbasics_1_1_enums_1_1_fx_vanilla_european_option_quote_convention}{Fx\+Vanilla\+European\+Option\+Quote\+Convention}} quote\+Convention=\mbox{\hyperlink{classbasics_1_1_enums_1_1_fx_vanilla_european_option_quote_convention_a1d3c5a806c7a9801ff16e8a00bb2f5ac}{Fx\+Vanilla\+European\+Option\+Quote\+Convention.\+DOMESTIC\+\_\+\+PER\+\_\+\+UNIT\+\_\+\+OF\+\_\+\+FOREIGN}})
+\item 
+\mbox{\hyperlink{class_black_scholes_vanilla_fx_option_pricer_1_1_black_scholes_vanilla_fx_option_pricer_a526dfb8c6c153f90b082846313dbe204}{delta}} (self, \mbox{\hyperlink{classbasics_1_1_enums_1_1_delta_convention}{Delta\+Convention}} delta\+Convention=\mbox{\hyperlink{classbasics_1_1_enums_1_1_delta_convention_ab1e19cd49d717eba1174c8907c8ed9e0}{Delta\+Convention.\+PIPS\+\_\+\+SPOT\+\_\+\+DELTA}})
+\item 
+\mbox{\hyperlink{class_black_scholes_vanilla_fx_option_pricer_1_1_black_scholes_vanilla_fx_option_pricer_ad9ca78d52aaa586b222af28f99670e88}{analytic\+Gamma}} (self)
+\item 
+\mbox{\hyperlink{class_black_scholes_vanilla_fx_option_pricer_1_1_black_scholes_vanilla_fx_option_pricer_a8dd06d7fe11faa177eefd123774f7067}{analytic\+Theta}} (self)
+\item 
+\mbox{\hyperlink{class_black_scholes_vanilla_fx_option_pricer_1_1_black_scholes_vanilla_fx_option_pricer_a2c7c24b4914ba5663e16eed2f593a8cd}{vega}} (self)
+\item 
+\mbox{\hyperlink{class_black_scholes_vanilla_fx_option_pricer_1_1_black_scholes_vanilla_fx_option_pricer_a8b0e3b4e3ea0189eb00b4bb761a8f177}{vanna}} (self)
+\item 
+\mbox{\hyperlink{class_black_scholes_vanilla_fx_option_pricer_1_1_black_scholes_vanilla_fx_option_pricer_a8881b9cf9946e27a91a8c22302776dcb}{volga}} (self)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_black_scholes_vanilla_fx_option_pricer_1_1_black_scholes_vanilla_fx_option_pricer_a8bb54d64aaf560d4168df15aa04cff58}{t}}
+\item 
+\mbox{\hyperlink{class_black_scholes_vanilla_fx_option_pricer_1_1_black_scholes_vanilla_fx_option_pricer_ae5fbb48b5bdfdc86d7c52ed738ee6995}{european\+Vanilla\+Fx\+Option}}
+\item 
+\mbox{\hyperlink{class_black_scholes_vanilla_fx_option_pricer_1_1_black_scholes_vanilla_fx_option_pricer_aeaa58a1776dbc10876ee0f6f5275ff50}{S\+\_\+t}}
+\item 
+\mbox{\hyperlink{class_black_scholes_vanilla_fx_option_pricer_1_1_black_scholes_vanilla_fx_option_pricer_ac7ff976c0a812429f23ce46c892f70e8}{foreign\+Discounting\+Curve}}
+\item 
+\mbox{\hyperlink{class_black_scholes_vanilla_fx_option_pricer_1_1_black_scholes_vanilla_fx_option_pricer_a4b480860c497d129ee4078503926a35f}{domestic\+Discounting\+Curve}}
+\item 
+\mbox{\hyperlink{class_black_scholes_vanilla_fx_option_pricer_1_1_black_scholes_vanilla_fx_option_pricer_a8e6e7ac4d4b3fb970831e0de5a324c87}{fx\+Volatility\+Surface}}
+\item 
+\mbox{\hyperlink{class_black_scholes_vanilla_fx_option_pricer_1_1_black_scholes_vanilla_fx_option_pricer_a0c2d01e83baa943633d150018b9e6370}{tau}}
+\item 
+\mbox{\hyperlink{class_black_scholes_vanilla_fx_option_pricer_1_1_black_scholes_vanilla_fx_option_pricer_a2d6dd5991c1461cb825a89a3fdb46166}{sigma}}
+\item 
+\mbox{\hyperlink{class_black_scholes_vanilla_fx_option_pricer_1_1_black_scholes_vanilla_fx_option_pricer_a5927e2918bd7fe439e659650b9471c7a}{F}}
+\item 
+\mbox{\hyperlink{class_black_scholes_vanilla_fx_option_pricer_1_1_black_scholes_vanilla_fx_option_pricer_a322859bd2fe358de8c4a4661ac0cda91}{foreign\+DF}}
+\item 
+\mbox{\hyperlink{class_black_scholes_vanilla_fx_option_pricer_1_1_black_scholes_vanilla_fx_option_pricer_a0aff34a7e73cef1067024f1e55c7ef3d}{domestic\+DF}}
+\item 
+\mbox{\hyperlink{class_black_scholes_vanilla_fx_option_pricer_1_1_black_scholes_vanilla_fx_option_pricer_a534fac9c4a3f22e219119e53b214195b}{K}}
+\item 
+\mbox{\hyperlink{class_black_scholes_vanilla_fx_option_pricer_1_1_black_scholes_vanilla_fx_option_pricer_aa3fb22e338269037ab98b24bd4559fd8}{T}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Standard BS-\/analytic price for a Vanilla FX option. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_black_scholes_vanilla_fx_option_pricer_1_1_black_scholes_vanilla_fx_option_pricer_a38c917029f318b5542bda268fe2a18a8}\label{class_black_scholes_vanilla_fx_option_pricer_1_1_black_scholes_vanilla_fx_option_pricer_a38c917029f318b5542bda268fe2a18a8} 
+\index{BlackScholesVanillaFxOptionPricer.BlackScholesVanillaFxOptionPricer@{BlackScholesVanillaFxOptionPricer.BlackScholesVanillaFxOptionPricer}!\_\_init\_\_@{\_\_init\_\_}}
+\index{\_\_init\_\_@{\_\_init\_\_}!BlackScholesVanillaFxOptionPricer.BlackScholesVanillaFxOptionPricer@{BlackScholesVanillaFxOptionPricer.BlackScholesVanillaFxOptionPricer}}
+\doxysubsubsection{\texorpdfstring{\_\_init\_\_()}{\_\_init\_\_()}}
+{\footnotesize\ttfamily Black\+Scholes\+Vanilla\+Fx\+Option\+Pricer.\+Black\+Scholes\+Vanilla\+Fx\+Option\+Pricer.\+\_\+\+\_\+init\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{date}]{valuation\+Date,  }\item[{European\+Vanilla\+Fx\+Option}]{european\+Vanilla\+Fx\+Option,  }\item[{float}]{fx\+Spot,  }\item[{Discounting\+Curve}]{foreign\+Discounting\+Curve,  }\item[{Discounting\+Curve}]{domestic\+Discounting\+Curve,  }\item[{Fx\+Volatility\+Surface     }]{fx\+Volatility\+Surface }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00021\ \ \ \ \ ): }
+\DoxyCodeLine{00022\ \ \ \ \ \ \ \ \ self.t\ =\ valuationDate }
+\DoxyCodeLine{00023\ \ \ \ \ \ \ \ \ self.europeanVanillaFxOption\ =\ europeanVanillaFxOption }
+\DoxyCodeLine{00024\ \ \ \ \ \ \ \ \ self.S\_t\ =\ fxSpot }
+\DoxyCodeLine{00025\ \ \ \ \ \ \ \ \ self.foreignDiscountingCurve\ =\ foreignDiscountingCurve }
+\DoxyCodeLine{00026\ \ \ \ \ \ \ \ \ self.domesticDiscountingCurve\ =\ domesticDiscountingCurve }
+\DoxyCodeLine{00027\ \ \ \ \ \ \ \ \ self.fxVolatilitySurface\ =\ fxVolatilitySurface }
+\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ self.tau\ =\ Actual365.yearFraction(self.t,self.T) }
+\DoxyCodeLine{00029\ \ \ \ \ \ \ \ \ self.sigma\ =\ self.fxVolatilitySurface.getVolatility(self.K,\ self.T) }
+\DoxyCodeLine{00030\ \ \ \ \ \ \ \ \ self.F\ =\ self.atTheMoneyForward() }
+\DoxyCodeLine{00031\ \ \ \ \ \ \ \ \ self.foreignDF\ =\ self.foreignDiscountingCurve.discountFactor(self.t,self.T) }
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ self.domesticDF\ =\ self.domesticDiscountingCurve.discountFactor(self.t,self.T) }
+\DoxyCodeLine{00033\  }
+
+\end{DoxyCode}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_black_scholes_vanilla_fx_option_pricer_1_1_black_scholes_vanilla_fx_option_pricer_ad9ca78d52aaa586b222af28f99670e88}\label{class_black_scholes_vanilla_fx_option_pricer_1_1_black_scholes_vanilla_fx_option_pricer_ad9ca78d52aaa586b222af28f99670e88} 
+\index{BlackScholesVanillaFxOptionPricer.BlackScholesVanillaFxOptionPricer@{BlackScholesVanillaFxOptionPricer.BlackScholesVanillaFxOptionPricer}!analyticGamma@{analyticGamma}}
+\index{analyticGamma@{analyticGamma}!BlackScholesVanillaFxOptionPricer.BlackScholesVanillaFxOptionPricer@{BlackScholesVanillaFxOptionPricer.BlackScholesVanillaFxOptionPricer}}
+\doxysubsubsection{\texorpdfstring{analyticGamma()}{analyticGamma()}}
+{\footnotesize\ttfamily Black\+Scholes\+Vanilla\+Fx\+Option\+Pricer.\+Black\+Scholes\+Vanilla\+Fx\+Option\+Pricer.\+analytic\+Gamma (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00080\ \ \ \ \ \textcolor{keyword}{def\ }analyticGamma(self): }
+\DoxyCodeLine{00081\ \ \ \ \ \ \ \ \ omega\ =\ self.europeanVanillaFxOption.optionType }
+\DoxyCodeLine{00082\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ self.foreignDF\ *\ norm.cdf(omega\ *\ self.dPlus())\ /\ (self.sigma\ *\ self.S\_t\ *\ np.sqrt(Actual365.yearFraction(self.t,\ self.T))) }
+\DoxyCodeLine{00083\  }
+
+\end{DoxyCode}
+\Hypertarget{class_black_scholes_vanilla_fx_option_pricer_1_1_black_scholes_vanilla_fx_option_pricer_a8dd06d7fe11faa177eefd123774f7067}\label{class_black_scholes_vanilla_fx_option_pricer_1_1_black_scholes_vanilla_fx_option_pricer_a8dd06d7fe11faa177eefd123774f7067} 
+\index{BlackScholesVanillaFxOptionPricer.BlackScholesVanillaFxOptionPricer@{BlackScholesVanillaFxOptionPricer.BlackScholesVanillaFxOptionPricer}!analyticTheta@{analyticTheta}}
+\index{analyticTheta@{analyticTheta}!BlackScholesVanillaFxOptionPricer.BlackScholesVanillaFxOptionPricer@{BlackScholesVanillaFxOptionPricer.BlackScholesVanillaFxOptionPricer}}
+\doxysubsubsection{\texorpdfstring{analyticTheta()}{analyticTheta()}}
+{\footnotesize\ttfamily Black\+Scholes\+Vanilla\+Fx\+Option\+Pricer.\+Black\+Scholes\+Vanilla\+Fx\+Option\+Pricer.\+analytic\+Theta (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00084\ \ \ \ \ \textcolor{keyword}{def\ }analyticTheta(self): }
+\DoxyCodeLine{00085\ \ \ \ \ \ \ \ \ omega\ =\ self.europeanVanillaFxOption.optionType }
+\DoxyCodeLine{00086\ \ \ \ \ \ \ \ \ Nd1\ =\ norm.cdf(omega\ *\ self.dPlus()) }
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \ \ Nd2\ =\ norm.cdf(omega\ *\ self.dMinus()) }
+\DoxyCodeLine{00088\ \ \ \ \ \ \ \ \ r\_FOR\ =\ Utils.dfToRate(self.foreignDF,self.t,self.T) }
+\DoxyCodeLine{00089\ \ \ \ \ \ \ \ \ r\_DOM\ =\ Utils.dfToRate(self.domesticDF,\ self.t,\ self.T) }
+\DoxyCodeLine{00090\ \ \ \ \ \ \ \ \ theta\ =\ (omega\ *\ (self.S\_t\ *\ r\_FOR\ *\ self.foreignDF\ *\ Nd1\ -\/\ self.K\ *\ r\_DOM\ *\ self.domesticDF\ *\ Nd2) }
+\DoxyCodeLine{00091\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ -\/\ self.S\_t\ *\ self.foreignDF\ *\ Nd1\ *\ (self.sigma\ /\ (2\ *\ np.sqrt(Actual365.yearFraction(self.t,self.T)))))\ *\ 100.0 }
+\DoxyCodeLine{00092\  }
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ theta }
+\DoxyCodeLine{00094\  }
+
+\end{DoxyCode}
+\Hypertarget{class_black_scholes_vanilla_fx_option_pricer_1_1_black_scholes_vanilla_fx_option_pricer_aeeb409dea4cec417a31f9db24dbb8f80}\label{class_black_scholes_vanilla_fx_option_pricer_1_1_black_scholes_vanilla_fx_option_pricer_aeeb409dea4cec417a31f9db24dbb8f80} 
+\index{BlackScholesVanillaFxOptionPricer.BlackScholesVanillaFxOptionPricer@{BlackScholesVanillaFxOptionPricer.BlackScholesVanillaFxOptionPricer}!atTheMoneyForward@{atTheMoneyForward}}
+\index{atTheMoneyForward@{atTheMoneyForward}!BlackScholesVanillaFxOptionPricer.BlackScholesVanillaFxOptionPricer@{BlackScholesVanillaFxOptionPricer.BlackScholesVanillaFxOptionPricer}}
+\doxysubsubsection{\texorpdfstring{atTheMoneyForward()}{atTheMoneyForward()}}
+{\footnotesize\ttfamily Black\+Scholes\+Vanilla\+Fx\+Option\+Pricer.\+Black\+Scholes\+Vanilla\+Fx\+Option\+Pricer.\+at\+The\+Money\+Forward (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+
+
+Returns the forward contract strike F(0,\+T) 
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keyword}{def\ }atTheMoneyForward(self): }
+\DoxyCodeLine{00036\ \ \ \ \ \ \ \ \ fwdPoints\ =\ self.foreignDF\ /\ self.domesticDF }
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \ \ F\ =\ fwdPoints\ *\ self.S\_t }
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ F }
+\DoxyCodeLine{00039\  }
+
+\end{DoxyCode}
+\Hypertarget{class_black_scholes_vanilla_fx_option_pricer_1_1_black_scholes_vanilla_fx_option_pricer_a526dfb8c6c153f90b082846313dbe204}\label{class_black_scholes_vanilla_fx_option_pricer_1_1_black_scholes_vanilla_fx_option_pricer_a526dfb8c6c153f90b082846313dbe204} 
+\index{BlackScholesVanillaFxOptionPricer.BlackScholesVanillaFxOptionPricer@{BlackScholesVanillaFxOptionPricer.BlackScholesVanillaFxOptionPricer}!delta@{delta}}
+\index{delta@{delta}!BlackScholesVanillaFxOptionPricer.BlackScholesVanillaFxOptionPricer@{BlackScholesVanillaFxOptionPricer.BlackScholesVanillaFxOptionPricer}}
+\doxysubsubsection{\texorpdfstring{delta()}{delta()}}
+{\footnotesize\ttfamily Black\+Scholes\+Vanilla\+Fx\+Option\+Pricer.\+Black\+Scholes\+Vanilla\+Fx\+Option\+Pricer.\+delta (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{\mbox{\hyperlink{classbasics_1_1_enums_1_1_delta_convention}{Delta\+Convention}} }]{delta\+Convention = {\ttfamily \mbox{\hyperlink{classbasics_1_1_enums_1_1_delta_convention_ab1e19cd49d717eba1174c8907c8ed9e0}{Delta\+Convention.\+PIPS\+\_\+\+SPOT\+\_\+\+DELTA}}} }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00069\ \ \ \ \ ): }
+\DoxyCodeLine{00070\ \ \ \ \ \ \ \ \ omega\ =\ self.europeanVanillaFxOption.optionType }
+\DoxyCodeLine{00071\  }
+\DoxyCodeLine{00072\ \ \ \ \ \ \ \ \ if(deltaConvention\ ==\ DeltaConvention.PIPS\_SPOT\_DELTA): }
+\DoxyCodeLine{00073\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ omega\ *\ self.foreignDF\ *\ norm.cdf(omega\ *\ self.dPlus())\ *\ 100.00 }
+\DoxyCodeLine{00074\ \ \ \ \ \ \ \ \ elif(deltaConvention\ ==\ DeltaConvention.PIPS\_FORWARD\_DELTA): }
+\DoxyCodeLine{00075\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ omega\ *\ norm.cdf(omega\ *\ self.dPlus())\ *\ 100.0 }
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \ \ elif(deltaConvention\ ==\ DeltaConvention.PREMIUM\_ADJUSTED\_DELTA): }
+\DoxyCodeLine{00077\ \ \ \ \ \ \ \ \ \ \ \ \ pips\_spot\_delta\ =\ omega\ *\ self.foreignDF\ *\ norm.cdf(omega\ *\ self.dPlus())\ *\ 100.00 }
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ pips\_spot\_delta\ -\/\ self.value()/self.S\_t }
+\DoxyCodeLine{00079\  }
+
+\end{DoxyCode}
+\Hypertarget{class_black_scholes_vanilla_fx_option_pricer_1_1_black_scholes_vanilla_fx_option_pricer_a8bacd5d60ddfad46b2938a379ce48fec}\label{class_black_scholes_vanilla_fx_option_pricer_1_1_black_scholes_vanilla_fx_option_pricer_a8bacd5d60ddfad46b2938a379ce48fec} 
+\index{BlackScholesVanillaFxOptionPricer.BlackScholesVanillaFxOptionPricer@{BlackScholesVanillaFxOptionPricer.BlackScholesVanillaFxOptionPricer}!dMinus@{dMinus}}
+\index{dMinus@{dMinus}!BlackScholesVanillaFxOptionPricer.BlackScholesVanillaFxOptionPricer@{BlackScholesVanillaFxOptionPricer.BlackScholesVanillaFxOptionPricer}}
+\doxysubsubsection{\texorpdfstring{dMinus()}{dMinus()}}
+{\footnotesize\ttfamily Black\+Scholes\+Vanilla\+Fx\+Option\+Pricer.\+Black\+Scholes\+Vanilla\+Fx\+Option\+Pricer.\+d\+Minus (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00043\ \ \ \ \ \textcolor{keyword}{def\ }dMinus(self): }
+\DoxyCodeLine{00044\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (np.log(self.F\ /\ self.K)\ -\/\ self.tau\ *\ (self.sigma\ **\ 2)\ /\ 2)\ /\ (self.sigma\ *\ np.sqrt(self.tau)) }
+\DoxyCodeLine{00045\  }
+
+\end{DoxyCode}
+\Hypertarget{class_black_scholes_vanilla_fx_option_pricer_1_1_black_scholes_vanilla_fx_option_pricer_a05ebabbbe3ce1f56be5727bbfa7c3608}\label{class_black_scholes_vanilla_fx_option_pricer_1_1_black_scholes_vanilla_fx_option_pricer_a05ebabbbe3ce1f56be5727bbfa7c3608} 
+\index{BlackScholesVanillaFxOptionPricer.BlackScholesVanillaFxOptionPricer@{BlackScholesVanillaFxOptionPricer.BlackScholesVanillaFxOptionPricer}!dPlus@{dPlus}}
+\index{dPlus@{dPlus}!BlackScholesVanillaFxOptionPricer.BlackScholesVanillaFxOptionPricer@{BlackScholesVanillaFxOptionPricer.BlackScholesVanillaFxOptionPricer}}
+\doxysubsubsection{\texorpdfstring{dPlus()}{dPlus()}}
+{\footnotesize\ttfamily Black\+Scholes\+Vanilla\+Fx\+Option\+Pricer.\+Black\+Scholes\+Vanilla\+Fx\+Option\+Pricer.\+d\+Plus (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00040\ \ \ \ \ \textcolor{keyword}{def\ }dPlus(self): }
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (np.log(self.F\ /\ self.K)\ +\ self.tau\ *\ (self.sigma\ **\ 2)\ /\ 2)\ /\ (self.sigma\ *\ np.sqrt(self.tau)) }
+\DoxyCodeLine{00042\  }
+
+\end{DoxyCode}
+\Hypertarget{class_black_scholes_vanilla_fx_option_pricer_1_1_black_scholes_vanilla_fx_option_pricer_a41dfe1528073e52ee15596f2e7f9d1d1}\label{class_black_scholes_vanilla_fx_option_pricer_1_1_black_scholes_vanilla_fx_option_pricer_a41dfe1528073e52ee15596f2e7f9d1d1} 
+\index{BlackScholesVanillaFxOptionPricer.BlackScholesVanillaFxOptionPricer@{BlackScholesVanillaFxOptionPricer.BlackScholesVanillaFxOptionPricer}!value@{value}}
+\index{value@{value}!BlackScholesVanillaFxOptionPricer.BlackScholesVanillaFxOptionPricer@{BlackScholesVanillaFxOptionPricer.BlackScholesVanillaFxOptionPricer}}
+\doxysubsubsection{\texorpdfstring{value()}{value()}}
+{\footnotesize\ttfamily Black\+Scholes\+Vanilla\+Fx\+Option\+Pricer.\+Black\+Scholes\+Vanilla\+Fx\+Option\+Pricer.\+value (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{\mbox{\hyperlink{classbasics_1_1_enums_1_1_fx_vanilla_european_option_quote_convention}{Fx\+Vanilla\+European\+Option\+Quote\+Convention}} }]{quote\+Convention = {\ttfamily \mbox{\hyperlink{classbasics_1_1_enums_1_1_fx_vanilla_european_option_quote_convention_a1d3c5a806c7a9801ff16e8a00bb2f5ac}{Fx\+Vanilla\+European\+Option\+Quote\+Convention.\+DOMESTIC\+\_\+\+PER\+\_\+\+UNIT\+\_\+\+OF\+\_\+\+FOREIGN}}} }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00049\ \ \ \ \ ): }
+\DoxyCodeLine{00050\ \ \ \ \ \ \ \ \ omega\ =\ self.europeanVanillaFxOption.optionType }
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \ \ d\_plus\ =\ self.dPlus() }
+\DoxyCodeLine{00052\ \ \ \ \ \ \ \ \ d\_minus\ =\ self.dMinus() }
+\DoxyCodeLine{00053\ \ \ \ \ \ \ \ \ undiscountedPrice\ =\ omega\ *\ (self.F\ *\ norm.cdf(omega\ *\ d\_plus)\ -\/\ self.K\ *\ norm.cdf(omega\ *\ d\_minus)) }
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \ \ pv\ =\ self.domesticDF\ *\ undiscountedPrice }
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \ \ signedPV\ =\ self.europeanVanillaFxOption.direction\ *\ pv }
+\DoxyCodeLine{00056\  }
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \ \ if(quoteConvention\ ==\ FxVanillaEuropeanOptionQuoteConvention.DOMESTIC\_PER\_UNIT\_OF\_FOREIGN): }
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ signedPV\ *\ 100.0 }
+\DoxyCodeLine{00059\ \ \ \ \ \ \ \ \ elif(quoteConvention\ ==\ FxVanillaEuropeanOptionQuoteConvention.PERCENTAGE\_DOMESTIC): }
+\DoxyCodeLine{00060\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ signedPV\ /self.S\_t\ *\ 100.0 }
+\DoxyCodeLine{00061\ \ \ \ \ \ \ \ \ elif(quoteConvention\ ==\ FxVanillaEuropeanOptionQuoteConvention.PERCENTAGE\_FOREIGN): }
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ signedPV\ /\ self.K\ *\ 100.0 }
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}: }
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ signedPV\ /\ (self.S\_t\ *\ self.K)\ *\ 100 }
+\DoxyCodeLine{00065\  }
+
+\end{DoxyCode}
+\Hypertarget{class_black_scholes_vanilla_fx_option_pricer_1_1_black_scholes_vanilla_fx_option_pricer_a8b0e3b4e3ea0189eb00b4bb761a8f177}\label{class_black_scholes_vanilla_fx_option_pricer_1_1_black_scholes_vanilla_fx_option_pricer_a8b0e3b4e3ea0189eb00b4bb761a8f177} 
+\index{BlackScholesVanillaFxOptionPricer.BlackScholesVanillaFxOptionPricer@{BlackScholesVanillaFxOptionPricer.BlackScholesVanillaFxOptionPricer}!vanna@{vanna}}
+\index{vanna@{vanna}!BlackScholesVanillaFxOptionPricer.BlackScholesVanillaFxOptionPricer@{BlackScholesVanillaFxOptionPricer.BlackScholesVanillaFxOptionPricer}}
+\doxysubsubsection{\texorpdfstring{vanna()}{vanna()}}
+{\footnotesize\ttfamily Black\+Scholes\+Vanilla\+Fx\+Option\+Pricer.\+Black\+Scholes\+Vanilla\+Fx\+Option\+Pricer.\+vanna (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00098\ \ \ \ \ \textcolor{keyword}{def\ }vanna(self): }
+\DoxyCodeLine{00099\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ -\/self.foreignDF\ *\ norm.pdf(self.dPlus())\ *\ (self.dMinus()/self.sigma) }
+\DoxyCodeLine{00100\  }
+
+\end{DoxyCode}
+\Hypertarget{class_black_scholes_vanilla_fx_option_pricer_1_1_black_scholes_vanilla_fx_option_pricer_a2c7c24b4914ba5663e16eed2f593a8cd}\label{class_black_scholes_vanilla_fx_option_pricer_1_1_black_scholes_vanilla_fx_option_pricer_a2c7c24b4914ba5663e16eed2f593a8cd} 
+\index{BlackScholesVanillaFxOptionPricer.BlackScholesVanillaFxOptionPricer@{BlackScholesVanillaFxOptionPricer.BlackScholesVanillaFxOptionPricer}!vega@{vega}}
+\index{vega@{vega}!BlackScholesVanillaFxOptionPricer.BlackScholesVanillaFxOptionPricer@{BlackScholesVanillaFxOptionPricer.BlackScholesVanillaFxOptionPricer}}
+\doxysubsubsection{\texorpdfstring{vega()}{vega()}}
+{\footnotesize\ttfamily Black\+Scholes\+Vanilla\+Fx\+Option\+Pricer.\+Black\+Scholes\+Vanilla\+Fx\+Option\+Pricer.\+vega (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00095\ \ \ \ \ \textcolor{keyword}{def\ }vega(self): }
+\DoxyCodeLine{00096\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ self.S\_t\ *\ self.foreignDF\ *\ norm.pdf(self.dPlus())\ *\ np.sqrt(Actual365.yearFraction(self.t,self.T)) }
+\DoxyCodeLine{00097\  }
+
+\end{DoxyCode}
+\Hypertarget{class_black_scholes_vanilla_fx_option_pricer_1_1_black_scholes_vanilla_fx_option_pricer_a8881b9cf9946e27a91a8c22302776dcb}\label{class_black_scholes_vanilla_fx_option_pricer_1_1_black_scholes_vanilla_fx_option_pricer_a8881b9cf9946e27a91a8c22302776dcb} 
+\index{BlackScholesVanillaFxOptionPricer.BlackScholesVanillaFxOptionPricer@{BlackScholesVanillaFxOptionPricer.BlackScholesVanillaFxOptionPricer}!volga@{volga}}
+\index{volga@{volga}!BlackScholesVanillaFxOptionPricer.BlackScholesVanillaFxOptionPricer@{BlackScholesVanillaFxOptionPricer.BlackScholesVanillaFxOptionPricer}}
+\doxysubsubsection{\texorpdfstring{volga()}{volga()}}
+{\footnotesize\ttfamily Black\+Scholes\+Vanilla\+Fx\+Option\+Pricer.\+Black\+Scholes\+Vanilla\+Fx\+Option\+Pricer.\+volga (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00101\ \ \ \ \ \textcolor{keyword}{def\ }volga(self): }
+\DoxyCodeLine{00102\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ self.S\_t\ *\ self.foreignDF\ *\ np.sqrt(Actual365.yearFraction(self.t,self.T))\ *\ \(\backslash\) }
+\DoxyCodeLine{00103\ \ \ \ \ \ \ \ \ \ \ \ \ norm.pdf(self.dPlus())\ *\ (self.dPlus()\ *\ self.dMinus())/self.sigma }
+
+\end{DoxyCode}
+
+
+\doxysubsection{Member Data Documentation}
+\Hypertarget{class_black_scholes_vanilla_fx_option_pricer_1_1_black_scholes_vanilla_fx_option_pricer_a0aff34a7e73cef1067024f1e55c7ef3d}\label{class_black_scholes_vanilla_fx_option_pricer_1_1_black_scholes_vanilla_fx_option_pricer_a0aff34a7e73cef1067024f1e55c7ef3d} 
+\index{BlackScholesVanillaFxOptionPricer.BlackScholesVanillaFxOptionPricer@{BlackScholesVanillaFxOptionPricer.BlackScholesVanillaFxOptionPricer}!domesticDF@{domesticDF}}
+\index{domesticDF@{domesticDF}!BlackScholesVanillaFxOptionPricer.BlackScholesVanillaFxOptionPricer@{BlackScholesVanillaFxOptionPricer.BlackScholesVanillaFxOptionPricer}}
+\doxysubsubsection{\texorpdfstring{domesticDF}{domesticDF}}
+{\footnotesize\ttfamily Black\+Scholes\+Vanilla\+Fx\+Option\+Pricer.\+Black\+Scholes\+Vanilla\+Fx\+Option\+Pricer.\+domestic\+DF}
+
+\Hypertarget{class_black_scholes_vanilla_fx_option_pricer_1_1_black_scholes_vanilla_fx_option_pricer_a4b480860c497d129ee4078503926a35f}\label{class_black_scholes_vanilla_fx_option_pricer_1_1_black_scholes_vanilla_fx_option_pricer_a4b480860c497d129ee4078503926a35f} 
+\index{BlackScholesVanillaFxOptionPricer.BlackScholesVanillaFxOptionPricer@{BlackScholesVanillaFxOptionPricer.BlackScholesVanillaFxOptionPricer}!domesticDiscountingCurve@{domesticDiscountingCurve}}
+\index{domesticDiscountingCurve@{domesticDiscountingCurve}!BlackScholesVanillaFxOptionPricer.BlackScholesVanillaFxOptionPricer@{BlackScholesVanillaFxOptionPricer.BlackScholesVanillaFxOptionPricer}}
+\doxysubsubsection{\texorpdfstring{domesticDiscountingCurve}{domesticDiscountingCurve}}
+{\footnotesize\ttfamily Black\+Scholes\+Vanilla\+Fx\+Option\+Pricer.\+Black\+Scholes\+Vanilla\+Fx\+Option\+Pricer.\+domestic\+Discounting\+Curve}
+
+\Hypertarget{class_black_scholes_vanilla_fx_option_pricer_1_1_black_scholes_vanilla_fx_option_pricer_ae5fbb48b5bdfdc86d7c52ed738ee6995}\label{class_black_scholes_vanilla_fx_option_pricer_1_1_black_scholes_vanilla_fx_option_pricer_ae5fbb48b5bdfdc86d7c52ed738ee6995} 
+\index{BlackScholesVanillaFxOptionPricer.BlackScholesVanillaFxOptionPricer@{BlackScholesVanillaFxOptionPricer.BlackScholesVanillaFxOptionPricer}!europeanVanillaFxOption@{europeanVanillaFxOption}}
+\index{europeanVanillaFxOption@{europeanVanillaFxOption}!BlackScholesVanillaFxOptionPricer.BlackScholesVanillaFxOptionPricer@{BlackScholesVanillaFxOptionPricer.BlackScholesVanillaFxOptionPricer}}
+\doxysubsubsection{\texorpdfstring{europeanVanillaFxOption}{europeanVanillaFxOption}}
+{\footnotesize\ttfamily Black\+Scholes\+Vanilla\+Fx\+Option\+Pricer.\+Black\+Scholes\+Vanilla\+Fx\+Option\+Pricer.\+european\+Vanilla\+Fx\+Option}
+
+\Hypertarget{class_black_scholes_vanilla_fx_option_pricer_1_1_black_scholes_vanilla_fx_option_pricer_a5927e2918bd7fe439e659650b9471c7a}\label{class_black_scholes_vanilla_fx_option_pricer_1_1_black_scholes_vanilla_fx_option_pricer_a5927e2918bd7fe439e659650b9471c7a} 
+\index{BlackScholesVanillaFxOptionPricer.BlackScholesVanillaFxOptionPricer@{BlackScholesVanillaFxOptionPricer.BlackScholesVanillaFxOptionPricer}!F@{F}}
+\index{F@{F}!BlackScholesVanillaFxOptionPricer.BlackScholesVanillaFxOptionPricer@{BlackScholesVanillaFxOptionPricer.BlackScholesVanillaFxOptionPricer}}
+\doxysubsubsection{\texorpdfstring{F}{F}}
+{\footnotesize\ttfamily Black\+Scholes\+Vanilla\+Fx\+Option\+Pricer.\+Black\+Scholes\+Vanilla\+Fx\+Option\+Pricer.\+F}
+
+\Hypertarget{class_black_scholes_vanilla_fx_option_pricer_1_1_black_scholes_vanilla_fx_option_pricer_a322859bd2fe358de8c4a4661ac0cda91}\label{class_black_scholes_vanilla_fx_option_pricer_1_1_black_scholes_vanilla_fx_option_pricer_a322859bd2fe358de8c4a4661ac0cda91} 
+\index{BlackScholesVanillaFxOptionPricer.BlackScholesVanillaFxOptionPricer@{BlackScholesVanillaFxOptionPricer.BlackScholesVanillaFxOptionPricer}!foreignDF@{foreignDF}}
+\index{foreignDF@{foreignDF}!BlackScholesVanillaFxOptionPricer.BlackScholesVanillaFxOptionPricer@{BlackScholesVanillaFxOptionPricer.BlackScholesVanillaFxOptionPricer}}
+\doxysubsubsection{\texorpdfstring{foreignDF}{foreignDF}}
+{\footnotesize\ttfamily Black\+Scholes\+Vanilla\+Fx\+Option\+Pricer.\+Black\+Scholes\+Vanilla\+Fx\+Option\+Pricer.\+foreign\+DF}
+
+\Hypertarget{class_black_scholes_vanilla_fx_option_pricer_1_1_black_scholes_vanilla_fx_option_pricer_ac7ff976c0a812429f23ce46c892f70e8}\label{class_black_scholes_vanilla_fx_option_pricer_1_1_black_scholes_vanilla_fx_option_pricer_ac7ff976c0a812429f23ce46c892f70e8} 
+\index{BlackScholesVanillaFxOptionPricer.BlackScholesVanillaFxOptionPricer@{BlackScholesVanillaFxOptionPricer.BlackScholesVanillaFxOptionPricer}!foreignDiscountingCurve@{foreignDiscountingCurve}}
+\index{foreignDiscountingCurve@{foreignDiscountingCurve}!BlackScholesVanillaFxOptionPricer.BlackScholesVanillaFxOptionPricer@{BlackScholesVanillaFxOptionPricer.BlackScholesVanillaFxOptionPricer}}
+\doxysubsubsection{\texorpdfstring{foreignDiscountingCurve}{foreignDiscountingCurve}}
+{\footnotesize\ttfamily Black\+Scholes\+Vanilla\+Fx\+Option\+Pricer.\+Black\+Scholes\+Vanilla\+Fx\+Option\+Pricer.\+foreign\+Discounting\+Curve}
+
+\Hypertarget{class_black_scholes_vanilla_fx_option_pricer_1_1_black_scholes_vanilla_fx_option_pricer_a8e6e7ac4d4b3fb970831e0de5a324c87}\label{class_black_scholes_vanilla_fx_option_pricer_1_1_black_scholes_vanilla_fx_option_pricer_a8e6e7ac4d4b3fb970831e0de5a324c87} 
+\index{BlackScholesVanillaFxOptionPricer.BlackScholesVanillaFxOptionPricer@{BlackScholesVanillaFxOptionPricer.BlackScholesVanillaFxOptionPricer}!fxVolatilitySurface@{fxVolatilitySurface}}
+\index{fxVolatilitySurface@{fxVolatilitySurface}!BlackScholesVanillaFxOptionPricer.BlackScholesVanillaFxOptionPricer@{BlackScholesVanillaFxOptionPricer.BlackScholesVanillaFxOptionPricer}}
+\doxysubsubsection{\texorpdfstring{fxVolatilitySurface}{fxVolatilitySurface}}
+{\footnotesize\ttfamily Black\+Scholes\+Vanilla\+Fx\+Option\+Pricer.\+Black\+Scholes\+Vanilla\+Fx\+Option\+Pricer.\+fx\+Volatility\+Surface}
+
+\Hypertarget{class_black_scholes_vanilla_fx_option_pricer_1_1_black_scholes_vanilla_fx_option_pricer_a534fac9c4a3f22e219119e53b214195b}\label{class_black_scholes_vanilla_fx_option_pricer_1_1_black_scholes_vanilla_fx_option_pricer_a534fac9c4a3f22e219119e53b214195b} 
+\index{BlackScholesVanillaFxOptionPricer.BlackScholesVanillaFxOptionPricer@{BlackScholesVanillaFxOptionPricer.BlackScholesVanillaFxOptionPricer}!K@{K}}
+\index{K@{K}!BlackScholesVanillaFxOptionPricer.BlackScholesVanillaFxOptionPricer@{BlackScholesVanillaFxOptionPricer.BlackScholesVanillaFxOptionPricer}}
+\doxysubsubsection{\texorpdfstring{K}{K}}
+{\footnotesize\ttfamily Black\+Scholes\+Vanilla\+Fx\+Option\+Pricer.\+Black\+Scholes\+Vanilla\+Fx\+Option\+Pricer.\+K}
+
+\Hypertarget{class_black_scholes_vanilla_fx_option_pricer_1_1_black_scholes_vanilla_fx_option_pricer_aeaa58a1776dbc10876ee0f6f5275ff50}\label{class_black_scholes_vanilla_fx_option_pricer_1_1_black_scholes_vanilla_fx_option_pricer_aeaa58a1776dbc10876ee0f6f5275ff50} 
+\index{BlackScholesVanillaFxOptionPricer.BlackScholesVanillaFxOptionPricer@{BlackScholesVanillaFxOptionPricer.BlackScholesVanillaFxOptionPricer}!S\_t@{S\_t}}
+\index{S\_t@{S\_t}!BlackScholesVanillaFxOptionPricer.BlackScholesVanillaFxOptionPricer@{BlackScholesVanillaFxOptionPricer.BlackScholesVanillaFxOptionPricer}}
+\doxysubsubsection{\texorpdfstring{S\_t}{S\_t}}
+{\footnotesize\ttfamily Black\+Scholes\+Vanilla\+Fx\+Option\+Pricer.\+Black\+Scholes\+Vanilla\+Fx\+Option\+Pricer.\+S\+\_\+t}
+
+\Hypertarget{class_black_scholes_vanilla_fx_option_pricer_1_1_black_scholes_vanilla_fx_option_pricer_a2d6dd5991c1461cb825a89a3fdb46166}\label{class_black_scholes_vanilla_fx_option_pricer_1_1_black_scholes_vanilla_fx_option_pricer_a2d6dd5991c1461cb825a89a3fdb46166} 
+\index{BlackScholesVanillaFxOptionPricer.BlackScholesVanillaFxOptionPricer@{BlackScholesVanillaFxOptionPricer.BlackScholesVanillaFxOptionPricer}!sigma@{sigma}}
+\index{sigma@{sigma}!BlackScholesVanillaFxOptionPricer.BlackScholesVanillaFxOptionPricer@{BlackScholesVanillaFxOptionPricer.BlackScholesVanillaFxOptionPricer}}
+\doxysubsubsection{\texorpdfstring{sigma}{sigma}}
+{\footnotesize\ttfamily Black\+Scholes\+Vanilla\+Fx\+Option\+Pricer.\+Black\+Scholes\+Vanilla\+Fx\+Option\+Pricer.\+sigma}
+
+\Hypertarget{class_black_scholes_vanilla_fx_option_pricer_1_1_black_scholes_vanilla_fx_option_pricer_a8bb54d64aaf560d4168df15aa04cff58}\label{class_black_scholes_vanilla_fx_option_pricer_1_1_black_scholes_vanilla_fx_option_pricer_a8bb54d64aaf560d4168df15aa04cff58} 
+\index{BlackScholesVanillaFxOptionPricer.BlackScholesVanillaFxOptionPricer@{BlackScholesVanillaFxOptionPricer.BlackScholesVanillaFxOptionPricer}!t@{t}}
+\index{t@{t}!BlackScholesVanillaFxOptionPricer.BlackScholesVanillaFxOptionPricer@{BlackScholesVanillaFxOptionPricer.BlackScholesVanillaFxOptionPricer}}
+\doxysubsubsection{\texorpdfstring{t}{t}}
+{\footnotesize\ttfamily Black\+Scholes\+Vanilla\+Fx\+Option\+Pricer.\+Black\+Scholes\+Vanilla\+Fx\+Option\+Pricer.\+t}
+
+\Hypertarget{class_black_scholes_vanilla_fx_option_pricer_1_1_black_scholes_vanilla_fx_option_pricer_aa3fb22e338269037ab98b24bd4559fd8}\label{class_black_scholes_vanilla_fx_option_pricer_1_1_black_scholes_vanilla_fx_option_pricer_aa3fb22e338269037ab98b24bd4559fd8} 
+\index{BlackScholesVanillaFxOptionPricer.BlackScholesVanillaFxOptionPricer@{BlackScholesVanillaFxOptionPricer.BlackScholesVanillaFxOptionPricer}!T@{T}}
+\index{T@{T}!BlackScholesVanillaFxOptionPricer.BlackScholesVanillaFxOptionPricer@{BlackScholesVanillaFxOptionPricer.BlackScholesVanillaFxOptionPricer}}
+\doxysubsubsection{\texorpdfstring{T}{T}}
+{\footnotesize\ttfamily Black\+Scholes\+Vanilla\+Fx\+Option\+Pricer.\+Black\+Scholes\+Vanilla\+Fx\+Option\+Pricer.\+T}
+
+\Hypertarget{class_black_scholes_vanilla_fx_option_pricer_1_1_black_scholes_vanilla_fx_option_pricer_a0c2d01e83baa943633d150018b9e6370}\label{class_black_scholes_vanilla_fx_option_pricer_1_1_black_scholes_vanilla_fx_option_pricer_a0c2d01e83baa943633d150018b9e6370} 
+\index{BlackScholesVanillaFxOptionPricer.BlackScholesVanillaFxOptionPricer@{BlackScholesVanillaFxOptionPricer.BlackScholesVanillaFxOptionPricer}!tau@{tau}}
+\index{tau@{tau}!BlackScholesVanillaFxOptionPricer.BlackScholesVanillaFxOptionPricer@{BlackScholesVanillaFxOptionPricer.BlackScholesVanillaFxOptionPricer}}
+\doxysubsubsection{\texorpdfstring{tau}{tau}}
+{\footnotesize\ttfamily Black\+Scholes\+Vanilla\+Fx\+Option\+Pricer.\+Black\+Scholes\+Vanilla\+Fx\+Option\+Pricer.\+tau}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+models/\mbox{\hyperlink{_black_scholes_vanilla_fx_option_pricer_8py}{Black\+Scholes\+Vanilla\+Fx\+Option\+Pricer.\+py}}\end{DoxyCompactItemize}
