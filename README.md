@@ -1,0 +1,3 @@
+# Option Pricing Python Package
+
+This package provides a set of Python modules for pricing various types of options...
