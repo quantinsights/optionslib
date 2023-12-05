@@ -38,10 +38,10 @@ class EuropeanVanillaFxOptionPricer:
         return self.blackCalculator.atTheMoneyForward()
 
     def dPlus(self):
-        return self.blackCalculator.dPlus()
+        return self.blackCalculator.d_plus()
 
     def dMinus(self):
-        return self.blackCalculator.dMinus()
+        return self.blackCalculator.d_minus()
 
     def value(
             self,
