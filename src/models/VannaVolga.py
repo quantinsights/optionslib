@@ -16,7 +16,7 @@ class VannaVolga:
             foreignCcyDiscountingCurve : DiscountingCurve,
             domesticCcyDiscountingCurve : DiscountingCurve
     ):
-        self.fxOptionMarketQuotes = fxOptionMarketQuotes
+        self.fx_option_market_quotes = fxOptionMarketQuotes
         self.S_t = S_t
         self.foreignDiscountingCurve = foreignCcyDiscountingCurve
         self.domesticDiscountingCurve = domesticCcyDiscountingCurve
