@@ -1,23 +1,24 @@
-import numpy as np
 import datetime
 from datetime import date, timedelta
-import typing
-from algorithms import LinearInterpolator, CubicSplineInterpolator
+from enum import IntEnum, auto
+
+import numpy as np
+from basics.interpolators import LinearInterpolator
+
 from basics import Utils
-from basics.DayCountBasis import Actual360, Actual365, ActualActual
-import logging
-from enum import Enum
+from basics.DayCountBasis import Actual365
 
 
-class DiscountingInterpolationMethod(Enum):
-    LINEAR_ON_DISCOUNT_FACTORS = 1
-    LINEAR_ON_RATES = 2
-    LINEAR_ON_LOG_OF_RATES = 3
-    LINEAR_ON_LOG_OF_DISCOUNT_FACTORS = 4
-    NATURAL_CUBIC_SPLINE = 5
-    BESSEL_CUBIC_SPLINE = 6
-    FINANCIAL_CUBIC_SPLINE = 7
-    QUARTIC_SPLINE = 8
+class DiscountingInterpolationMethod(IntEnum):
+    LINEAR_ON_DISCOUNT_FACTORS = auto()
+    LINEAR_ON_RATES = auto()
+    LINEAR_ON_LOG_OF_RATES = auto()
+    LINEAR_ON_LOG_OF_DISCOUNT_FACTORS = auto()
+    NATURAL_CUBIC_SPLINE = auto()
+    BESSEL_CUBIC_SPLINE = auto()
+    FINANCIAL_CUBIC_SPLINE = auto()
+    QUARTIC_SPLINE = auto()
+
 
 ## A curve object that stores discount factors.
 #
@@ -107,8 +108,9 @@ class DiscountingInterpolationMethod(Enum):
 #
 # Reference : http://www.deriscope.com/docs/Hagan_West_curves_AMF.pdf
 #
-class DiscountingCurve:
 
+
+class DiscountingCurve:
     def __init__(
         self,
         dates: np.ndarray,
@@ -121,37 +123,60 @@ class DiscountingCurve:
 
     def dateSetForPlot(self):
         anchorDate = self.dates[0]
-        terminalDate = anchorDate + datetime.timedelta(days=365*5)
+        terminalDate = anchorDate + datetime.timedelta(days=365 * 5)
         nPoints = (terminalDate - anchorDate).days + 1
-        return anchorDate, [anchorDate + timedelta(days=i) for i in range(nPoints)], nPoints
+        return (
+            anchorDate,
+            [anchorDate + timedelta(days=i) for i in range(nPoints)],
+            nPoints,
+        )
 
     def plotDFs(self):
         startDate, dates, n = self.dateSetForPlot()
-        discountFactors = [
-            self.discountFactor(startDate, dates[i]) for i in range(n)
-        ]
-        Utils.draw(x=dates,y=discountFactors,xlabel=r'Time $t$',ylabel=r'Discount factor $P(0,t)$',title="Discount factor curve")
+        discountFactors = [self.discountFactor(startDate, dates[i]) for i in range(n)]
+        Utils.draw(
+            x=dates,
+            y=discountFactors,
+            xlabel=r"Time $t$",
+            ylabel=r"Discount factor $P(0,t)$",
+            title="Discount factor curve",
+        )
 
     def plotRates(self):
         startDate, dates, n = self.dateSetForPlot()
-        rates = [
-            self.rate(startDate, dates[i]) for i in range(n)
-        ]
-        Utils.draw(x=dates,y=rates,xlabel=r'Time $t$',ylabel=r'Rate $R(0,t)$',title="Rates curve")
+        rates = [self.rate(startDate, dates[i]) for i in range(n)]
+        Utils.draw(
+            x=dates,
+            y=rates,
+            xlabel=r"Time $t$",
+            ylabel=r"Rate $R(0,t)$",
+            title="Rates curve",
+        )
 
     def plotZeroCouponCurve(self):
         startDate, dates, n = self.dateSetForPlot()
-        zeroCouponRates = [
-            self.zero(startDate, dates[i]) for i in range(n)
-        ]
-        Utils.draw(x=dates,y=zeroCouponRates,xlabel=r'Time $t$',ylabel=r'Zero coupon $Y(0,t)$',title="Zero Coupon curve")
+        zeroCouponRates = [self.zero(startDate, dates[i]) for i in range(n)]
+        Utils.draw(
+            x=dates,
+            y=zeroCouponRates,
+            xlabel=r"Time $t$",
+            ylabel=r"Zero coupon $Y(0,t)$",
+            title="Zero Coupon curve",
+        )
 
     def plotForwardCurve(self):
         startDate, dates, n = self.dateSetForPlot()
         forwardRates = [
-            self.forward(startDate, dates[i], dates[i] + datetime.timedelta(days=365)) for i in range(n)
+            self.forward(startDate, dates[i], dates[i] + datetime.timedelta(days=365))
+            for i in range(n)
         ]
-        Utils.draw(x=dates,y=forwardRates,xlabel=r'Time $t$',ylabel=r'Forward $F(0,T,S)$',title="1y Forward curve")
+        Utils.draw(
+            x=dates,
+            y=forwardRates,
+            xlabel=r"Time $t$",
+            ylabel=r"Forward $F(0,T,S)$",
+            title="1y Forward curve",
+        )
 
     ## Returns the discount factor P(t,T) between times t and T.
     def discountFactor(self, t: datetime.date, T: datetime.date):
@@ -159,55 +184,57 @@ class DiscountingCurve:
         result = 0.0
         interpolator = None
 
-        if (self.DiscountingInterpolationMethod == DiscountingInterpolationMethod.LINEAR_ON_DISCOUNT_FACTORS):
-            interpolator = LinearInterpolator.LinearInterpolator(
-                x_values=self.dates,
-                y_values=self.dfs
-            )
+        if (
+            self.DiscountingInterpolationMethod
+            == DiscountingInterpolationMethod.LINEAR_ON_DISCOUNT_FACTORS
+        ):
+            interpolator = LinearInterpolator(self.dates, self.dfs)
 
             # The discount factor P(0,t)
-            df_t = interpolator.value(t)
+            df_t = interpolator(t)
 
             # The discount factor P(0,T)
-            df_T = interpolator.value(T)
+            df_T = interpolator(T)
 
             # We know that, P(0,T) = P(0,t) x P(t,T)
             result = (df_T) / (df_t)
 
-        if (self.DiscountingInterpolationMethod == DiscountingInterpolationMethod.LINEAR_ON_RATES):
-            rates = np.ndarray([self.rate(anchorDate,t) for i in len(self.dfs)])
+        if (
+            self.DiscountingInterpolationMethod
+            == DiscountingInterpolationMethod.LINEAR_ON_RATES
+        ):
+            rates = np.ndarray([self.rate(anchorDate, t) for i in len(self.dfs)])
 
-            interpolator = LinearInterpolator.LinearInterpolator(
-                x_values=self.dates,
-                y_values=rates
-            )
+            interpolator = LinearInterpolator(self.dates, rates)
 
             # The rate R(0,t)
-            r_t = interpolator.value(t)
+            r_t = interpolator(t)
 
             # The rate R(0,T)
-            r_T = interpolator.value(T)
+            r_T = interpolator(T)
 
             # We know that e^(R(t,T)tau(t,T)) = e^(R(0,T)tau(0,T))/e^(R(0,t)tau(0,t))
             tau_t = Actual365.yearFraction(anchorDate, t)
             tau_T = Actual365.yearFraction(anchorDate, T)
 
             compoundFactor = np.exp(r_T * tau_T) / np.exp(r_t * tau_t)
-            result = 1/compoundFactor
+            result = 1 / compoundFactor
 
-        if (self.DiscountingInterpolationMethod == DiscountingInterpolationMethod.LINEAR_ON_LOG_OF_RATES):
-            logRates = np.ndarray([np.log(self.rate(anchorDate, t)) for i in len(self.dfs)])
-
-            interpolator = LinearInterpolator.LinearInterpolator(
-                x_values=self.dates,
-                y_values=logRates
+        if (
+            self.DiscountingInterpolationMethod
+            == DiscountingInterpolationMethod.LINEAR_ON_LOG_OF_RATES
+        ):
+            logRates = np.ndarray(
+                [np.log(self.rate(anchorDate, t)) for i in len(self.dfs)]
             )
 
+            interpolator = LinearInterpolator(self.dates, logRates)
+
             # log R(0,t)
-            logR_t = interpolator.value(t)
+            logR_t = interpolator(t)
 
             # log R(0,T)
-            logR_T = interpolator.value(T)
+            logR_T = interpolator(T)
 
             R_t = np.exp(logR_t)
             R_T = np.exp(logR_T)
@@ -218,35 +245,38 @@ class DiscountingCurve:
             compoundFactor = np.exp(R_t * tau_T) / np.exp(R_T * tau_t)
             result = 1 / compoundFactor
 
-        if (self.DiscountingInterpolationMethod == DiscountingInterpolationMethod.LINEAR_ON_LOG_OF_DISCOUNT_FACTORS):
+        if (
+            self.DiscountingInterpolationMethod
+            == DiscountingInterpolationMethod.LINEAR_ON_LOG_OF_DISCOUNT_FACTORS
+        ):
             logDfs = np.log(self.dfs)
 
-            interpolator = LinearInterpolator.LinearInterpolator(
-                x_values=self.dates,
-                y_values=logDfs
-            )
+            interpolator = LinearInterpolator(self.dates, logDfs)
 
             # log P(0,t)
-            logP_t = interpolator.value(t)
+            logP_t = interpolator(t)
 
             # log P(0,T)
-            logP_T = interpolator.value(T)
+            logP_T = interpolator(T)
 
             P_t = np.exp(logP_t)
             P_T = np.exp(logP_T)
-            return (P_T/P_t)
+            return P_T / P_t
 
     ## Returns the annual compounded spot interest rate(zero) Y(t,T) between times t and T
-    def zero(self, t:date, T:date):
-        return Utils.dfToZero(self.discountFactor(t,T),t,T)
+    def zero(self, t: date, T: date):
+        return Utils.dfToZero(self.discountFactor(t, T), t, T)
 
     ## Returns the continuous compounded spot rate R(t,T) between times t and T
-    def rate(self, t:date, T:date):
-        return Utils.dfToRate(self.discountFactor(t,T),t,T)
+    def rate(self, t: date, T: date):
+        return Utils.dfToRate(self.discountFactor(t, T), t, T)
 
     ## Returns the simply compounded forward rate F(t;T,S) between times T and S, as observed on t
-    def forward(self, t:date, T:date, S:date):
-        return Utils.dfToForward(self.discountFactor(t,T),self.discountFactor(t,S),T,S)
+    def forward(self, t: date, T: date, S: date):
+        return Utils.dfToForward(
+            self.discountFactor(t, T), self.discountFactor(t, S), T, S
+        )
+
 
 if __name__ == "__main__":
     dates = [
@@ -267,7 +297,9 @@ if __name__ == "__main__":
         (1.05) ** (-5),
     ]
 
-    discountingCurve = DiscountingCurve(dates, dfs, DiscountingInterpolationMethod.LINEAR_ON_LOG_OF_DISCOUNT_FACTORS)
+    discountingCurve = DiscountingCurve(
+        dates, dfs, DiscountingInterpolationMethod.LINEAR_ON_LOG_OF_DISCOUNT_FACTORS
+    )
     today = datetime.date(2023, 1, 1)
     df = discountingCurve.discountFactor(today, datetime.date(2024, 6, 1))
     print(f"DF = {df}")

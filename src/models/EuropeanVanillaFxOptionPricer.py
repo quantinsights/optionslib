@@ -4,7 +4,7 @@ from scipy.stats import norm
 
 from product import EuropeanVanillaFxOption
 from basics.Enums import FxVanillaEuropeanOptionQuoteConvention, DeltaConvention
-from market.DiscountingCurve import DiscountingCurve
+from market.discounting_curve import DiscountingCurve
 from market.FxVolatilitySurface import FxVolatilitySurface
 from models.BlackCalculator import BlackCalculator
 from basics.DayCountBasis import Actual360, Actual365, ActualActual

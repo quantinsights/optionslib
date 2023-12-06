@@ -3,7 +3,7 @@ from datetime import date
 from basics.DayCountBasis import Actual360, Actual365, ActualActual
 import numpy as np
 from market.EuropeanVanillaFxOptionQuote import EuropeanVanillaFxOptionQuote
-from market.DiscountingCurve import DiscountingCurve
+from market.discounting_curve import DiscountingCurve
 from basics.Enums import FxOptionsMarketQuoteType
 from scipy.stats import norm
 

@@ -47,8 +47,8 @@ class ExtrapolateIndex(IntEnum):
 class Interpolator(ABC):
     """Abstract base class for interpolator objects."""
 
-    _xs: List[NumericType] = field(alias="x_values")
-    _ys: List[NumericType] = field(alias="y_values")
+    _xs: List[NumericType] | np.ndarray = field(alias="x_values")
+    _ys: List[NumericType] | np.ndarray = field(alias="y_values")
     _extrapolate: bool = field(
         alias="extrapolate",
         default=False,
