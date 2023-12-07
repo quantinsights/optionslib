@@ -24,8 +24,9 @@ Concrete implementations:
 
 from abc import ABC, abstractmethod
 from enum import IntEnum
-from typing import List, Union
+from typing import List, Union, cast
 
+import datetime as dt
 import numpy as np
 from attrs import define, field
 
@@ -47,7 +48,7 @@ class ExtrapolateIndex(IntEnum):
 class Interpolator(ABC):
     """Abstract base class for interpolator objects."""
 
-    _xs: List[NumericType] | np.ndarray = field(alias="x_values")
+    _xs: List[NumericType] | List[dt.datetime] | np.ndarray = field(alias="x_values")
     _ys: List[NumericType] | np.ndarray = field(alias="y_values")
     _extrapolate: bool = field(
         alias="extrapolate",
@@ -61,8 +62,9 @@ class Interpolator(ABC):
             raise ValueError("list of x values is empty.")
         if len(values) == 1:
             return
+        zero_point = dt.timedelta(0) if isinstance(values[0], dt.date) else 0
         for i in range(len(values) - 1):
-            if values[i + 1] - values[i] < 0:
+            if values[i + 1] - values[i] < zero_point:
                 raise ValueError("List of x values is not sorted")
 
     @_ys.validator
@@ -74,7 +76,7 @@ class Interpolator(ABC):
     @property
     def x_values(self) -> List[float]:
         """Get x values."""
-        return [float(x) for x in self._xs]
+        return self._xs
 
     @property
     def y_values(self) -> List[float]:
@@ -87,7 +89,7 @@ class Interpolator(ABC):
         return self._extrapolate
 
     @abstractmethod
-    def __call__(self, x: NumericType) -> float:
+    def __call__(self, x: float | dt.date) -> float:
         """Call to get interpolated y value."""
 
     def __len__(self):
@@ -99,7 +101,7 @@ class Interpolator(ABC):
 class LinearInterpolator(Interpolator):
     """Interpolator using linear interpolation, constant extrapolation."""
 
-    def __call__(self, x: float) -> float:
+    def __call__(self, x: float | dt.date) -> float:
         """Call to get interpolated y value."""
         index = self.__find_index(x)
 
@@ -114,10 +116,10 @@ class LinearInterpolator(Interpolator):
             case ExtrapolateIndex.BACK:
                 result = self._ys[-1]
             case _:
-                x_delta = self._xs[index + 1] - self._xs[index]
+                x_delta = self.__convert_to_float(self._xs[index + 1] - self._xs[index])
                 y_delta = self._ys[index + 1] - self._ys[index]
                 slope = y_delta / x_delta
-                result = self._ys[index] + (x - self._xs[index]) * slope
+                result = self._ys[index] + self.__convert_to_float(x - self._xs[index]) * slope
         # enforce float -> flot signature of interpolator
         return float(result)
 
@@ -129,3 +131,11 @@ class LinearInterpolator(Interpolator):
             if self._xs[i] <= x < self._xs[i + 1]:
                 return i
         return ExtrapolateIndex.BACK
+
+    @staticmethod
+    def __convert_to_float(delta: float | dt.timedelta ) -> float:
+        """Convert the potential time delta to year fraction float."""
+        if isinstance(delta, dt.timedelta):
+            # convert to year fraction, assume daily granularity
+            delta = delta.days / 365
+        return cast(float, delta)

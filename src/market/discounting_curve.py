@@ -3,10 +3,10 @@ from datetime import date, timedelta
 from enum import IntEnum, auto
 
 import numpy as np
-from basics.interpolators import LinearInterpolator
+from src.basics.interpolators import LinearInterpolator
 
-from basics import Utils
-from basics.DayCountBasis import Actual365
+from src.basics import Utils
+from src.basics.DayCountBasis import Actual365
 
 
 class DiscountingInterpolationMethod(IntEnum):
