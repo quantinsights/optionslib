@@ -97,9 +97,9 @@ class VannaVolga:
             )
             i += 1
 
-    def forward(self, t_1:date, t_2:date):
+    def forward(self, t_1:date, t_2:date) -> float:
         """
-        Returns the foward \f$F(t_1,t_2)\f$
+        Returns the foward F(t_1,t_2)
         """
         foreign_df = self.foreign_discounting_curve.discountFactor(t_1, t_2)
         domestic_df = self.domestic_discounting_curve.discountFactor(t_1, t_2)
@@ -107,9 +107,9 @@ class VannaVolga:
         fwd = fwd_points * self.s_t
         return fwd
 
-    def first_order_approximation(self, k:float, t_exp:date):
+    def first_order_approximation(self, k:float, t_exp:date) -> float:
         """
-        The first order smile approximation \f$\sigma(K,T)\f$
+        The first order smile approximation sigma(K,T)
         """
         if t_exp in self.data_by_expiry:
             tau, sigma_2, sigma_3, sigma_1, fwd_t_exp, k_2, k_3, k_1 = self.data_by_expiry[t_exp]
@@ -121,11 +121,11 @@ class VannaVolga:
         raise Exception(f"Market quotes for the expiry {date.strftime(t_exp, '%Y-%m-%d')} "
                         f"were not supplied during VV calibration!")
 
-    def second_order_approximation(self, k:float, t_exp:date):
+    def second_order_approximation(self, k:float, t_exp:date) -> float:
         """
-        The second order smile approximation \f$\sigma(K,T)\f$
+        The second order smile approximation sigma(K,T)
         """
-        if t_exp in self.data_by_expiry.keys():
+        if t_exp in self.data_by_expiry:
             tau, sigma_2, sigma_3, sigma_1, fwd_t_exp, k_2, k_3, k_1 = self.data_by_expiry[t_exp]
             xi1 = self.first_order_approximation(k, t_exp)
             d1_k = xi1 - sigma_2
@@ -156,12 +156,12 @@ class VannaVolga:
 
     def d_plus(self, fwd, k, tau, sigma):
         """
-        Returns \f$d_{+}\f$ in the Black-Scholes model
+        Returns d+ in the Black-Scholes model
         """
         return (np.log(fwd / k) + tau * (sigma ** 2) / 2) / (sigma * np.sqrt(tau))
 
     def d_minus(self, fwd, k, tau, sigma):
         """
-        Returns \f$d_{-}\f$ in the Black-Scholes model
+        Returns d- in the Black-Scholes model
         """
         return (np.log(fwd / k) - tau * (sigma ** 2) / 2) / (sigma * np.sqrt(tau))
