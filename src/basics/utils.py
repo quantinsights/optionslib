@@ -2,12 +2,12 @@ from typing import Any
 import numpy as np
 import matplotlib.pyplot as plt
 from datetime import date
-from src.basics.DayCountBasis import Actual360, Actual365, ActualActual
+from src.basics.day_count_basis import Actual360, Actual365, ActualActual
 
 ## Converts the discount factor P(t,T) to the annually compounded spot interest rate Y(t,T).
 def dfToZero(df: float, t:date, T:date):
     zeroRate = 0.0
-    tau = Actual365.yearFraction(t,T)
+    tau = Actual365.year_fraction(t, T)
     if (tau == 0.0):
         zeroRate = 0.0
     #elif (tau <= 1.0):
@@ -17,7 +17,7 @@ def dfToZero(df: float, t:date, T:date):
     return zeroRate
 
 def dfToRate(df:float, t:date, T:date):
-    tau = Actual365.yearFraction(t, T)
+    tau = Actual365.year_fraction(t, T)
     if tau == 0.0:
         return 0.0
     else:
@@ -26,7 +26,7 @@ def dfToRate(df:float, t:date, T:date):
 ## Converts the annually compounded spot interest rate Y(t,T) to a discount factor P(t,T).
 def ZeroToDf(y:float, t:date, T:date):
     df = 1.0
-    tau = Actual365.yearFraction(t,T)
+    tau = Actual365.year_fraction(t, T)
     if (tau == 0.0):
         df = 1.0
     #elif (tau<= 1.0):
@@ -36,7 +36,7 @@ def ZeroToDf(y:float, t:date, T:date):
 
 ## Extracts the forward from a pair of discount factors
 def dfToForward(df1,df2,T,S):
-    tau = Actual365.yearFraction(T,S)
+    tau = Actual365.year_fraction(T, S)
     return (1/tau) * (df1/df2 - 1)
 
 ## Test if the given year is a leap year

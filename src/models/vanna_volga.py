@@ -9,7 +9,7 @@ import numpy as np
 from scipy.stats import norm
 from attrs import define, field
 
-from src.basics.DayCountBasis import Actual365
+from src.basics.day_count_basis import Actual365
 from src.basics.enums import FxOptionsMarketQuoteType
 from src.market.european_vanilla_fx_option_quote import EuropeanVanillaFxOptionQuote
 from src.market.discounting_curve import DiscountingCurve
@@ -267,7 +267,7 @@ class VannaVolga:
         The second order smile approximation sigma(K,T)
         """
         if t_exp in self.exp_dates:
-            tau = Actual365.yearFraction(self.valuation_date,t_exp)
+            tau = Actual365.year_fraction(self.valuation_date, t_exp)
 
             sigma_1 = self.sigma_25d_put(t_exp)
             sigma_2 = self.sigma_atm(t_exp)

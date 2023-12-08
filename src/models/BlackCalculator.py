@@ -23,7 +23,7 @@ class BlackCalculator:
         self.S_t = fxSpot
         self.foreignDiscountingCurve = foreignDiscountingCurve
         self.domesticDiscountingCurve = domesticDiscountingCurve
-        self.tau = Actual365.yearFraction(self.t,self.T)
+        self.tau = Actual365.year_fraction(self.t, self.T)
         self.sigma = sigma
         self.F = self.atTheMoneyForward()
         self.foreignDF = self.foreignDiscountingCurve.discountFactor(self.t,self.T)
@@ -77,7 +77,7 @@ class BlackCalculator:
 
     def analyticGamma(self):
         omega = self.europeanVanillaFxOption.optionType
-        return self.foreignDF * norm.cdf(omega * self.dPlus()) / (self.sigma * self.S_t * np.sqrt(Actual365.yearFraction(self.t, self.T)))
+        return self.foreignDF * norm.cdf(omega * self.dPlus()) / (self.sigma * self.S_t * np.sqrt(Actual365.year_fraction(self.t, self.T)))
 
     def analyticTheta(self):
         omega = self.europeanVanillaFxOption.optionType
@@ -86,16 +86,16 @@ class BlackCalculator:
         r_FOR = Utils.dfToRate(self.foreignDF,self.t,self.T)
         r_DOM = Utils.dfToRate(self.domesticDF, self.t, self.T)
         theta = (omega * (self.S_t * r_FOR * self.foreignDF * Nd1 - self.K * r_DOM * self.domesticDF * Nd2)
-                 - self.S_t * self.foreignDF * Nd1 * (self.sigma / (2 * np.sqrt(Actual365.yearFraction(self.t,self.T))))) * 100.0
+                 - self.S_t * self.foreignDF * Nd1 * (self.sigma / (2 * np.sqrt(Actual365.year_fraction(self.t, self.T))))) * 100.0
 
         return theta
 
     def vega(self):
-        return self.S_t * self.foreignDF * norm.pdf(self.dPlus()) * np.sqrt(Actual365.yearFraction(self.t,self.T))
+        return self.S_t * self.foreignDF * norm.pdf(self.dPlus()) * np.sqrt(Actual365.year_fraction(self.t, self.T))
 
     def vanna(self):
         return -self.foreignDF * norm.pdf(self.dPlus()) * (self.dMinus()/self.sigma)
 
     def volga(self):
-        return self.S_t * self.foreignDF * np.sqrt(Actual365.yearFraction(self.t,self.T)) * \
+        return self.S_t * self.foreignDF * np.sqrt(Actual365.year_fraction(self.t, self.T)) * \
             norm.pdf(self.dPlus()) * (self.dPlus() * self.dMinus())/self.sigma

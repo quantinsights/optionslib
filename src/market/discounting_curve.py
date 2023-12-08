@@ -5,8 +5,8 @@ from enum import IntEnum, auto
 import numpy as np
 from src.basics.interpolators import LinearInterpolator
 
-from src.basics import Utils
-from src.basics.DayCountBasis import Actual365
+from src.basics import utils
+from src.basics.day_count_basis import Actual365
 
 
 class DiscountingInterpolationMethod(IntEnum):
@@ -214,8 +214,8 @@ class DiscountingCurve:
             r_T = interpolator(T)
 
             # We know that e^(R(t,T)tau(t,T)) = e^(R(0,T)tau(0,T))/e^(R(0,t)tau(0,t))
-            tau_t = Actual365.yearFraction(anchorDate, t)
-            tau_T = Actual365.yearFraction(anchorDate, T)
+            tau_t = Actual365.year_fraction(anchorDate, t)
+            tau_T = Actual365.year_fraction(anchorDate, T)
 
             compoundFactor = np.exp(r_T * tau_T) / np.exp(r_t * tau_t)
             result = 1 / compoundFactor
@@ -239,8 +239,8 @@ class DiscountingCurve:
             R_t = np.exp(logR_t)
             R_T = np.exp(logR_T)
 
-            tau_t = Actual365.yearFraction(anchorDate, t)
-            tau_T = Actual365.yearFraction(anchorDate, T)
+            tau_t = Actual365.year_fraction(anchorDate, t)
+            tau_T = Actual365.year_fraction(anchorDate, T)
 
             compoundFactor = np.exp(R_t * tau_T) / np.exp(R_T * tau_t)
             result = 1 / compoundFactor
