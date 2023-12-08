@@ -1,5 +1,6 @@
 from datetime import date
-from basics.Enums import FxOptionsMarketQuoteType
+from src.basics.enums import FxOptionsMarketQuoteType
+
 class EuropeanVanillaFxOptionQuote:
     def __init__(
             self,

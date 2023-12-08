@@ -1,24 +1,24 @@
-from enum import Enum,IntEnum,StrEnum
+from enum import Enum,IntEnum,StrEnum,auto
 
 class Direction(IntEnum):
     BUY = 1
     SELL = -1
 
 class FxVanillaEuropeanOptionQuoteConvention(IntEnum):
-    DOMESTIC_PER_UNIT_OF_FOREIGN = 1
-    PERCENTAGE_FOREIGN = 2
-    PERCENTAGE_DOMESTIC = 3
-    FOREIGN_PER_UNIT_OF_DOMESTIC = 4
+    DOMESTIC_PER_UNIT_OF_FOREIGN = auto()
+    PERCENTAGE_FOREIGN = auto()
+    PERCENTAGE_DOMESTIC = auto()
+    FOREIGN_PER_UNIT_OF_DOMESTIC = auto()
 
 class DeltaConvention(IntEnum):
-    PIPS_SPOT_DELTA = 1
-    PIPS_FORWARD_DELTA = 2
-    PREMIUM_ADJUSTED_DELTA = 3
+    PIPS_SPOT_DELTA = auto()
+    PIPS_FORWARD_DELTA = auto()
+    PREMIUM_ADJUSTED_DELTA = auto()
 
 class FxVolatilitySurfaceParametricModel(IntEnum):
-    VANNA_VOLGA = 1
-    SABR = 2
-    HESTON = 3
+    VANNA_VOLGA = auto()
+    SABR = auto()
+    HESTON = auto()
 
 class FxOptionsMarketQuoteType(StrEnum):
     ATM_STRADDLE = 'STDL'
