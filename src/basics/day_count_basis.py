@@ -1,3 +1,7 @@
+"""
+Module for support various day count conventions.
+Reference.  https://en.wikipedia.org/wiki/Day_count_convention.
+"""
 from abc import ABC, abstractmethod
 import datetime as dt
 
@@ -11,7 +15,6 @@ class DayCountBase(ABC):
     def days_between(start_inclusive : dt.date, end_exlusive : dt.date):
         """
         Returns the number of calendar days in the period [startInclusive,endExclusive).
-        Refer here: https://en.wikipedia.org/wiki/Day_count_convention.
         """
         return (end_exlusive - start_inclusive).days
 
