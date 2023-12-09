@@ -63,12 +63,12 @@ class ActualActual(DayCountBase):
         y_2 = d_2.year
 
         if y_1 == y_2:
-            return (d_2 - d_1).days/utils.lengthOfYear(y_1)
+            return (d_2 - d_1).days/utils.length_of_year(y_1)
         else:
             j_i = dt.date(y_1+1,1,1)
             j_f = dt.date(y_2,1,1)
-            n_i = utils.lengthOfYear(y_1)
-            n_f = utils.lengthOfYear(y_2)
+            n_i = utils.length_of_year(y_1)
+            n_f = utils.length_of_year(y_2)
             y = y_2 - y_1
             return (j_i - d_1).days/n_i + y + (d_2 - j_f).days/n_f
 

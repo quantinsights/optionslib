@@ -83,8 +83,8 @@ class BlackCalculator:
         omega = self.europeanVanillaFxOption.optionType
         Nd1 = norm.cdf(omega * self.dPlus())
         Nd2 = norm.cdf(omega * self.dMinus())
-        r_FOR = Utils.dfToRate(self.foreignDF,self.t,self.T)
-        r_DOM = Utils.dfToRate(self.domesticDF, self.t, self.T)
+        r_FOR = Utils.df_to_rate(self.foreignDF, self.t, self.T)
+        r_DOM = Utils.df_to_rate(self.domesticDF, self.t, self.T)
         theta = (omega * (self.S_t * r_FOR * self.foreignDF * Nd1 - self.K * r_DOM * self.domesticDF * Nd2)
                  - self.S_t * self.foreignDF * Nd1 * (self.sigma / (2 * np.sqrt(Actual365.year_fraction(self.t, self.T))))) * 100.0
 

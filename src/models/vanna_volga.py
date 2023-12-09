@@ -1,5 +1,6 @@
 """
 This module implements the Vanna-Volga approximation for constructing a smile.
+Reference. https://quantophile.github.io/mathsummaries/post/2023/11/26/implementing-vanna-volga/
 """
 from typing import List, Union, Dict
 import datetime as dt

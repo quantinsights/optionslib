@@ -265,15 +265,15 @@ class DiscountingCurve:
 
     ## Returns the annual compounded spot interest rate(zero) Y(t,T) between times t and T
     def zero(self, t: date, T: date):
-        return Utils.dfToZero(self.discountFactor(t, T), t, T)
+        return Utils.df_to_zero(self.discountFactor(t, T), t, T)
 
     ## Returns the continuous compounded spot rate R(t,T) between times t and T
     def rate(self, t: date, T: date):
-        return Utils.dfToRate(self.discountFactor(t, T), t, T)
+        return Utils.df_to_rate(self.discountFactor(t, T), t, T)
 
     ## Returns the simply compounded forward rate F(t;T,S) between times T and S, as observed on t
     def forward(self, t: date, T: date, S: date):
-        return Utils.dfToForward(
+        return Utils.df_to_forward(
             self.discountFactor(t, T), self.discountFactor(t, S), T, S
         )
 
