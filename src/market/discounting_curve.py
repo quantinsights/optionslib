@@ -5,8 +5,8 @@ from enum import IntEnum, auto
 import numpy as np
 from src.basics.interpolators import LinearInterpolator
 
-from src.basics import Utils
-from src.basics.DayCountBasis import Actual365
+from src.basics import utils
+from src.basics.day_count_basis import Actual365
 
 
 class DiscountingInterpolationMethod(IntEnum):
@@ -214,8 +214,8 @@ class DiscountingCurve:
             r_T = interpolator(T)
 
             # We know that e^(R(t,T)tau(t,T)) = e^(R(0,T)tau(0,T))/e^(R(0,t)tau(0,t))
-            tau_t = Actual365.yearFraction(anchorDate, t)
-            tau_T = Actual365.yearFraction(anchorDate, T)
+            tau_t = Actual365.year_fraction(anchorDate, t)
+            tau_T = Actual365.year_fraction(anchorDate, T)
 
             compoundFactor = np.exp(r_T * tau_T) / np.exp(r_t * tau_t)
             result = 1 / compoundFactor
@@ -239,8 +239,8 @@ class DiscountingCurve:
             R_t = np.exp(logR_t)
             R_T = np.exp(logR_T)
 
-            tau_t = Actual365.yearFraction(anchorDate, t)
-            tau_T = Actual365.yearFraction(anchorDate, T)
+            tau_t = Actual365.year_fraction(anchorDate, t)
+            tau_T = Actual365.year_fraction(anchorDate, T)
 
             compoundFactor = np.exp(R_t * tau_T) / np.exp(R_T * tau_t)
             result = 1 / compoundFactor
@@ -265,15 +265,15 @@ class DiscountingCurve:
 
     ## Returns the annual compounded spot interest rate(zero) Y(t,T) between times t and T
     def zero(self, t: date, T: date):
-        return Utils.dfToZero(self.discountFactor(t, T), t, T)
+        return Utils.df_to_zero(self.discountFactor(t, T), t, T)
 
     ## Returns the continuous compounded spot rate R(t,T) between times t and T
     def rate(self, t: date, T: date):
-        return Utils.dfToRate(self.discountFactor(t, T), t, T)
+        return Utils.df_to_rate(self.discountFactor(t, T), t, T)
 
     ## Returns the simply compounded forward rate F(t;T,S) between times T and S, as observed on t
     def forward(self, t: date, T: date, S: date):
-        return Utils.dfToForward(
+        return Utils.df_to_forward(
             self.discountFactor(t, T), self.discountFactor(t, S), T, S
         )
 

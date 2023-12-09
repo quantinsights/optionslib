@@ -2,13 +2,13 @@ from datetime import date
 import numpy as np
 from scipy.stats import norm
 
-from product import EuropeanVanillaFxOption
-from basics.Enums import FxVanillaEuropeanOptionQuoteConvention, DeltaConvention
-from market.discounting_curve import DiscountingCurve
-from market.FxVolatilitySurface import FxVolatilitySurface
-from models.BlackCalculator import BlackCalculator
-from basics.DayCountBasis import Actual360, Actual365, ActualActual
-from basics import Utils
+from src.product import EuropeanVanillaFxOption
+from src.basics.enums import FxVanillaEuropeanOptionQuoteConvention, DeltaConvention
+from src.market.discounting_curve import DiscountingCurve
+from src.market.fx_volatility_surface import FxVolatilitySurface
+from src.models.black_calculator import BlackCalculator
+from src.basics.day_count_basis import Actual360, Actual365, ActualActual
+from src.basics import utils
 
 
 ## A pricer for European Vanilla FX Options that uses the `BlackCalculator`
@@ -23,7 +23,7 @@ class EuropeanVanillaFxOptionPricer:
             fxVolatilitySurface : FxVolatilitySurface
     ):
         self.fxVolatilitySurface = fxVolatilitySurface
-        self.sigma = self.fxVolatilitySurface.getVolatility(self.K, self.T)
+        self.sigma = self.fxVolatilitySurface.volatility(self.K, self.T)
         self.blackCalculator = BlackCalculator(
             valuationDate,
             europeanVanillaFxOption,
@@ -38,10 +38,10 @@ class EuropeanVanillaFxOptionPricer:
         return self.blackCalculator.atTheMoneyForward()
 
     def dPlus(self):
-        return self.blackCalculator.dPlus()
+        return self.blackCalculator.d_plus()
 
     def dMinus(self):
-        return self.blackCalculator.dMinus()
+        return self.blackCalculator.d_minus()
 
     def value(
             self,
