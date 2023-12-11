@@ -9,7 +9,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from src.basics.day_count_basis import Actual365
-from src.basics.enums import DayOfWeek
+from src.basics.enums import DayOfWeek, Period, BusinessDayConventions
 
 
 def df_to_zero(df: float, t_1:dt.date, t_2:dt.date) -> float:
@@ -216,3 +216,94 @@ def draw(x:Any, y:Any, xlabel: str, ylabel: str, title:str):
     plt.title(title)
     plt.plot(x,y,alpha=0.75,linewidth=0.80)
     plt.show()
+
+
+def add_months(start : dt.date, months : int) -> dt.date:
+    """Add months to a date"""
+    year_roll = (start.month + months - 1) // 12
+    month = (start.month + months) % 13 + year_roll
+    try:
+        end = dt.date(start.year + year_roll, month, start.day)
+    except ValueError: # day is out of range for the month
+        return add_months(dt.date(start.year, start.month, start.day - 1), months)
+    else:
+        return end
+
+def add_years(start : dt.date, years : int) -> dt.date:
+    """Add years to a date"""
+    try:
+        end = dt.date(start.year + years, start.month, start.day)
+    except ValueError:
+        return add_years(dt.date(start.year, start.month, start.day - 1), years)
+    else:
+        return end
+
+def add_period(
+        start : dt.date,
+        length : int,
+        period : Period,
+        holiday_calendar
+):
+
+    """Add period of a certain length to a date"""
+    if period == Period.DAYS:
+        end = start + dt.timedelta(days=length)
+
+    if period == Period.BUSINESS_DAYS:
+        if length == 0:
+            end = start
+        else:
+            next_date = start + dt.timedelta(days=(+1 if length > 0 else -1))
+            if holiday_calendar.is_holiday(next_date):
+                end = add_period(next_date, length, Period.BUSINESS_DAYS, holiday_calendar)
+            else:
+                end = add_period(next_date,
+                                 length + (-1 if length > 0 else +1),
+                                 Period.BUSINESS_DAYS, holiday_calendar)
+
+    if period == Period.MONTHS:
+        end = add_months(start,months=length)
+
+    if period == Period.YEARS:
+        end = add_years(start,years=length)
+
+    return end
+
+
+def adjust(
+        unadjusted_date: dt.date,
+        bus_day_convention: BusinessDayConventions,
+        holiday_calendar
+) -> dt.date:
+    """
+    Converts an undajusted date to an adjusted date.
+    Ref. https://en.wikipedia.org/wiki/Date_rolling
+    """
+    if holiday_calendar.is_holiday(unadjusted_date):
+
+        following_date = add_period(unadjusted_date, 1, Period.BUSINESS_DAYS, holiday_calendar)
+        preceding_date = add_period(unadjusted_date,-1, Period.BUSINESS_DAYS, holiday_calendar)
+
+        if bus_day_convention == BusinessDayConventions.NO_ADJUST:
+            return unadjusted_date
+
+        if bus_day_convention == BusinessDayConventions.FOLLOWING:
+            return following_date
+
+        if bus_day_convention == BusinessDayConventions.MODIFIED_FOLLOWING:
+            if following_date.month != unadjusted_date.month:
+                return preceding_date
+            else:
+                return following_date
+
+        if bus_day_convention == BusinessDayConventions.PRECEDING:
+            return preceding_date
+
+        if bus_day_convention == BusinessDayConventions.MODIFIED_PRECEDING:
+            if preceding_date.month != unadjusted_date.month:
+                return following_date
+            else:
+                return preceding_date
+    else:
+        return unadjusted_date
+

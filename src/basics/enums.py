@@ -86,17 +86,17 @@ class RollConventions(IntEnum):
     DAY_FRI = 106,
     DAY_SAT = 107
 
-class BusinessDayConventions(IntEnum):
+class BusinessDayConventions(StrEnum):
     """
     When processing dates in finance, a cashflow cannot occur on a business holiday. So, any non-business
     dates have to be converted to a nearby valid business date. The business day convention together with the
     holiday calendar defines exactly how this adjustment is to be made.
     """
-    NO_ADJUST = auto()
-    MODIFIED_FOLLOWING = auto()
-    FOLLOWING = auto()
-    PRECEDING = auto()
-    MODIFIED_PRECEDING = auto()
+    NO_ADJUST = "No adjustment"
+    MODIFIED_FOLLOWING = "Modified Following"
+    FOLLOWING = "Following"
+    PRECEDING = "Preceding"
+    MODIFIED_PRECEDING = "Modified Preceding"
 
 class DayOfWeek(IntEnum):
     """
@@ -110,10 +110,30 @@ class DayOfWeek(IntEnum):
     SATURDAY = 5
     SUNDAY = 6
 
-class HolidayCalendarId(IntEnum):
+class HolidayCalendarId(StrEnum):
     """
     List of supported holiday calendar IDs
     """
-    TARGET = auto()
-    US = auto()
-    LONDON = auto()
+    TARGET = "Target"
+    US = "US"
+    LONDON = "London"
+
+class Period(StrEnum):
+    """
+    A calendar period such as days, business days, months or years
+    """
+    BUSINESS_DAYS = "business days"
+    DAYS = "days"
+    MONTHS = "months"
+    YEARS = "years"
+
+class StubConvention(StrEnum):
+    """
+    A stub is an irregular period in the front or rear of the schedule.
+    The StubConvention determines how a stub is created during schedule generation.
+    """
+    NONE = "None"
+    SHORT_INITIAL = "Short Initial"
+    LONG_INITIAL = "Long Initial"
+    SHORT_FINAL = "Short Final"
+    LONG_FINAL = "Long Final"
