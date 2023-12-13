@@ -91,8 +91,7 @@ class Schedule:
     )
 
     _stub_convention : StubConvention = field(
-        default = StubConvention.SHORT_FINAL,
-        validator = attrs.validators.instance_of(StubConvention)
+        default = StubConvention.SHORT_FINAL
     )
 
     _schedule_periods : List[SchedulePeriod] = field(default = [])
@@ -108,6 +107,18 @@ class Schedule:
                 " must be >= " +
                 "the start date " + dt.date.strftime(self._start_date, "%Y-%m-%d")
             )
+
+    @_stub_convention.validator
+    def check_stub_convention(self, attribute, value) -> bool:
+        if not isinstance(value, StubConvention):
+            raise ValueError("Invalid stub convention! Must be None, Short Initial, Short Final"
+                             "Long Initial, Long Final or Both.")
+
+        if value == StubConvention.BOTH:
+            if self._first_regular_start_date is None or \
+                    self._last_regular_end_date is None:
+                raise ValueError("First regular and last regular dates must be supplied, "
+                                 "when stub convention is BOTH!")
 
     @property
     def start_date(self) -> dt.date:
@@ -203,6 +214,9 @@ class Schedule:
                 self.holiday_calendar
             )
 
+        if self.stub_convention == StubConvention.BOTH:
+            calculated_first_regular_start_date = self._first_regular_start_date
+
         if self._first_regular_start_date is None:
             self._first_regular_start_date = calculated_first_regular_start_date
         else:
@@ -244,6 +258,9 @@ class Schedule:
                 self.holiday_calendar
             )
 
+        if self.stub_convention == StubConvention.BOTH:
+            calculated_last_regular_end_date = self._last_regular_end_date
+
         if self._last_regular_end_date is None:
             self._last_regular_end_date = calculated_last_regular_end_date
         else:
@@ -255,20 +272,48 @@ class Schedule:
         """Deduces a roll convention"""
 
         if self.stub_convention == StubConvention.NONE:
-            if self._start_date.day == self._end_date.day:
-                self._roll_convention = RollConventions(self._start_date.day)
-            else:
-                raise ValueError(f"The end date must fall on {self.start_date.day} of the month!")
+            calculated_roll_convention = RollConventions(self._start_date.day)
 
         if (self.stub_convention == StubConvention.SHORT_INITIAL or
                 self.stub_convention == StubConvention.LONG_INITIAL):
-            self._roll_convention = RollConventions(self._end_date.day)
+            calculated_roll_convention = RollConventions(self._end_date.day)
 
         if (self.stub_convention == StubConvention.SHORT_FINAL or
                 self.stub_convention == StubConvention.LONG_FINAL):
-            self._roll_convention = RollConventions(self._start_date.day)
+            calculated_roll_convention = RollConventions(self._start_date.day)
 
-    def pre_validation(self):
+        if self.stub_convention == StubConvention.BOTH:
+            calculated_roll_convention = RollConventions(self._first_regular_start_date.day)
+
+        if self._roll_convention is None:
+            self._roll_convention = calculated_roll_convention
+
+    def valid_roll_day(
+            self,
+            date_value: dt.date
+    ) -> bool:
+        """Check if the given date follows the roll-convention"""
+        if date_value.day == self._roll_convention:
+            return True
+
+        if self._roll_convention == RollConventions.DAY_30:
+                if date_value.month == 2 and date_value.day in [28,29]:
+                    return True
+
+        print(f"isLeapYear({date_value.year}) : {utils.is_leap_year(date_value.year)}")
+        if self._roll_convention == RollConventions.DAY_29:
+            if (date_value.month == 2 and date_value.day in [28]
+                    and (not(utils.is_leap_year(date_value.year)))):
+                return True
+
+        if self._roll_convention == RollConventions.EOM:
+            if date_value.month in [2,4,6,9,11] and date_value.day == 30:
+                return True
+
+        return False
+
+
+    def pre_validation(self) -> None:
         """Performs initial validation"""
 
         if not (self.end_date >= self.last_regular_end_date):
@@ -289,30 +334,39 @@ class Schedule:
                              dt.date.strftime(self.start_date, "%Y-%m-%d") + "!")
 
         if self.stub_convention == StubConvention.NONE:
-            if not(self.start_date.day == self.roll_convention and
-                   self.first_regular_start_date.day == self.roll_convention and
-                   self.last_regular_end_date.day == self.roll_convention and
-                   self.end_date.day == self.roll_convention
+            if not(
+                self.valid_roll_day(self.start_date) and
+                self.valid_roll_day(self.last_regular_end_date) and
+                self.valid_roll_day(self.first_regular_start_date) and
+                self.valid_roll_day(self.end_date)
             ):
                 raise ValueError("Failure - The schedule dates and roll convention are incompatible!")
 
         if (self.stub_convention == StubConvention.SHORT_INITIAL or
                 self.stub_convention == StubConvention.LONG_INITIAL):
             if not(
-                self.end_date.day == self.roll_convention and
-                self.last_regular_end_date.day == self.roll_convention and
-                self.first_regular_start_date.day == self.roll_convention
+                self.valid_roll_day(self.end_date) and
+                self.valid_roll_day(self.last_regular_end_date) and
+                self.valid_roll_day(self.first_regular_start_date)
             ):
                 raise ValueError("Failure - The schedule dates and roll convention are incompatible!")
 
         if (self.stub_convention == StubConvention.SHORT_FINAL or
                 self.stub_convention == StubConvention.LONG_FINAL):
             if not(
-                self.start_date.day == self.roll_convention and
-                self.last_regular_end_date.day == self.roll_convention and
-                self.first_regular_start_date.day == self.roll_convention
+                self.valid_roll_day(self.start_date) and
+                self.valid_roll_day(self.last_regular_end_date) and
+                self.valid_roll_day(self.first_regular_start_date)
             ):
                 raise ValueError("Failure - The schedule dates and roll convention are incompatible!")
+
+        if self.stub_convention == StubConvention.BOTH:
+            if not(
+                self.valid_roll_day(self.first_regular_start_date) and
+                self.valid_roll_day(self.last_regular_end_date)
+            ):
+                raise ValueError("Failure - The schedule dates and roll convention are incompatible!")
+
 
     def build_short_final(self) -> None:
         """Builds schedule periods when stub convention is SHORT_FINAL"""
@@ -330,6 +384,10 @@ class Schedule:
                 self.frequency.units,
                 self.holiday_calendar
             )
+
+            if self.roll_convention <= utils.get_length_of_month(unadj_end):
+                unadj_end = dt.date(unadj_end.year, unadj_end.month, self.roll_convention)
+
             adj_start = utils.adjust(
                 unadj_start,
                 self.business_day_convention,
@@ -343,6 +401,10 @@ class Schedule:
             curr_period = SchedulePeriod(
                 unadj_start, unadj_end, adj_start, adj_end
             )
+
+            if not self.valid_roll_day(unadj_end):
+                raise ValueError("The period end date {:%Y-%m-%d} must follow "
+                                 "{} roll-day convention".format(unadj_end,self.roll_convention))
 
             self._schedule_periods.append(curr_period)
 
@@ -385,6 +447,10 @@ class Schedule:
                 self.frequency.units,
                 self.holiday_calendar
             )
+
+            if self.roll_convention <= utils.get_length_of_month(unadj_start):
+                unadj_start = dt.date(unadj_start.year, unadj_start.month, self.roll_convention)
+
             adj_start = utils.adjust(
                 unadj_start,
                 self.business_day_convention,
@@ -398,6 +464,10 @@ class Schedule:
             curr_period = SchedulePeriod(
                 unadj_start, unadj_end, adj_start, adj_end
             )
+
+            if not self.valid_roll_day(unadj_start):
+                raise ValueError("The period start date {:%Y-%m-%d} must follow "
+                                 "{} roll-day convention".format(unadj_start,self.roll_convention))
 
             self._schedule_periods.append(curr_period)
 
@@ -425,9 +495,99 @@ class Schedule:
         self._schedule_periods.append(first_period)
         self._schedule_periods.reverse()
 
+    def build_both(self) -> None:
+        """Builds schedule periods when stub convention is BOTH"""
+
+        unadj_start = self.start_date
+        unadj_end = self.first_regular_start_date
+        adj_start = utils.adjust(
+            unadj_start,
+            self.business_day_convention,
+            self.holiday_calendar
+        )
+        adj_end = utils.adjust(
+            unadj_end,
+            self.business_day_convention,
+            self.holiday_calendar
+        )
+
+        first_period = SchedulePeriod(
+            unadjusted_start_date=unadj_start,
+            unadjusted_end_date=unadj_end,
+            adjusted_start_date=adj_start,
+            adjusted_end_date=adj_end
+        )
+
+        if unadj_start != unadj_end:
+            self._schedule_periods.append(first_period)
+
+        current = self.first_regular_start_date
+
+        while current < self.last_regular_end_date:
+            unadj_start = current
+            unadj_end = utils.add_period(
+                start=unadj_start,
+                length=self.frequency.num,
+                period=self.frequency.units,
+                holiday_calendar=self.holiday_calendar
+            )
+
+            if self.roll_convention <= utils.get_length_of_month(unadj_end):
+                unadj_end = dt.date(unadj_end.year, unadj_end.month, self.roll_convention)
+
+            adj_start = utils.adjust(
+                unadj_start,
+                self.business_day_convention,
+                self.holiday_calendar
+            )
+            adj_end = utils.adjust(
+                unadj_end,
+                self.business_day_convention,
+                self.holiday_calendar
+            )
+
+            current_period = SchedulePeriod(
+                unadjusted_start_date=unadj_start,
+                unadjusted_end_date=unadj_end,
+                adjusted_start_date=adj_start,
+                adjusted_end_date=adj_end
+            )
+
+            if not self.valid_roll_day(unadj_end):
+                raise ValueError("The period end date {:%Y-%m-%d} must fall on "
+                                 "day {} of the month".format(unadj_end,self.roll_convention))
+
+            self._schedule_periods.append(current_period)
+
+            current = unadj_end
+
+        if current != self.last_regular_end_date:
+            raise ValueError("The last regular end date must fall on {:%Y-%m-%d}".format(current))
+
+        unadj_start = self.last_regular_end_date
+        unadj_end = self.end_date
+        adj_start = utils.adjust(
+            unadj_start,
+            self.business_day_convention,
+            self.holiday_calendar
+        )
+        adj_end = utils.adjust(
+            unadj_end,
+            self.business_day_convention,
+            self.holiday_calendar
+        )
+
+        last_period = SchedulePeriod(
+            unadj_start, unadj_end, adj_start, adj_end
+        )
+
+        if unadj_start != unadj_end:
+            self._schedule_periods.append(last_period)
 
     def build_schedule_periods(self):
         """Build schedule periods"""
+
+        self.pre_validation()
 
         # The schedule periods will be determined forwards from the regular
         # period start date. Any remaining period shorter than the standard
@@ -441,15 +601,8 @@ class Schedule:
         if self.stub_convention == StubConvention.SHORT_INITIAL:
             self.build_short_initial()
 
-    def build_schedule(self) -> None:
-        """Build the schedule of cashflows"""
-
-        self.calculate_roll_convention()
-        self.calculate_first_regular_start_date()
-        self.calculate_last_regular_end_date()
-        self.pre_validation()
-
-        self.build_schedule_periods()
+        if self.stub_convention == StubConvention.BOTH:
+            self.build_both()
 
     def get_period(self, i : int) -> SchedulePeriod:
         """Return the i-th schedule period"""
