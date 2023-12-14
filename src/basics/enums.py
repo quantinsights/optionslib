@@ -137,3 +137,4 @@ class StubConvention(StrEnum):
     LONG_INITIAL = "Long Initial"
     SHORT_FINAL = "Short Final"
     LONG_FINAL = "Long Final"
+    BOTH = "Both"
