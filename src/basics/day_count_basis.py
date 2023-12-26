@@ -1,5 +1,5 @@
 """
-Module for support various day count conventions.
+Module to support various day count conventions.
 Reference.  https://en.wikipedia.org/wiki/Day_count_convention.
 """
 from abc import ABC, abstractmethod
