@@ -7,7 +7,7 @@ import numpy as np
 from attrs import define, field
 import attrs
 
-from src.basics.enums import FxOptionsMarketQuoteType
+from optionslib.basics.enums import FxOptionsMarketQuoteType
 
 NumericType = Union[int, float, np.number]
 

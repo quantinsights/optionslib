@@ -8,9 +8,9 @@ import attrs.validators
 from attrs import define, field
 import attr
 
-from src.basics.enums import FxVolatilitySurfaceParametricModel
-from src.models.vanna_volga import VannaVolga
-from src.basics.enums import FxOptionsMarketQuoteType
+from optionslib.basics.enums import FxVolatilitySurfaceParametricModel
+from optionslib.models.vanna_volga import VannaVolga
+from optionslib.basics.enums import FxOptionsMarketQuoteType
 from european_vanilla_fx_option_quote import EuropeanVanillaFxOptionQuote
 
 

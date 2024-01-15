@@ -4,7 +4,7 @@ A module that supports periodic frequency in finance.
 import attrs
 from attrs import define, field
 
-from src.basics.enums import Period
+from optionslib.basics.enums import Period
 
 @define
 class Frequency:

@@ -1,8 +1,8 @@
 import unittest
 import datetime as dt
 
-from src.basics.holiday_calendar import HolidayCalendar, HolidayCalendarId
-from src.basics.enums import DayOfWeek
+from optionslib.basics.holiday_calendar import HolidayCalendar, HolidayCalendarId
+from optionslib.basics.enums import DayOfWeek
 
 class TestHolidayCalendar(unittest.TestCase):
 
