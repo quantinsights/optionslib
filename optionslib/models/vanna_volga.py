@@ -10,10 +10,10 @@ import numpy as np
 from scipy.stats import norm
 from attrs import define, field
 
-from src.basics.day_count_basis import Actual365
-from src.basics.enums import FxOptionsMarketQuoteType
-from src.market.european_vanilla_fx_option_quote import EuropeanVanillaFxOptionQuote
-from src.market.discounting_curve import DiscountingCurve
+from optionslib.basics.day_count_basis import Actual365
+from optionslib.basics.enums import FxOptionsMarketQuoteType
+from optionslib.market.european_vanilla_fx_option_quote import EuropeanVanillaFxOptionQuote
+from optionslib.market.discounting_curve import DiscountingCurve
 
 NumericType = Union[int, float, np.number]
 QuotesType = List[EuropeanVanillaFxOptionQuote]

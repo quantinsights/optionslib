@@ -2,13 +2,13 @@ from datetime import date
 import numpy as np
 from scipy.stats import norm
 
-from src.product import EuropeanVanillaFxOption
-from src.basics.enums import FxVanillaEuropeanOptionQuoteConvention, DeltaConvention
-from src.market.discounting_curve import DiscountingCurve
-from src.market.fx_volatility_surface import FxVolatilitySurface
-from src.models.black_calculator import BlackCalculator
-from src.basics.day_count_basis import Actual360, Actual365, ActualActual
-from src.basics import utils
+from optionslib.product import EuropeanVanillaFxOption
+from optionslib.basics.enums import FxVanillaEuropeanOptionQuoteConvention, DeltaConvention
+from optionslib.market.discounting_curve import DiscountingCurve
+from optionslib.market.fx_volatility_surface import FxVolatilitySurface
+from optionslib.models.black_calculator import BlackCalculator
+from optionslib.basics.day_count_basis import Actual360, Actual365, ActualActual
+from optionslib.basics import utils
 
 
 ## A pricer for European Vanilla FX Options that uses the `BlackCalculator`

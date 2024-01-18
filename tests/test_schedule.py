@@ -1,9 +1,9 @@
 import unittest
 import datetime as dt
 
-from src.basics.enums import Period, StubConvention
-from src.basics.frequency import Frequency
-from src.basics.schedule import Schedule, SchedulePeriod
+from optionslib.basics.enums import Period, StubConvention
+from optionslib.basics.frequency import Frequency
+from optionslib.basics.schedule import Schedule, SchedulePeriod
 
 
 class TestSchedule(unittest.TestCase):
