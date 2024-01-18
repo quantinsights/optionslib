@@ -6,8 +6,8 @@ import attrs
 from attrs import define, field
 import datetime as dt
 
-from src.basics.enums import HolidayCalendarId, DayOfWeek
-from src.basics import utils
+from optionslib.basics.enums import HolidayCalendarId, DayOfWeek
+from optionslib.basics import utils
 
 @define
 class HolidayCalendar:

@@ -7,10 +7,10 @@ from attrs import define, field
 import datetime as dt
 from typing import List
 
-from src.basics.enums import Period, BusinessDayConventions, RollConventions, StubConvention
-from src.basics.holiday_calendar import HolidayCalendar, HolidayCalendarId
-from src.basics.frequency import Frequency
-from src.basics import utils
+from optionslib.basics.enums import Period, BusinessDayConventions, RollConventions, StubConvention
+from optionslib.basics.holiday_calendar import HolidayCalendar, HolidayCalendarId
+from optionslib.basics.frequency import Frequency
+from optionslib.basics import utils
 
 
 @define
