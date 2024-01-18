@@ -4,7 +4,7 @@ Hoare's quicksort algorithm.
 from typing import List, Any
 
 
-def partition(arr:List[Any], low:int, high:int)->int:
+def partition(arr: List[Any], low: int, high: int) -> int:
     """
     Pick a pivot element, and partitions A[low...high]
     into two parts, one consisting of all elements smaller
@@ -22,7 +22,6 @@ def partition(arr:List[Any], low:int, high:int)->int:
     j = high
 
     while i < j:
-
         while arr[i] <= pivot and i <= high - 1:
             i += 1
 
@@ -38,7 +37,7 @@ def partition(arr:List[Any], low:int, high:int)->int:
     return j
 
 
-def quick_sort_helper(arr:List[Any], low:int, high:int):
+def quick_sort_helper(arr: List[Any], low: int, high: int):
     """
     1.  Partition step.
     1a. Pick a value, called a pivot.
@@ -57,7 +56,7 @@ def quick_sort_helper(arr:List[Any], low:int, high:int):
         quick_sort_helper(arr, partition_idx + 1, high)
 
 
-def quick_sort(arr:List[Any]) -> None:
+def quick_sort(arr: List[Any]) -> None:
     """
     Wrapper function around the actual quick_sort_helper that does
     the heavy-lifting.

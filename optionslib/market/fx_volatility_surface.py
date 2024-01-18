@@ -2,26 +2,25 @@
 This module contains functionality that supports volatility surfaces for FX options markets.
 """
 import datetime as dt
-from typing import Any, List, Union
+from typing import List, Union
 
-import attrs.validators
+import attrs
 from attrs import define, field
-import attr
 
-from optionslib.basics.enums import FxVolatilitySurfaceParametricModel
+from optionslib.market.enums import FxVolatilitySurfaceParametricModel
+from optionslib.market.european_vanilla_fx_option import EuropeanVanillaFxOptionQuote
 from optionslib.models.vanna_volga import VannaVolga
-from optionslib.basics.enums import FxOptionsMarketQuoteType
-from european_vanilla_fx_option_quote import EuropeanVanillaFxOptionQuote
-
 
 VolatilitySurfaceModel = Union[VannaVolga]
+
 
 @define
 class FxVolatilitySurfacePoint:
     """Represents a point on the volatility surface sigma(T,K)"""
-    __k : float = field(validator=attrs.validators.instance_of(float))
-    __t : dt.date = field(validator=attrs.validators.instance_of(dt.date))
-    __sigma : float = field(validator=attrs.validators.instance_of(float))
+
+    __k: float = field(validator=attrs.validators.instance_of(float))
+    __t: dt.date = field(validator=attrs.validators.instance_of(dt.date))
+    __sigma: float = field(validator=attrs.validators.instance_of(float))
 
     @property
     def k(self) -> float:
@@ -39,7 +38,7 @@ class FxVolatilitySurfacePoint:
         return self.__sigma
 
 
-@attr.s
+@define
 class FxVolatilitySurface:
     """
     An class representing the Fx Volatility surface, which is a scalar field
@@ -51,22 +50,26 @@ class FxVolatilitySurface:
     fx_volatility_surface_parametric_model_type argument.
     """
 
-    __foreign_currency : str = attr.ib(
-        default='EUR',
-        validator=attr.validators.instance_of(str)
+    __fx_option_market_quotes: EuropeanVanillaFxOptionQuote = field(
+        validator=attrs.validators.instance_of(List[EuropeanVanillaFxOptionQuote])
     )
-    __domestic_currency : str  = attr.ib(default='USD',validator=attr.validators.instance_of(str))
-
-    __fx_option_market_quotes : EuropeanVanillaFxOptionQuote = (
-        attr.ib(validator=attr.validators.instance_of(List[EuropeanVanillaFxOptionQuote])))
-
-    __fx_volatility_surface_parametric_model_type : FxVolatilitySurfaceParametricModel = (
-        attr.ib(validator=attr.validators.instance_of(FxVolatilitySurfaceParametricModel)))
+    __fx_volatility_surface_parametric_model_type: FxVolatilitySurfaceParametricModel = field(
+        validator=attrs.validators.instance_of(FxVolatilitySurfaceParametricModel)
+    )
+    __foreign_currency: str = field(
+        default="EUR", validator=attrs.validators.instance_of(str)
+    )
+    __domestic_currency: str = field(
+        default="USD", validator=attrs.validators.instance_of(str)
+    )
 
     def __attrs_post_init__(self):
         """Post initialization"""
-        self.__valuation_date = self.__fx_option_market_quotes[0].asOfDate \
-            if len(self.__fx_option_market_quotes) > 0 else dt.date.today()
+        self.__valuation_date = (
+            self.__fx_option_market_quotes[0].asOfDate
+            if len(self.__fx_option_market_quotes) > 0
+            else dt.date.today()
+        )
 
         self.__vol_surface_model = self.init_vol_surface_model()
 
@@ -86,7 +89,9 @@ class FxVolatilitySurface:
         return self.__fx_option_market_quotes
 
     @property
-    def fx_volatility_surface_parametric_model_type(self) -> FxVolatilitySurfaceParametricModel:
+    def fx_volatility_surface_parametric_model_type(
+        self,
+    ) -> FxVolatilitySurfaceParametricModel:
         """Return the volatility surface parameteric model type"""
         return self.__fx_volatility_surface_parametric_model_type
 
@@ -102,23 +107,19 @@ class FxVolatilitySurface:
 
     def init_vol_surface_model(self) -> VolatilitySurfaceModel:
         """Initialize a vol surface model with options market quotes"""
-        if (self.fx_volatility_surface_parametric_model_type ==
-                FxVolatilitySurfaceParametricModel.VANNA_VOLGA):
+        if (
+            self.fx_volatility_surface_parametric_model_type
+            == FxVolatilitySurfaceParametricModel.VANNA_VOLGA
+        ):
             # Instantantiate the VannaVolga and calibrate the surface to market quotes
             # of straddles, risk-reversals and fly's.
-            return VannaVolga(
-                self.fx_option_market_quotes
-            )
+            return VannaVolga(self.fx_option_market_quotes)
 
-
-    def volatility(self, strike: float, maturity:dt.date)->FxVolatilitySurfacePoint:
+    def volatility(self, strike: float, maturity: dt.date) -> FxVolatilitySurfacePoint:
         """Returns the implied vol from underlying fitted vol model"""
-        if (self.fx_volatility_surface_parametric_model_type ==
-                FxVolatilitySurfaceParametricModel.VANNA_VOLGA):
-
-            vol = self.vol_surface_model.second_order_approximation(strike,maturity)
-            return FxVolatilitySurfacePoint(
-                strike,
-                maturity,
-                vol
-            )
+        if (
+            self.fx_volatility_surface_parametric_model_type
+            == FxVolatilitySurfaceParametricModel.VANNA_VOLGA
+        ):
+            vol = self.vol_surface_model.second_order_approximation(strike, maturity)
+            return FxVolatilitySurfacePoint(strike, maturity, vol)
