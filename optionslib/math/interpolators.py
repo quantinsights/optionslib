@@ -22,11 +22,11 @@ Concrete implementations:
     LinearInterpolator
 """
 
+import datetime as dt
 from abc import ABC, abstractmethod
 from enum import IntEnum
 from typing import List, Union, cast
 
-import datetime as dt
 import numpy as np
 from attrs import define, field
 
@@ -119,7 +119,10 @@ class LinearInterpolator(Interpolator):
                 x_delta = self.__convert_to_float(self._xs[index + 1] - self._xs[index])
                 y_delta = self._ys[index + 1] - self._ys[index]
                 slope = y_delta / x_delta
-                result = self._ys[index] + self.__convert_to_float(x - self._xs[index]) * slope
+                result = (
+                    self._ys[index]
+                    + self.__convert_to_float(x - self._xs[index]) * slope
+                )
         # enforce float -> flot signature of interpolator
         return float(result)
 
@@ -133,7 +136,7 @@ class LinearInterpolator(Interpolator):
         return ExtrapolateIndex.BACK
 
     @staticmethod
-    def __convert_to_float(delta: float | dt.timedelta ) -> float:
+    def __convert_to_float(delta: float | dt.timedelta) -> float:
         """Convert the potential time delta to year fraction float."""
         if isinstance(delta, dt.timedelta):
             # convert to year fraction, assume daily granularity

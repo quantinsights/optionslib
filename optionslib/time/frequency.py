@@ -4,7 +4,8 @@ A module that supports periodic frequency in finance.
 import attrs
 from attrs import define, field
 
-from optionslib.basics.enums import Period
+from optionslib.time.enums import Period
+
 
 @define
 class Frequency:
@@ -17,13 +18,10 @@ class Frequency:
     num_of_periods - an integer value
     units - One of [Days, Business days, Months, Years]
     """
-    _num : int = field(
-        alias = "num",
-        validator = attrs.validators.instance_of(int)
-    )
-    _units : Period = field(
-        alias = "units",
-        validator = attrs.validators.instance_of(Period)
+
+    _num: int = field(alias="num", validator=attrs.validators.instance_of(int))
+    _units: Period = field(
+        alias="units", validator=attrs.validators.instance_of(Period)
     )
 
     @property

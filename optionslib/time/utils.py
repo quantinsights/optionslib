@@ -2,88 +2,47 @@
 A module offering various helper functions to work with discount factors,
 dates etc.
 """
-from typing import Any
-import datetime as dt
 import calendar
-import numpy as np
-import matplotlib.pyplot as plt
+import datetime as dt
 
-from optionslib.basics.day_count_basis import Actual365
-from optionslib.basics.enums import DayOfWeek, Period, BusinessDayConventions
+from optionslib.time.enums import BusinessDayConventions, DayOfWeek, Period
 
 
-def df_to_zero(df: float, t_1:dt.date, t_2:dt.date) -> float:
-    """
-    Converts the discount factor P(t,T) to the annually compounded spot interest rate Y(t,T).
-    """
-    tau = Actual365.year_fraction(t_1, t_2)
-    if tau == 0.0:
-        return 0.0
-
-    return 1/((df)**(1/tau))-1
-
-
-def df_to_rate(df:float, t_1:dt.date, t_2:dt.date) -> float:
-    """
-    Converts the discount factor P(t,T) to continuously compounded spot interest rate R(t)
-    """
-    tau = Actual365.year_fraction(t_1, t_2)
-    if tau == 0.0:
-        return 0.0
-
-    return -(np.log(df))/tau
-
-
-def zero_to_df(y:float, t_1:dt.date, t_2:dt.date) -> float:
-    """
-    Converts the annually compounded spot interest rate Y(t,T) to a discount factor P(t,T).
-    """
-    tau = Actual365.year_fraction(t_1, t_2)
-    if (tau == 0.0):
-        return 1.0
-
-    return 1/((1 + y)**tau)
-
-
-def df_to_forward(df1, df2, t, s) -> float:
-    """Extracts the forward from a pair of discount factors"""
-    tau = Actual365.year_fraction(t, s)
-    return (1/tau) * (df1/df2 - 1)
-
-
-def is_leap_year(year:int) -> bool:
+def is_leap_year(year: int) -> bool:
     """Test if the given year is a leap year"""
-    return ((year % 4 == 0) and (not(year % 100 == 0))) or (year % 400 == 0)
+    return ((year % 4 == 0) and (not (year % 100 == 0))) or (year % 400 == 0)
 
 
-def length_of_year(year:int) -> int:
+def length_of_year(year: int) -> int:
     """Returns the number of days in a year"""
     return 366 if is_leap_year(year) else 365
 
 
-def ensure_leap_year(date_value : dt.date) -> dt.date:
+def ensure_leap_year(date_value: dt.date) -> dt.date:
     """
     Returns the 29th of February if the current year is a leap year, else looks for
     the next near nearest 29th Feb.
     """
-    if (is_leap_year(date_value.year)):
+    if is_leap_year(date_value.year):
         return dt.date(date_value.year, 2, 29)
-    elif (is_leap_year(date_value.year + 1)):
+    elif is_leap_year(date_value.year + 1):
         return dt.date(date_value.year + 1, 2, 29)
-    elif (is_leap_year(date_value.year + 2)):
+    elif is_leap_year(date_value.year + 2):
         return dt.date(date_value.year + 2, 2, 29)
-    elif (is_leap_year(date_value.year + 3)):
+    elif is_leap_year(date_value.year + 3):
         return dt.date(date_value.year + 3, 2, 29)
     else:
         return dt.date(date_value.year + 4, 2, 29)
 
 
-def next_leap_day(date_value : dt.date) -> dt.date:
+def next_leap_day(date_value: dt.date) -> dt.date:
     """Returns the next leap date"""
     # Handle if already a leap day, move forward either 4 or 8 years.
     if date_value.month == 2 and date_value.day == 29:
         if is_leap_year(date_value.year):
-            return ensure_leap_year(dt.date(date_value.year + 4, date_value.month, date_value.day))
+            return ensure_leap_year(
+                dt.date(date_value.year + 4, date_value.month, date_value.day)
+            )
 
     # Handle if before February in a leap year.
     if date_value.month <= 2 and is_leap_year(date_value.year):
@@ -94,15 +53,15 @@ def next_leap_day(date_value : dt.date) -> dt.date:
     return ensure_leap_year(dt.date(yy + 4, 2, 29))
 
 
-def get_length_of_month(date_value : dt.date) -> int:
+def get_length_of_month(date_value: dt.date) -> int:
     """Returns the number of days in a month"""
     _, num_days = calendar.monthrange(date_value.year, date_value.month)
     return num_days
 
 
-def first_in_month(year : int, month : int, day_of_week : DayOfWeek):
+def first_in_month(year: int, month: int, day_of_week: DayOfWeek):
     """Returns the first day_of_week in the month"""
-    first_of_month = dt.date(year,month,1)
+    first_of_month = dt.date(year, month, 1)
     result = first_of_month
 
     while result.weekday() != day_of_week:
@@ -111,11 +70,11 @@ def first_in_month(year : int, month : int, day_of_week : DayOfWeek):
     return result
 
 
-def last_in_month(year : int, month : int, day_of_week : DayOfWeek):
+def last_in_month(year: int, month: int, day_of_week: DayOfWeek):
     """Returns the last day_of_week in the given month"""
     first_of_month = dt.date(year, month, 1)
     num_days = get_length_of_month(first_of_month)
-    end_of_month = dt.date(year,month,num_days)
+    end_of_month = dt.date(year, month, num_days)
     result = end_of_month
 
     while result.weekday() != day_of_week:
@@ -124,7 +83,7 @@ def last_in_month(year : int, month : int, day_of_week : DayOfWeek):
     return result
 
 
-def easter(year:int) -> dt.date:
+def easter(year: int) -> dt.date:
     """
     Butcher's algorithm to calculate the Easter day of any given year.
     Reference. https://en.wikipedia.org/wiki/Date_of_Easter
@@ -144,10 +103,10 @@ def easter(year:int) -> dt.date:
     month = (h + l - 7 * m + 114) // 31
     dd = ((h + l - 7 * m + 114) % 31) + 1
 
-    return dt.date(year,month,dd)
+    return dt.date(year, month, dd)
 
 
-def bump_sun_to_mon(date_value : dt.date) -> dt.date:
+def bump_sun_to_mon(date_value: dt.date) -> dt.date:
     """Bumps to monday, if the given date falls on a sunday"""
     if date_value.weekday() == DayOfWeek.SUNDAY:
         return date_value + dt.timedelta(days=1)
@@ -155,81 +114,76 @@ def bump_sun_to_mon(date_value : dt.date) -> dt.date:
     return date_value
 
 
-def bump_to_mon(date_value : dt.date) -> dt.date:
+def bump_to_mon(date_value: dt.date) -> dt.date:
     """Bumps to monday, if the given date falls on a weekend"""
     if date_value.weekday() == DayOfWeek.SATURDAY:
-        return date_value + dt.timedelta(days = 2)
+        return date_value + dt.timedelta(days=2)
     elif date_value.weekday() == DayOfWeek.SUNDAY:
-        return date_value + dt.timedelta(days = 1)
+        return date_value + dt.timedelta(days=1)
     else:
         return date_value
 
 
-def bump_to_fri_or_mon(date_value : dt.date) -> dt.date:
+def bump_to_fri_or_mon(date_value: dt.date) -> dt.date:
     """Bumps saturday to friday and sunday to monday"""
     if date_value.weekday() == DayOfWeek.SATURDAY:
-        return date_value - dt.timedelta(days = 1)
+        return date_value - dt.timedelta(days=1)
 
     if date_value.weekday() == DayOfWeek.SUNDAY:
-        return date_value + dt.timedelta(days = 1)
+        return date_value + dt.timedelta(days=1)
 
     return date_value
 
-def christmas_bumped_sat_or_sun(year:int) -> dt.date:
+
+def christmas_bumped_sat_or_sun(year: int) -> dt.date:
     """If Christmas falls on saturday or sunday, move to 27th December"""
-    base = dt.date(year,12,25)
+    base = dt.date(year, 12, 25)
     if base.weekday() == DayOfWeek.SATURDAY or base.weekday() == DayOfWeek.SUNDAY:
-        return dt.date(year,12,27)
+        return dt.date(year, 12, 27)
 
     return base
+
 
 def christmas_bumped_sun(year: int) -> dt.date:
     """If Christmas is on sunday, moved to Monday"""
-    base = dt.date(year,12,25)
+    base = dt.date(year, 12, 25)
     if base.weekday() == DayOfWeek.SUNDAY:
-        return dt.date(year,12,26)
+        return dt.date(year, 12, 26)
 
     return base
+
 
 def boxing_day_bumped_sun(year: int) -> dt.date:
     """Boxing day (if Christmas is sunday, boxing day moved from Monday to Tuesday)"""
-    base = dt.date(year,12,26)
+    base = dt.date(year, 12, 26)
     if base.weekday() == DayOfWeek.MONDAY:
-        return dt.date(year,12,27)
+        return dt.date(year, 12, 27)
 
     return base
+
 
 def boxing_day_bumped_sat_sun(year: int) -> dt.date:
     """If boxing day is on saturday(sunday), bumped to monday(tuesday)"""
     base = dt.date(year, 12, 26)
     if base.weekday() == DayOfWeek.SATURDAY or base.weekday() == DayOfWeek.SUNDAY:
-        return dt.date(year,12,28)
+        return dt.date(year, 12, 28)
 
     return base
 
-def draw(x:Any, y:Any, xlabel: str, ylabel: str, title:str):
-    """Contains boilerplate code to draw a matplotlib plot"""
-    plt.style.use('seaborn-v0_8-whitegrid')
-    plt.grid(True)
-    plt.xlabel(xlabel)
-    plt.ylabel(ylabel)
-    plt.title(title)
-    plt.plot(x,y,alpha=0.75,linewidth=0.80)
-    plt.show()
 
-
-def add_months(start : dt.date, months : int) -> dt.date:
+def add_months(start: dt.date, months: int) -> dt.date:
     """Add months to a date"""
     year_roll = (start.month + months - 1) // 12
     month = (start.month + months) % 13 + year_roll
     try:
         end = dt.date(start.year + year_roll, month, start.day)
-    except ValueError: # day is out of range for the month
+    except ValueError:  # day is out of range for the month
         return add_months(dt.date(start.year, start.month, start.day - 1), months)
     else:
         return end
 
-def add_years(start : dt.date, years : int) -> dt.date:
+
+def add_years(start: dt.date, years: int) -> dt.date:
     """Add years to a date"""
     try:
         end = dt.date(start.year + years, start.month, start.day)
@@ -238,13 +192,8 @@ def add_years(start : dt.date, years : int) -> dt.date:
     else:
         return end
 
-def add_period(
-        start : dt.date,
-        length : int,
-        period : Period,
-        holiday_calendar
-):
 
+def add_period(start: dt.date, length: int, period: Period, holiday_calendar):
     """Add period of a certain length to a date"""
     if period == Period.DAYS:
         end = start + dt.timedelta(days=length)
@@ -255,34 +204,42 @@ def add_period(
         else:
             next_date = start + dt.timedelta(days=(+1 if length > 0 else -1))
             if holiday_calendar.is_holiday(next_date):
-                end = add_period(next_date, length, Period.BUSINESS_DAYS, holiday_calendar)
+                end = add_period(
+                    next_date, length, Period.BUSINESS_DAYS, holiday_calendar
+                )
             else:
-                end = add_period(next_date,
-                                 length + (-1 if length > 0 else +1),
-                                 Period.BUSINESS_DAYS, holiday_calendar)
+                end = add_period(
+                    next_date,
+                    length + (-1 if length > 0 else +1),
+                    Period.BUSINESS_DAYS,
+                    holiday_calendar,
+                )
 
     if period == Period.MONTHS:
-        end = add_months(start,months=length)
+        end = add_months(start, months=length)
 
     if period == Period.YEARS:
-        end = add_years(start,years=length)
+        end = add_years(start, years=length)
 
     return end
 
 
 def adjust(
-        unadjusted_date: dt.date,
-        bus_day_convention: BusinessDayConventions,
-        holiday_calendar
+    unadjusted_date: dt.date,
+    bus_day_convention: BusinessDayConventions,
+    holiday_calendar,
 ) -> dt.date:
     """
     Converts an undajusted date to an adjusted date.
     Ref. https://en.wikipedia.org/wiki/Date_rolling
     """
     if holiday_calendar.is_holiday(unadjusted_date):
-
-        following_date = add_period(unadjusted_date, 1, Period.BUSINESS_DAYS, holiday_calendar)
-        preceding_date = add_period(unadjusted_date,-1, Period.BUSINESS_DAYS, holiday_calendar)
+        following_date = add_period(
+            unadjusted_date, 1, Period.BUSINESS_DAYS, holiday_calendar
+        )
+        preceding_date = add_period(
+            unadjusted_date, -1, Period.BUSINESS_DAYS, holiday_calendar
+        )
 
         if bus_day_convention == BusinessDayConventions.NO_ADJUST:
             return unadjusted_date
@@ -306,4 +263,3 @@ def adjust(
                 return preceding_date
     else:
         return unadjusted_date
-

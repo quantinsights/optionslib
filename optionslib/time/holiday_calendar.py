@@ -1,13 +1,15 @@
 """
 This module provides functionality to working with holiday calendars.
 """
+import datetime as dt
 from typing import List
+
 import attrs
 from attrs import define, field
-import datetime as dt
 
-from optionslib.basics.enums import HolidayCalendarId, DayOfWeek
-from optionslib.basics import utils
+from optionslib.time import utils
+from optionslib.time.enums import DayOfWeek, HolidayCalendarId
+
 
 @define
 class HolidayCalendar:
@@ -15,14 +17,19 @@ class HolidayCalendar:
     In many calculations in financial mathematics, we are interested to know if a given date
     is a business date or not. This class implements a few standard calendars.
     """
-    __first_weekend_day = field(default=DayOfWeek.SATURDAY,
-                                  validator=attrs.validators.instance_of(DayOfWeek))
 
-    __second_weekend_day = field(default=DayOfWeek.SUNDAY,
-                                   validator=attrs.validators.instance_of(DayOfWeek))
+    __first_weekend_day = field(
+        default=DayOfWeek.SATURDAY, validator=attrs.validators.instance_of(DayOfWeek)
+    )
 
-    __holiday_calendar_id = field(default=HolidayCalendarId.LONDON,
-                                    validator=attrs.validators.instance_of(HolidayCalendarId))
+    __second_weekend_day = field(
+        default=DayOfWeek.SUNDAY, validator=attrs.validators.instance_of(DayOfWeek)
+    )
+
+    __holiday_calendar_id = field(
+        default=HolidayCalendarId.LONDON,
+        validator=attrs.validators.instance_of(HolidayCalendarId),
+    )
 
     __holiday_dates = field(default=None)
 
@@ -64,17 +71,17 @@ class HolidayCalendar:
         """
         holidays = []
 
-        for year in range(1950,2101,1):
+        for year in range(1950, 2101, 1):
             # new year
             if year >= 1974:
-                holidays.append(utils.bump_to_mon(dt.date(year,1,1)))
+                holidays.append(utils.bump_to_mon(dt.date(year, 1, 1)))
 
             # easter
             holidays.append(utils.easter(year) - dt.timedelta(days=2))
             holidays.append(utils.easter(year) + dt.timedelta(days=1))
 
             # early may
-            if year in [1995,2020]:
+            if year in [1995, 2020]:
                 holidays.append(dt.date(year, 5, 8))
             else:
                 if year >= 1978:
@@ -105,8 +112,10 @@ class HolidayCalendar:
             if year < 1965:
                 holidays.append(utils.first_in_month(year, 8, DayOfWeek.MONDAY))
             elif year < 1971:
-                holidays.append(utils.last_in_month(year, 8, DayOfWeek.SATURDAY) +
-                                dt.timedelta(days=2))
+                holidays.append(
+                    utils.last_in_month(year, 8, DayOfWeek.SATURDAY)
+                    + dt.timedelta(days=2)
+                )
             else:
                 holidays.append(utils.last_in_month(year, 8, DayOfWeek.MONDAY))
 
@@ -118,31 +127,33 @@ class HolidayCalendar:
             holidays.append(utils.christmas_bumped_sat_or_sun(year))
             holidays.append(utils.boxing_day_bumped_sat_sun(year))
 
-        holidays.append(dt.date(1999, 12, 31)) # millenium
-        holidays.append(dt.date(2011, 4, 29)) # royal wedding
-        holidays.append(dt.date(2023, 5, 8)) # king's coronation
+        holidays.append(dt.date(1999, 12, 31))  # millenium
+        holidays.append(dt.date(2011, 4, 29))  # royal wedding
+        holidays.append(dt.date(2023, 5, 8))  # king's coronation
 
         holidays = self.remove_sat_sun(holidays)
         self.__holiday_dates = holidays
 
-    def remove_sat_sun(self, holidays : List[dt.date]) -> List[dt.date]:
+    def remove_sat_sun(self, holidays: List[dt.date]) -> List[dt.date]:
         """
         Removes the first weekend day and second weekend day from the list of holidays.
         """
         return list(
             filter(
-                lambda x : x.weekday() != self.first_weekend_day and
-                           x.weekday() != self.second_weekend_day,
-                holidays
+                lambda x: x.weekday() != self.first_weekend_day
+                and x.weekday() != self.second_weekend_day,
+                holidays,
             )
         )
 
-    def is_holiday(self, date_value:dt.date) -> bool:
+    def is_holiday(self, date_value: dt.date) -> bool:
         """
         Tests if a given date is a holiday.
         """
-        if date_value.weekday() == self.first_weekend_day or \
-            date_value.weekday() == self.second_weekend_day:
+        if (
+            date_value.weekday() == self.first_weekend_day
+            or date_value.weekday() == self.second_weekend_day
+        ):
             return True
 
         if date_value in self.holiday_dates:
@@ -150,7 +161,7 @@ class HolidayCalendar:
 
         return False
 
-    def is_bus_day(self, date_value:dt.date) -> bool:
+    def is_bus_day(self, date_value: dt.date) -> bool:
         """
         Tests if a given date is a business date
         """

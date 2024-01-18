@@ -1,23 +1,52 @@
 import datetime
+import datetime as dt
 from datetime import date, timedelta
-from enum import IntEnum, auto
 
 import numpy as np
-from optionslib.basics.interpolators import LinearInterpolator
 
-from optionslib.basics import utils
-from optionslib.basics.day_count_basis import Actual365
+import optionslib.utils.visualisation
+from optionslib.market.enums import DiscountingInterpolationMethod
+from optionslib.math.interpolators import LinearInterpolator
+from optionslib.time.day_count_basis import Actual365
 
 
-class DiscountingInterpolationMethod(IntEnum):
-    LINEAR_ON_DISCOUNT_FACTORS = auto()
-    LINEAR_ON_RATES = auto()
-    LINEAR_ON_LOG_OF_RATES = auto()
-    LINEAR_ON_LOG_OF_DISCOUNT_FACTORS = auto()
-    NATURAL_CUBIC_SPLINE = auto()
-    BESSEL_CUBIC_SPLINE = auto()
-    FINANCIAL_CUBIC_SPLINE = auto()
-    QUARTIC_SPLINE = auto()
+def df_to_zero(df: float, t_1: dt.date, t_2: dt.date) -> float:
+    """
+    Converts the discount factor P(t,T) to the annually compounded spot interest rate Y(t,T).
+    """
+    tau = Actual365.year_fraction(t_1, t_2)
+    if tau == 0.0:
+        return 0.0
+
+    return 1 / ((df) ** (1 / tau)) - 1
+
+
+def df_to_rate(df: float, t_1: dt.date, t_2: dt.date) -> float:
+    """
+    Converts the discount factor P(t,T) to continuously compounded spot interest rate R(t)
+    """
+    tau = Actual365.year_fraction(t_1, t_2)
+    if tau == 0.0:
+        return 0.0
+
+    return -(np.log(df)) / tau
+
+
+def zero_to_df(y: float, t_1: dt.date, t_2: dt.date) -> float:
+    """
+    Converts the annually compounded spot interest rate Y(t,T) to a discount factor P(t,T).
+    """
+    tau = Actual365.year_fraction(t_1, t_2)
+    if tau == 0.0:
+        return 1.0
+
+    return 1 / ((1 + y) ** tau)
+
+
+def df_to_forward(df1, df2, t, s) -> float:
+    """Extracts the forward from a pair of discount factors"""
+    tau = Actual365.year_fraction(t, s)
+    return (1 / tau) * (df1 / df2 - 1)
 
 
 ## A curve object that stores discount factors.
@@ -134,7 +163,7 @@ class DiscountingCurve:
     def plotDFs(self):
         startDate, dates, n = self.dateSetForPlot()
         discountFactors = [self.discountFactor(startDate, dates[i]) for i in range(n)]
-        Utils.draw(
+        optionslib.utils.visualisation.draw(
             x=dates,
             y=discountFactors,
             xlabel=r"Time $t$",
@@ -145,7 +174,7 @@ class DiscountingCurve:
     def plotRates(self):
         startDate, dates, n = self.dateSetForPlot()
         rates = [self.rate(startDate, dates[i]) for i in range(n)]
-        Utils.draw(
+        optionslib.utils.visualisation.draw(
             x=dates,
             y=rates,
             xlabel=r"Time $t$",
@@ -156,7 +185,7 @@ class DiscountingCurve:
     def plotZeroCouponCurve(self):
         startDate, dates, n = self.dateSetForPlot()
         zeroCouponRates = [self.zero(startDate, dates[i]) for i in range(n)]
-        Utils.draw(
+        optionslib.utils.visualisation.draw(
             x=dates,
             y=zeroCouponRates,
             xlabel=r"Time $t$",
@@ -170,7 +199,7 @@ class DiscountingCurve:
             self.forward(startDate, dates[i], dates[i] + datetime.timedelta(days=365))
             for i in range(n)
         ]
-        Utils.draw(
+        optionslib.utils.visualisation.draw(
             x=dates,
             y=forwardRates,
             xlabel=r"Time $t$",
@@ -265,17 +294,15 @@ class DiscountingCurve:
 
     ## Returns the annual compounded spot interest rate(zero) Y(t,T) between times t and T
     def zero(self, t: date, T: date):
-        return Utils.df_to_zero(self.discountFactor(t, T), t, T)
+        return df_to_zero(self.discountFactor(t, T), t, T)
 
     ## Returns the continuous compounded spot rate R(t,T) between times t and T
     def rate(self, t: date, T: date):
-        return Utils.df_to_rate(self.discountFactor(t, T), t, T)
+        return df_to_rate(self.discountFactor(t, T), t, T)
 
     ## Returns the simply compounded forward rate F(t;T,S) between times T and S, as observed on t
     def forward(self, t: date, T: date, S: date):
-        return Utils.df_to_forward(
-            self.discountFactor(t, T), self.discountFactor(t, S), T, S
-        )
+        return df_to_forward(self.discountFactor(t, T), self.discountFactor(t, S), T, S)
 
 
 if __name__ == "__main__":
