@@ -1,18 +1,15 @@
-"""
-A module that supports periodic frequency in finance.
-"""
+"""A module that supports periodic frequency in finance."""
 import attrs
 from attrs import define, field
 
-from optionslib.time.enums import Period
+from optionslib.types.enums import Period
 
 
 @define
 class Frequency:
-    """
-    Schedules are based on a periodic frequency. This determines how many periods
-    are there in a year. For example, a periodic frequency of 3 months, results in
-    4 periods in a year.
+    """Schedules are based on a periodic frequency. This determines how many
+    periods are there in a year. For example, a periodic frequency of 3 months,
+    results in 4 periods in a year.
 
     Frequency objects are initiated with:
     num_of_periods - an integer value

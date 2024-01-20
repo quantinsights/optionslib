@@ -1,14 +1,11 @@
-"""
-Hoare's quicksort algorithm.
-"""
+"""Hoare's quicksort algorithm."""
 from typing import List, Any
 
 
 def partition(arr: List[Any], low: int, high: int) -> int:
-    """
-    Pick a pivot element, and partitions A[low...high]
-    into two parts, one consisting of all elements smaller
-    to the pivot, the other consisting of all elements larger than the pivot.
+    """Pick a pivot element, and partitions A[low...high] into two parts, one
+    consisting of all elements smaller to the pivot, the other consisting of
+    all elements larger than the pivot.
 
     The pivot for convenience is chosen to be the first element of the array. The routine determines
     the partition_idx: the position where the pivot must be placed, so that:
@@ -57,8 +54,6 @@ def quick_sort_helper(arr: List[Any], low: int, high: int):
 
 
 def quick_sort(arr: List[Any]) -> None:
-    """
-    Wrapper function around the actual quick_sort_helper that does
-    the heavy-lifting.
-    """
+    """Wrapper function around the actual quick_sort_helper that does the
+    heavy-lifting."""
     quick_sort_helper(arr, 0, len(arr) - 1)

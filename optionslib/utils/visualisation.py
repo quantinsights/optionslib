@@ -4,7 +4,7 @@ from matplotlib import pyplot as plt
 
 
 def draw(x: Any, y: Any, xlabel: str, ylabel: str, title: str):
-    """Contains boilerplate code to draw a matplotlib plot"""
+    """Contains boilerplate code to draw a matplotlib plot."""
     plt.style.use("seaborn-v0_8-whitegrid")
     plt.grid(True)
     plt.xlabel(xlabel)

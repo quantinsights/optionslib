@@ -1,13 +1,13 @@
 from datetime import date
 
 from optionslib.market.discounting_curve import DiscountingCurve
-from optionslib.market.enums import (
-    FxVanillaEuropeanOptionQuoteConvention,
-    DeltaConvention,
-)
 from optionslib.market.european_vanilla_fx_option import EuropeanVanillaFxOption
 from optionslib.market.fx_volatility_surface import FxVolatilitySurface
 from optionslib.models.black_calculator import BlackCalculator
+from optionslib.types.enums import (
+    FxVanillaEuropeanOptionQuoteConvention,
+    DeltaConvention,
+)
 
 
 ## A pricer for European Vanilla FX Options that uses the `BlackCalculator`

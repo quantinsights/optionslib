@@ -5,15 +5,14 @@ from datetime import date, timedelta
 import numpy as np
 
 import optionslib.utils.visualisation
-from optionslib.market.enums import DiscountingInterpolationMethod
-from optionslib.math.interpolation import LinearInterpolator
+from optionslib.math.interpolators import LinearInterpolator
 from optionslib.time.day_count_basis import Actual365
+from optionslib.types.enums import DiscountingInterpolationMethod
 
 
 def df_to_zero(df: float, t_1: dt.date, t_2: dt.date) -> float:
-    """
-    Converts the discount factor P(t,T) to the annually compounded spot interest rate Y(t,T).
-    """
+    """Converts the discount factor P(t,T) to the annually compounded spot
+    interest rate Y(t,T)."""
     tau = Actual365.year_fraction(t_1, t_2)
     if tau == 0.0:
         return 0.0
@@ -22,9 +21,8 @@ def df_to_zero(df: float, t_1: dt.date, t_2: dt.date) -> float:
 
 
 def df_to_rate(df: float, t_1: dt.date, t_2: dt.date) -> float:
-    """
-    Converts the discount factor P(t,T) to continuously compounded spot interest rate R(t)
-    """
+    """Converts the discount factor P(t,T) to continuously compounded spot
+    interest rate R(t)"""
     tau = Actual365.year_fraction(t_1, t_2)
     if tau == 0.0:
         return 0.0
@@ -33,9 +31,8 @@ def df_to_rate(df: float, t_1: dt.date, t_2: dt.date) -> float:
 
 
 def zero_to_df(y: float, t_1: dt.date, t_2: dt.date) -> float:
-    """
-    Converts the annually compounded spot interest rate Y(t,T) to a discount factor P(t,T).
-    """
+    """Converts the annually compounded spot interest rate Y(t,T) to a discount
+    factor P(t,T)."""
     tau = Actual365.year_fraction(t_1, t_2)
     if tau == 0.0:
         return 1.0
@@ -44,7 +41,7 @@ def zero_to_df(y: float, t_1: dt.date, t_2: dt.date) -> float:
 
 
 def df_to_forward(df1, df2, t, s) -> float:
-    """Extracts the forward from a pair of discount factors"""
+    """Extracts the forward from a pair of discount factors."""
     tau = Actual365.year_fraction(t, s)
     return (1 / tau) * (df1 / df2 - 1)
 
