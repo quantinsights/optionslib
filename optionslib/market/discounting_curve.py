@@ -6,7 +6,7 @@ import numpy as np
 
 import optionslib.utils.visualisation
 from optionslib.market.enums import DiscountingInterpolationMethod
-from optionslib.math.interpolators import LinearInterpolator
+from optionslib.math.interpolation import LinearInterpolator
 from optionslib.time.day_count_basis import Actual365
 
 
