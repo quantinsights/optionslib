@@ -1,9 +1,11 @@
-"""
-This module implements the Vanna-Volga approximation for constructing a smile.
-Reference. https://quantophile.github.io/mathsummaries/post/2023/11/26/implementing-vanna-volga/
+"""This module implements the Vanna-Volga approximation for constructing a
+smile.
+
+Reference.
+https://quantophile.github.io/mathsummaries/post/2023/11/26/implementing-vanna-volga/
 """
 import datetime as dt
-from typing import List, Union, Dict
+from typing import Union
 
 import attrs.validators
 import numpy as np
@@ -11,22 +13,15 @@ from attrs import define, field
 from scipy.stats import norm
 
 from optionslib.market.discounting_curve import DiscountingCurve
-from optionslib.market.enums import FxOptionsMarketQuoteType
-from optionslib.market.european_vanilla_fx_option import (
-    EuropeanVanillaFxOptionQuote,
-)
 from optionslib.time.day_count_basis import Actual365
-
-NumericType = Union[int, float, np.number]
-QuotesType = List[EuropeanVanillaFxOptionQuote]
-VolSurfaceDataType = Dict[dt.date, float]
+from optionslib.types.enums import FxOptionsMarketQuote
+from optionslib.types.var_types import NumericType
+from optionslib.market.european_vanilla_fx_option import QuotesType
 
 
 @define
 class VannaVolga:
-    """
-    This is an abstraction of the Vanna-Volga approximation.
-    """
+    """This is an abstraction of the Vanna-Volga approximation."""
 
     __fx_option_market_quotes: QuotesType = field(
         validator=attrs.validators.instance_of(QuotesType)
@@ -55,38 +50,38 @@ class VannaVolga:
 
     @property
     def foreign_ccy_discounting_curve(self) -> DiscountingCurve:
-        """Returns the foreign currency discounting curve"""
+        """Returns the foreign currency discounting curve."""
         return self.__foreign_ccy_discounting_curve
 
     @property
     def domestic_ccy_discounting_curve(self) -> DiscountingCurve:
-        """Returns the domestic currency discounting curve"""
+        """Returns the domestic currency discounting curve."""
         return self.__domestic_ccy_discounting_curve
 
     @property
     def valuation_date(self) -> dt.date:
-        """Getter property for valuation date"""
+        """Getter property for valuation date."""
         return self.__valuation_date
 
     @property
     def time_to_expiries(self) -> np.ndarray[float]:
-        """Return the array of time to expiries"""
+        """Return the array of time to expiries."""
         return self.__time_to_expiries
 
     @property
     def exp_dates(self) -> np.ndarray[dt.date]:
-        """Return the array of expiration dates"""
+        """Return the array of expiration dates."""
         return self.__exp_dates
 
     def get_valuation_date_from_mkt_data(self) -> dt.date:
-        """Get the valuation date"""
+        """Get the valuation date."""
         if len(self.fx_option_market_quotes) == 0:
             return dt.date.today()
 
         return self.fx_option_market_quotes[0].asOfDate
 
     def __attrs_post_init__(self) -> None:
-        """Post-initialization"""
+        """Post-initialization."""
         self.__valuation_date = self.get_valuation_date_from_mkt_data()
         self.unpack_option_quotes()
         self.__exp_dates = np.array(self.__stdl.keys())
@@ -111,16 +106,15 @@ class VannaVolga:
         self.__vwb = {}
 
         for quote in enumerate(self.fx_option_market_quotes):
-            if quote.quoteType == FxOptionsMarketQuoteType.ATM_STRADDLE:
+            if quote.quoteType == FxOptionsMarketQuote.ATM_STRADDLE:
                 self.__stdl[quote.expiryDate] = quote.vol
             elif (
-                quote.quoteType
-                == FxOptionsMarketQuoteType.TWENTY_FIVE_DELTA_RISK_REVERSAL
+                quote.quoteType == FxOptionsMarketQuote.TWENTY_FIVE_DELTA_RISK_REVERSAL
             ):
                 self.__risk_rev[quote.expiryDate] = quote.vol
             elif (
                 quote.quoteType
-                == FxOptionsMarketQuoteType.TWENTY_FIVE_DELTA_VEGA_WEIGHTED_BUTTERFLY
+                == FxOptionsMarketQuote.TWENTY_FIVE_DELTA_VEGA_WEIGHTED_BUTTERFLY
             ):
                 self.__vwb[quote.expiryDate] = quote.vol
 
@@ -137,40 +131,42 @@ class VannaVolga:
         return True
 
     def sigma_atm(self, t: dt.date) -> float:
-        """Returns the STDL vol quote"""
+        """Returns the STDL vol quote."""
         return self.__stdl[t]
 
     def sigma_25d_rr(self, t: dt.date) -> float:
-        """Returns the 25-delta risk reversal vol quote"""
+        """Returns the 25-delta risk reversal vol quote."""
         return self.__risk_rev[t]
 
     def sigma_25d_fly(self, t: dt.date) -> float:
-        """Returns the 25-delta butterfly vol quotes"""
+        """Returns the 25-delta butterfly vol quotes."""
         return self.__vwb[t]
 
     def sigma_25d_call(self, t: dt.date) -> float:
-        """Compute the 25-delta call volatility"""
+        """Compute the 25-delta call volatility."""
         return (self.sigma_25d_fly(t) + self.sigma_atm(t)) + 0.50 * self.sigma_25d_rr(t)
 
     def sigma_25d_put(self, t: dt.date) -> np.ndarray[float]:
-        """Compute the 25-delta put volatility"""
+        """Compute the 25-delta put volatility."""
         return (self.sigma_25d_fly(t) + self.sigma_atm(t)) - 0.50 * self.sigma_25d_rr(t)
 
     def alpha(self, exp_date) -> float:
-        """Computes the alpha given a expiration date"""
+        """Computes the alpha given a expiration date."""
         compound_factor = 1 / self.domestic_ccy_discounting_curve.discountFactor(
             self.valuation_date, exp_date
         )
         return -norm.ppf(0.25 * compound_factor)
 
     def k_atm_call(self, exp_date) -> float:
-        """Compute the ATM strike for a given smile(with certain expiration date)"""
+        """Compute the ATM strike for a given smile(with certain expiration
+        date)"""
         fwd = self.forward(self.valuation_date, exp_date)
         time_to_expiry = Actual365(self.valuation_date, exp_date)
         return fwd * np.exp((self.sigma_atm(exp_date) ** 2) / 2 * time_to_expiry)
 
     def k_25d_call(self, exp_date) -> float:
-        """Compute the 25-delta call strike for a given smile(with certain expiration date)"""
+        """Compute the 25-delta call strike for a given smile(with certain
+        expiration date)"""
         fwd = self.forward(self.valuation_date, exp_date)
         time_to_expiry = Actual365(self.valuation_date, exp_date)
 
@@ -182,7 +178,8 @@ class VannaVolga:
         )
 
     def k_25d_put(self, exp_date) -> np.ndarray[float]:
-        """Compute the 25-delta put strike for a given smile(with certain expiration date)"""
+        """Compute the 25-delta put strike for a given smile(with certain
+        expiration date)"""
         fwd = self.forward(self.valuation_date, exp_date)
         time_to_expiry = Actual365(self.valuation_date, exp_date)
 
@@ -194,9 +191,7 @@ class VannaVolga:
         )
 
     def forward(self, t_1: dt.date, t_2: dt.date) -> float:
-        """
-        Returns the foward F(t_1,t_2) between t_1 and t_2
-        """
+        """Returns the foward F(t_1,t_2) between t_1 and t_2."""
         foreign_df = self.foreign_ccy_discounting_curve.discountFactor(t_1, t_2)
         domestic_df = self.domestic_ccy_discounting_curve.discountFactor(t_1, t_2)
         fwd_points = foreign_df / domestic_df
@@ -204,33 +199,28 @@ class VannaVolga:
         return fwd
 
     def y_1(self, k_1, k_2, k_3, k):
-        """
-        Returns the term y_1 in first order linear approximation of VV-smile
-        """
+        """Returns the term y_1 in first order linear approximation of VV-
+        smile."""
         return (np.log(k_2 / k) * np.log(k_3 / k)) / (
             np.log(k_3 / k_1) * np.log(k_2 / k_1)
         )
 
     def y_2(self, k_1, k_2, k_3, k):
-        """
-        Returns the term y_2 in first order linear approximation of VV-smile
-        """
+        """Returns the term y_2 in first order linear approximation of VV-
+        smile."""
         return (np.log(k / k_1) * np.log(k_3 / k)) / (
             np.log(k_2 / k_1) * np.log(k_3 / k_2)
         )
 
     def y_3(self, k_1, k_2, k_3, k):
-        """
-        Returns the term y_3 in first order linear approximation of VV-smile
-        """
+        """Returns the term y_3 in first order linear approximation of VV-
+        smile."""
         return (np.log(k / k_1) * np.log(k / k_2)) / (
             np.log(k_3 / k_1) * np.log(k_3 / k_2)
         )
 
     def first_order_approximation(self, k: float, t_exp: dt.date) -> float:
-        """
-        The first order smile approximation sigma(K,T)
-        """
+        """The first order smile approximation sigma(K,T)"""
         if t_exp in self.exp_dates:
             sigma_1 = self.sigma_25d_put(t_exp)
             sigma_2 = self.sigma_atm(t_exp)
@@ -262,7 +252,8 @@ class VannaVolga:
         sigma_2: float,
         sigma_3: float,
     ) -> float:
-        """Returns the term D2(K) in the second-order approximation of VV-smile"""
+        """Returns the term D2(K) in the second-order approximation of VV-
+        smile."""
         fwd = self.forward(self.valuation_date, t_exp)
         tau = Actual365(self.valuation_date, t_exp)
 
@@ -286,9 +277,7 @@ class VannaVolga:
         return d2_k
 
     def second_order_approximation(self, k: float, t_exp: dt.date) -> float:
-        """
-        The second order smile approximation sigma(K,T)
-        """
+        """The second order smile approximation sigma(K,T)"""
         if t_exp in self.exp_dates:
             tau = Actual365.year_fraction(self.valuation_date, t_exp)
 
@@ -323,13 +312,12 @@ class VannaVolga:
         )
 
     def d_plus(self, fwd, k, tau, sigma):
-        """
-        Returns d+ in the Black-Scholes model
-        """
+        """Returns d+ in the Black-Scholes model."""
         return (np.log(fwd / k) + tau * (sigma**2) / 2) / (sigma * np.sqrt(tau))
 
     def d_minus(self, fwd, k, tau, sigma):
-        """
-        Returns d- in the Black-Scholes model
-        """
+        """Returns d- in the Black-Scholes model."""
         return (np.log(fwd / k) - tau * (sigma**2) / 2) / (sigma * np.sqrt(tau))
+
+
+VolatilitySurfaceModel = Union[VannaVolga]

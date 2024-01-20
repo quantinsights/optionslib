@@ -1,16 +1,16 @@
 import datetime as dt
 import unittest
 
-from optionslib.time.enums import Period, StubConvention
+from optionslib.types.enums import Period, StubConvention
 from optionslib.time.frequency import Frequency
 from optionslib.time.schedule import Schedule, SchedulePeriod
 
 
 class TestSchedule(unittest.TestCase):
-    """Unit tests for Schedule"""
+    """Unit tests for Schedule."""
 
     def test_short_final(self):
-        """Unit test for SHORT_FINAL stub convention"""
+        """Unit test for SHORT_FINAL stub convention."""
         s = Schedule(
             start_date=dt.date(2023, 3, 15),
             end_date=dt.date(2024, 1, 1),
@@ -64,7 +64,7 @@ class TestSchedule(unittest.TestCase):
         del s
 
     def test_short_initial(self):
-        """Unit test for SHORT_INITIAL stub convention"""
+        """Unit test for SHORT_INITIAL stub convention."""
         s = Schedule(
             start_date=dt.date(2023, 3, 15),
             end_date=dt.date(2024, 1, 1),
@@ -118,7 +118,7 @@ class TestSchedule(unittest.TestCase):
         del s
 
     def test_both(self):
-        """Unit test for StubConvention.BOTH"""
+        """Unit test for StubConvention.BOTH."""
         s = Schedule(
             start_date=dt.date(2023, 3, 15),
             first_regular_start_date=dt.date(2023, 3, 20),
@@ -174,7 +174,7 @@ class TestSchedule(unittest.TestCase):
         del s
 
     def test_day29_roll_convention(self):
-        """Unit test for day 29 roll convention"""
+        """Unit test for day 29 roll convention."""
 
         s = Schedule(
             start_date=dt.date(2023, 1, 1),

@@ -4,12 +4,12 @@ import numpy as np
 from scipy.stats import norm
 
 from optionslib.market.discounting_curve import DiscountingCurve, df_to_rate
-from optionslib.market.enums import (
+from optionslib.market.european_vanilla_fx_option import EuropeanVanillaFxOption
+from optionslib.time.day_count_basis import Actual365
+from optionslib.types.enums import (
     FxVanillaEuropeanOptionQuoteConvention,
     DeltaConvention,
 )
-from optionslib.market.european_vanilla_fx_option import EuropeanVanillaFxOption
-from optionslib.time.day_count_basis import Actual365
 
 
 # Standard Black formula for European vanilla calls/puts

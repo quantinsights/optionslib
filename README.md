@@ -1,5 +1,6 @@
 # optionslib
-This is an options pricing library written completely in python. The **optionslib** library provides implementations of various mathematical finance algorithms, models and methodologies. 
+This is an options pricing library written completely in python. The **optionslib** library provides implementations of 
+various mathematical finance algorithms, models and methodologies. 
 
 In the **optionslib** world, a product can be priced using a model and market data. 
 
@@ -9,4 +10,10 @@ It supports:
 
 - **Analytical formulae**.
   - Models : Black-Scholes
+
+# developer commands:
+
+    poetry run docformatter --in-place -r .
+    poetry run pylint --rcfile=pylintrc .
+    poetry run black .
 
