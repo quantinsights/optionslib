@@ -12,7 +12,7 @@ matplotlib = "^3.8"
 scipy = "^1.11"
 
 [tool.poetry.group.dev.dependencies]
-black = "^23.11"
+black = {extras = ["jupyter"], version = "^23.11"}
 pylint = "^3.0"
 mypy = "^1.7"
 docformatter = "^1.7"
@@ -24,3 +24,7 @@ coverage = "^7.3.2"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 80
+target-version = ["py311"]

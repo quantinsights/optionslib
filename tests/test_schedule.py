@@ -161,15 +161,25 @@ class TestSchedule(unittest.TestCase):
             dt.date(2024, 1, 2),
         )
 
-        self.assertEqual(s.get_period(0) == s0, True, "Failed BOTH stub unit test!")
+        self.assertEqual(
+            s.get_period(0) == s0, True, "Failed BOTH stub unit test!"
+        )
 
-        self.assertEqual(s.get_period(1) == s1, True, "Failed BOTH stub unit test!")
+        self.assertEqual(
+            s.get_period(1) == s1, True, "Failed BOTH stub unit test!"
+        )
 
-        self.assertEqual(s.get_period(2) == s2, True, "Failed BOTH stub unit test!")
+        self.assertEqual(
+            s.get_period(2) == s2, True, "Failed BOTH stub unit test!"
+        )
 
-        self.assertEqual(s.get_period(3) == s3, True, "Failed BOTH stub unit test!")
+        self.assertEqual(
+            s.get_period(3) == s3, True, "Failed BOTH stub unit test!"
+        )
 
-        self.assertEqual(s.get_period(4) == s4, True, "Failed BOTH stub unit test!")
+        self.assertEqual(
+            s.get_period(4) == s4, True, "Failed BOTH stub unit test!"
+        )
 
         del s
 
@@ -213,19 +223,27 @@ class TestSchedule(unittest.TestCase):
         )
 
         self.assertEqual(
-            s.get_period(0) == s0, True, "Failed RollConvention.DAY_29 stub unit test!"
+            s.get_period(0) == s0,
+            True,
+            "Failed RollConvention.DAY_29 stub unit test!",
         )
 
         self.assertEqual(
-            s.get_period(1) == s1, True, "Failed RollConvention.DAY_29 stub unit test!"
+            s.get_period(1) == s1,
+            True,
+            "Failed RollConvention.DAY_29 stub unit test!",
         )
 
         self.assertEqual(
-            s.get_period(2) == s2, True, "Failed RollConvention.DAY_29 stub unit test!"
+            s.get_period(2) == s2,
+            True,
+            "Failed RollConvention.DAY_29 stub unit test!",
         )
 
         self.assertEqual(
-            s.get_period(3) == s3, True, "Failed RollConvention.DAY_29 stub unit test!"
+            s.get_period(3) == s3,
+            True,
+            "Failed RollConvention.DAY_29 stub unit test!",
         )
 
         del s
