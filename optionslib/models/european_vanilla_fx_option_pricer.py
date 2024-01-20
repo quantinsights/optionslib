@@ -48,7 +48,9 @@ class EuropeanVanillaFxOptionPricer:
     ):
         return self.blackCalculator.value(quoteConvention)
 
-    def delta(self, deltaConvention: DeltaConvention = DeltaConvention.PIPS_SPOT_DELTA):
+    def delta(
+        self, deltaConvention: DeltaConvention = DeltaConvention.PIPS_SPOT_DELTA
+    ):
         return self.blackCalculator.delta(deltaConvention)
 
     def analyticGamma(self):
