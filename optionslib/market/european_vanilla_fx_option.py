@@ -1,22 +1,18 @@
-"""
-A module for holding FX option market quotes.
-"""
+"""A module for holding FX option market quotes."""
 import datetime as dt
 from datetime import date
-from typing import Union
+from typing import List
 
 import attrs
-import numpy as np
 from attrs import define, field
 
-from optionslib.market.enums import FxOptionsMarketQuoteType, OptionType, Direction
-
-NumericType = Union[int, float, np.number]
+from optionslib.types.enums import FxOptionsMarketQuote, OptionPayoff, Direction
+from optionslib.types.var_types import NumericType
 
 
 @define
 class EuropeanVanillaFxOptionQuote:
-    """Python dataclass for European Vanilla Fx Option Quote"""
+    """Python dataclass for European Vanilla Fx Option Quote."""
 
     __foreign_ccy: str = field(validator=attrs.validators.instance_of(str))
     __domestic_ccy: str = field(validator=attrs.validators.instance_of(str))
@@ -24,8 +20,8 @@ class EuropeanVanillaFxOptionQuote:
     __expiry_date: dt.date = field(validator=attrs.validators.instance_of(dt.date))
     __strike: NumericType = field(validator=attrs.validators.instance_of(NumericType))
     __vol: NumericType = field(validator=attrs.validators.instance_of(NumericType))
-    __quoteType: FxOptionsMarketQuoteType = field(
-        validator=attrs.validators.instance_of(FxOptionsMarketQuoteType)
+    __quoteType: FxOptionsMarketQuote = field(
+        validator=attrs.validators.instance_of(FxOptionsMarketQuote)
     )
 
 
@@ -37,7 +33,7 @@ class EuropeanVanillaFxOption:
         strike: float,
         foreignCurrency: str,
         domesticCurrency: str,
-        optionType: OptionType,
+        optionType: OptionPayoff,
         ccy1Notional: float = 1.0,
         direction: Direction = Direction.BUY,
     ):
@@ -49,3 +45,6 @@ class EuropeanVanillaFxOption:
         self.optionType = optionType
         self.ccy1Notional = ccy1Notional
         self.direction = direction
+
+
+QuotesType = List[EuropeanVanillaFxOptionQuote]

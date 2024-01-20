@@ -1,7 +1,7 @@
 import datetime as dt
 import unittest
 
-from optionslib.time.enums import DayOfWeek, HolidayCalendarId
+from optionslib.types.enums import DayOfWeek, HolidayCalendarId
 from optionslib.time.holiday_calendar import HolidayCalendar
 
 

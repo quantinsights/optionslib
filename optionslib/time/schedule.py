@@ -1,14 +1,12 @@
-"""
-Module to support cashflow schedules.
-"""
+"""Module to support cashflow schedules."""
 import datetime as dt
 from typing import List
 
 import attrs
 from attrs import define, field
 
-from optionslib.time import utils
-from optionslib.time.enums import (
+from optionslib.time import time_utils
+from optionslib.types.enums import (
     RollConventions,
     BusinessDayConventions,
     Period,
@@ -20,9 +18,7 @@ from optionslib.time.holiday_calendar import HolidayCalendar
 
 @define
 class SchedulePeriod:
-    """
-    A period in a schedule.
-    """
+    """A period in a schedule."""
 
     _unadjusted_start_date: dt.date = field(
         validator=attrs.validators.instance_of(dt.date)
@@ -40,30 +36,31 @@ class SchedulePeriod:
 
     @property
     def unadjusted_start_date(self) -> dt.date:
-        """Returns the unadjusted period start date"""
+        """Returns the unadjusted period start date."""
         return self._unadjusted_start_date
 
     @property
     def unadjusted_end_date(self) -> dt.date:
-        """Returns the unadjusted period end date"""
+        """Returns the unadjusted period end date."""
         return self._unadjusted_end_date
 
     @property
     def adjusted_start_date(self) -> dt.date:
-        """Returns the adjusted period start date"""
+        """Returns the adjusted period start date."""
         return self._adjusted_start_date
 
     @property
     def adjusted_end_date(self) -> dt.date:
-        """Returns the adjusted period end date"""
+        """Returns the adjusted period end date."""
         return self._adjusted_end_date
 
 
 @define
 class Schedule:
-    """
-    A complete schedule consisting of a list of `SchedulePeriods`.
-    This typically forms the basis of financial calculations such as accrued interest.
+    """A complete schedule consisting of a list of `SchedulePeriods`.
+
+    This typically forms the basis of financial calculations such as
+    accrued interest.
     """
 
     # (unadjusted) start of the first schedule period
@@ -133,41 +130,41 @@ class Schedule:
 
     @property
     def start_date(self) -> dt.date:
-        """Returns the schedule start date"""
+        """Returns the schedule start date."""
         return self._start_date
 
     @property
     def end_date(self) -> dt.date:
-        """Returns the schedule end date"""
+        """Returns the schedule end date."""
         return self._end_date
 
     @property
     def first_regular_start_date(self) -> dt.date:
-        """Returns the first regular start date"""
+        """Returns the first regular start date."""
         self.calculate_first_regular_start_date()
 
         return self._first_regular_start_date
 
     @property
     def last_regular_end_date(self) -> dt.date:
-        """Returns the last regular end date"""
+        """Returns the last regular end date."""
         self.calculate_last_regular_end_date()
 
         return self._last_regular_end_date
 
     @property
     def frequency(self) -> Frequency:
-        """Returns the frequency"""
+        """Returns the frequency."""
         return self._frequency
 
     @property
     def business_day_convention(self) -> BusinessDayConventions:
-        """Returns the business date convention"""
+        """Returns the business date convention."""
         return self._business_day_convention
 
     @property
     def roll_convention(self) -> RollConventions:
-        """Returns the roll convention"""
+        """Returns the roll convention."""
         if self._roll_convention is None:
             self.calculate_roll_convention()
 
@@ -175,24 +172,24 @@ class Schedule:
 
     @property
     def holiday_calendar(self) -> HolidayCalendar:
-        """Returns the holiday calendar"""
+        """Returns the holiday calendar."""
         return self._holiday_calendar
 
     @property
     def stub_convention(self) -> StubConvention:
-        """Returns the stub convention"""
+        """Returns the stub convention."""
         return self._stub_convention
 
     @property
     def schedule_periods(self) -> List[SchedulePeriod]:
-        """Returns the list of schedule periods"""
+        """Returns the list of schedule periods."""
         if len(self._schedule_periods) == 0:
             self.build_schedule_periods()
 
         return self._schedule_periods
 
     def calculate_first_regular_start_date(self) -> None:
-        """Calculates the first regular period start date"""
+        """Calculates the first regular period start date."""
 
         def loop_back():
             date_i = self.end_date
@@ -240,7 +237,7 @@ class Schedule:
                 )
 
     def calculate_last_regular_end_date(self) -> None:
-        """Calculates the last regular period end date"""
+        """Calculates the last regular period end date."""
 
         def loop_forward():
             date_i = self.start_date
@@ -288,7 +285,7 @@ class Schedule:
                 )
 
     def calculate_roll_convention(self) -> None:
-        """Deduces a roll convention"""
+        """Deduces a roll convention."""
 
         if self.stub_convention == StubConvention.NONE:
             calculated_roll_convention = RollConventions(self._start_date.day)
@@ -314,7 +311,7 @@ class Schedule:
             self._roll_convention = calculated_roll_convention
 
     def valid_roll_day(self, date_value: dt.date) -> bool:
-        """Check if the given date follows the roll-convention"""
+        """Check if the given date follows the roll-convention."""
         if date_value.day == self._roll_convention:
             return True
 
@@ -338,7 +335,7 @@ class Schedule:
         return False
 
     def pre_validation(self) -> None:
-        """Performs initial validation"""
+        """Performs initial validation."""
 
         if not (self.end_date >= self.last_regular_end_date):
             raise ValueError(
@@ -414,7 +411,7 @@ class Schedule:
                 )
 
     def build_short_final(self) -> None:
-        """Builds schedule periods when stub convention is SHORT_FINAL"""
+        """Builds schedule periods when stub convention is SHORT_FINAL."""
 
         if self.start_date != self.first_regular_start_date:
             current = self.start_date
@@ -473,7 +470,7 @@ class Schedule:
         self._schedule_periods.append(last_period)
 
     def build_short_initial(self):
-        """Builds schedule periods when stub convention is SHORT_INITIAL"""
+        """Builds schedule periods when stub convention is SHORT_INITIAL."""
 
         if self.end_date != self.last_regular_end_date:
             current = self.end_date
@@ -533,7 +530,7 @@ class Schedule:
         self._schedule_periods.reverse()
 
     def build_both(self) -> None:
-        """Builds schedule periods when stub convention is BOTH"""
+        """Builds schedule periods when stub convention is BOTH."""
 
         unadj_start = self.start_date
         unadj_end = self.first_regular_start_date
@@ -614,7 +611,7 @@ class Schedule:
             self._schedule_periods.append(last_period)
 
     def build_schedule_periods(self):
-        """Build schedule periods"""
+        """Build schedule periods."""
 
         self.pre_validation()
 
@@ -634,12 +631,12 @@ class Schedule:
             self.build_both()
 
     def get_period(self, i: int) -> SchedulePeriod:
-        """Return the i-th schedule period"""
+        """Return the i-th schedule period."""
 
         return self.schedule_periods[i]
 
     def __repr__(self):
-        """Pretty print the schedule"""
+        """Pretty print the schedule."""
         s = ""
         s += "Start Date : " + dt.date.strftime(self.start_date, "%Y-%m-%d") + "\n"
         s += (

@@ -25,12 +25,12 @@ Concrete implementations:
 import datetime as dt
 from abc import ABC, abstractmethod
 from enum import IntEnum
-from typing import List, Union, cast
+from typing import List, cast
 
 import numpy as np
 from attrs import define, field
 
-NumericType = Union[int, float, np.number]
+from optionslib.types.var_types import NumericType
 
 
 class ExtrapolateIndex(IntEnum):
