@@ -3,15 +3,17 @@ schemas."""
 
 from typing import Optional, Callable, Type
 
-from attrs import define
+from attrs import define, field
 
 from optionslib.math.integration.integration_schema import (
     rectangle_rule,
+    monte_carlo,
     IntegrationSchema,
 )
 from optionslib.math.integration.integration_schema_configs import (
     RectangleConfig,
     IntegrationConfig,
+    MonteCarloConfig,
 )
 from optionslib.types.var_types import NumericType
 
@@ -23,10 +25,18 @@ class Integrator:
 
     default_config: Optional[IntegrationConfig] = None
     default_start: Optional[NumericType] = None
-    default_end: Optional[NumericType] = None
+    default_end: Optional[NumericType] = field(default=None)
+
+    @default_end.validator
+    def check_proper_integral(
+        self, attribute, default_end_value
+    ):  # pylint: disable=W0613
+        if self.default_start >= default_end_value:
+            raise ValueError("Start value must be less than end value.")
 
     _WORKER_MAP: dict[Type[IntegrationConfig], IntegrationSchema] = {
-        RectangleConfig: rectangle_rule
+        RectangleConfig: rectangle_rule,
+        MonteCarloConfig: monte_carlo,
     }
 
     def __call__(
@@ -54,5 +64,5 @@ class Integrator:
                 f"Integration not defined {start=} {end=} {config=}"
             )
 
-        worker = self.__WORKER_MAP[type(config)]
+        worker = self._WORKER_MAP[type(config)]
         return worker(integrand, start, end, config)
