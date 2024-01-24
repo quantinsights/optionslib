@@ -159,7 +159,9 @@ class DiscountingCurve:
 
     def plotDFs(self):
         startDate, dates, n = self.dateSetForPlot()
-        discountFactors = [self.discountFactor(startDate, dates[i]) for i in range(n)]
+        discountFactors = [
+            self.discountFactor(startDate, dates[i]) for i in range(n)
+        ]
         optionslib.utils.visualisation.draw(
             x=dates,
             y=discountFactors,
@@ -193,7 +195,9 @@ class DiscountingCurve:
     def plotForwardCurve(self):
         startDate, dates, n = self.dateSetForPlot()
         forwardRates = [
-            self.forward(startDate, dates[i], dates[i] + datetime.timedelta(days=365))
+            self.forward(
+                startDate, dates[i], dates[i] + datetime.timedelta(days=365)
+            )
             for i in range(n)
         ]
         optionslib.utils.visualisation.draw(
@@ -229,7 +233,9 @@ class DiscountingCurve:
             self.DiscountingInterpolationMethod
             == DiscountingInterpolationMethod.LINEAR_ON_RATES
         ):
-            rates = np.ndarray([self.rate(anchorDate, t) for i in len(self.dfs)])
+            rates = np.ndarray(
+                [self.rate(anchorDate, t) for i in len(self.dfs)]
+            )
 
             interpolator = LinearInterpolator(self.dates, rates)
 
@@ -299,7 +305,9 @@ class DiscountingCurve:
 
     ## Returns the simply compounded forward rate F(t;T,S) between times T and S, as observed on t
     def forward(self, t: date, T: date, S: date):
-        return df_to_forward(self.discountFactor(t, T), self.discountFactor(t, S), T, S)
+        return df_to_forward(
+            self.discountFactor(t, T), self.discountFactor(t, S), T, S
+        )
 
 
 if __name__ == "__main__":
@@ -322,7 +330,9 @@ if __name__ == "__main__":
     ]
 
     discountingCurve = DiscountingCurve(
-        dates, dfs, DiscountingInterpolationMethod.LINEAR_ON_LOG_OF_DISCOUNT_FACTORS
+        dates,
+        dfs,
+        DiscountingInterpolationMethod.LINEAR_ON_LOG_OF_DISCOUNT_FACTORS,
     )
     today = datetime.date(2023, 1, 1)
     df = discountingCurve.discountFactor(today, datetime.date(2024, 6, 1))

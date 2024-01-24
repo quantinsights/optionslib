@@ -31,8 +31,12 @@ class BlackCalculator:
         self.tau = Actual365.year_fraction(self.t, self.T)
         self.sigma = sigma
         self.F = self.atTheMoneyForward()
-        self.foreignDF = self.foreignDiscountingCurve.discountFactor(self.t, self.T)
-        self.domesticDF = self.domesticDiscountingCurve.discountFactor(self.t, self.T)
+        self.foreignDF = self.foreignDiscountingCurve.discountFactor(
+            self.t, self.T
+        )
+        self.domesticDF = self.domesticDiscountingCurve.discountFactor(
+            self.t, self.T
+        )
 
     ## Returns the forward contract strike F(0,T)
     def atTheMoneyForward(self):
@@ -58,7 +62,8 @@ class BlackCalculator:
         d_plus = self.dPlus()
         d_minus = self.dMinus()
         undiscountedPrice = omega * (
-            self.F * norm.cdf(omega * d_plus) - self.K * norm.cdf(omega * d_minus)
+            self.F * norm.cdf(omega * d_plus)
+            - self.K * norm.cdf(omega * d_minus)
         )
         pv = self.domesticDF * undiscountedPrice
         signedPV = self.europeanVanillaFxOption.direction * pv
@@ -74,17 +79,22 @@ class BlackCalculator:
         ):
             return signedPV / self.S_t * 100.0
         elif (
-            quoteConvention == FxVanillaEuropeanOptionQuoteConvention.PERCENTAGE_FOREIGN
+            quoteConvention
+            == FxVanillaEuropeanOptionQuoteConvention.PERCENTAGE_FOREIGN
         ):
             return signedPV / self.K * 100.0
         else:
             return signedPV / (self.S_t * self.K) * 100
 
-    def delta(self, deltaConvention: DeltaConvention = DeltaConvention.PIPS_SPOT_DELTA):
+    def delta(
+        self, deltaConvention: DeltaConvention = DeltaConvention.PIPS_SPOT_DELTA
+    ):
         omega = self.europeanVanillaFxOption.optionType
 
         if deltaConvention == DeltaConvention.PIPS_SPOT_DELTA:
-            return omega * self.foreignDF * norm.cdf(omega * self.dPlus()) * 100.00
+            return (
+                omega * self.foreignDF * norm.cdf(omega * self.dPlus()) * 100.00
+            )
         elif deltaConvention == DeltaConvention.PIPS_FORWARD_DELTA:
             return omega * norm.cdf(omega * self.dPlus()) * 100.0
         elif deltaConvention == DeltaConvention.PREMIUM_ADJUSTED_DELTA:
@@ -98,7 +108,11 @@ class BlackCalculator:
         return (
             self.foreignDF
             * norm.cdf(omega * self.dPlus())
-            / (self.sigma * self.S_t * np.sqrt(Actual365.year_fraction(self.t, self.T)))
+            / (
+                self.sigma
+                * self.S_t
+                * np.sqrt(Actual365.year_fraction(self.t, self.T))
+            )
         )
 
     def analyticTheta(self):
@@ -116,7 +130,10 @@ class BlackCalculator:
             - self.S_t
             * self.foreignDF
             * Nd1
-            * (self.sigma / (2 * np.sqrt(Actual365.year_fraction(self.t, self.T))))
+            * (
+                self.sigma
+                / (2 * np.sqrt(Actual365.year_fraction(self.t, self.T)))
+            )
         ) * 100.0
 
         return theta
@@ -130,7 +147,11 @@ class BlackCalculator:
         )
 
     def vanna(self):
-        return -self.foreignDF * norm.pdf(self.dPlus()) * (self.dMinus() / self.sigma)
+        return (
+            -self.foreignDF
+            * norm.pdf(self.dPlus())
+            * (self.dMinus() / self.sigma)
+        )
 
     def volga(self):
         return (
