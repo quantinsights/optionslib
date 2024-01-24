@@ -3,7 +3,8 @@
 Interpolator objects are initiated with:
     x_values - sorted list of numeric values (int, float, np.number)
     y_values - list of numeric values
-    extrapolate - boolean if object should return value if call is outside range.
+    extrapolate - boolean if object should return value
+        if call is outside range.
 
 Example usage:
     x_values = [1, 2, 4, ]
