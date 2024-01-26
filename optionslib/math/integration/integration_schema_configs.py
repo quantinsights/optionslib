@@ -19,4 +19,12 @@ class RectangleConfig:
     )
 
 
-IntegrationConfig = Union[RectangleConfig]
+@define
+class MonteCarloConfig:
+    random_points: int = field(
+        validator=validators.and_(validators.instance_of(int), validators.ge(0))
+    )
+    # TODO: add distribution to shuffle from
+
+
+IntegrationConfig = Union[RectangleConfig, MonteCarloConfig]
