@@ -105,31 +105,23 @@ class HolidayCalendar:
                 holidays.append(dt.date(2022, 6, 2))
                 holidays.append(dt.date(2022, 6, 3))
             elif year in [1967, 1970]:
-                holidays.append(
-                    time_utils.last_in_month(year, 5, DayOfWeek.MONDAY)
-                )
+                holidays.append(time_utils.last_in_month(year, 5, DayOfWeek.MONDAY))
             elif year < 1971:
                 # White sunday
                 holidays.append(time_utils.easter(year) + dt.timedelta(days=50))
             else:
-                holidays.append(
-                    time_utils.last_in_month(year, 5, DayOfWeek.MONDAY)
-                )
+                holidays.append(time_utils.last_in_month(year, 5, DayOfWeek.MONDAY))
 
             # summer
             if year < 1965:
-                holidays.append(
-                    time_utils.first_in_month(year, 8, DayOfWeek.MONDAY)
-                )
+                holidays.append(time_utils.first_in_month(year, 8, DayOfWeek.MONDAY))
             elif year < 1971:
                 holidays.append(
                     time_utils.last_in_month(year, 8, DayOfWeek.SATURDAY)
                     + dt.timedelta(days=2)
                 )
             else:
-                holidays.append(
-                    time_utils.last_in_month(year, 8, DayOfWeek.MONDAY)
-                )
+                holidays.append(time_utils.last_in_month(year, 8, DayOfWeek.MONDAY))
 
             # queen's funeral
             if year == 2022:

@@ -51,16 +51,12 @@ class FxVolatilitySurface:
     """
 
     __fx_option_market_quotes: EuropeanVanillaFxOptionQuote = field(
-        validator=attrs.validators.instance_of(
-            List[EuropeanVanillaFxOptionQuote]
-        )
+        validator=attrs.validators.instance_of(List[EuropeanVanillaFxOptionQuote])
     )
     __fx_volatility_surface_parametric_model_type: (
         FxVolatilitySurfaceParametricModel
     ) = field(
-        validator=attrs.validators.instance_of(
-            FxVolatilitySurfaceParametricModel
-        )
+        validator=attrs.validators.instance_of(FxVolatilitySurfaceParametricModel)
     )
     __foreign_currency: str = field(
         default="EUR", validator=attrs.validators.instance_of(str)
@@ -121,15 +117,11 @@ class FxVolatilitySurface:
             # of straddles, risk-reversals and fly's.
             return VannaVolga(self.fx_option_market_quotes)
 
-    def volatility(
-        self, strike: float, maturity: dt.date
-    ) -> FxVolatilitySurfacePoint:
+    def volatility(self, strike: float, maturity: dt.date) -> FxVolatilitySurfacePoint:
         """Returns the implied vol from underlying fitted vol model."""
         if (
             self.fx_volatility_surface_parametric_model_type
             == FxVolatilitySurfaceParametricModel.VANNA_VOLGA
         ):
-            vol = self.vol_surface_model.second_order_approximation(
-                strike, maturity
-            )
+            vol = self.vol_surface_model.second_order_approximation(strike, maturity)
             return FxVolatilitySurfacePoint(strike, maturity, vol)

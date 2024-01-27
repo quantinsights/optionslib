@@ -60,9 +60,7 @@ class Integrator:
         config = config or self.default_config
 
         if start and end and config:
-            raise ValueError(
-                f"Integration not defined {start=} {end=} {config=}"
-            )
+            raise ValueError(f"Integration not defined {start=} {end=} {config=}")
 
         worker = self._WORKER_MAP[type(config)]
         return worker(integrand, start, end, config)

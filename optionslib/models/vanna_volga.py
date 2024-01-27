@@ -87,10 +87,7 @@ class VannaVolga:
         self.unpack_option_quotes()
         self.__exp_dates = np.array(self.__stdl.keys())
         self.__time_to_expiries = np.array(
-            [
-                Actual365(self.__valuation_date, expDate)
-                for expDate in self.__exp_dates
-            ]
+            [Actual365(self.__valuation_date, expDate) for expDate in self.__exp_dates]
         )
 
         if not self.check_option_quotes_integrity():
@@ -113,8 +110,7 @@ class VannaVolga:
             if quote.quoteType == FxOptionsMarketQuote.ATM_STRADDLE:
                 self.__stdl[quote.expiryDate] = quote.vol
             elif (
-                quote.quoteType
-                == FxOptionsMarketQuote.TWENTY_FIVE_DELTA_RISK_REVERSAL
+                quote.quoteType == FxOptionsMarketQuote.TWENTY_FIVE_DELTA_RISK_REVERSAL
             ):
                 self.__risk_rev[quote.expiryDate] = quote.vol
             elif (
@@ -149,23 +145,16 @@ class VannaVolga:
 
     def sigma_25d_call(self, t: dt.date) -> float:
         """Compute the 25-delta call volatility."""
-        return (
-            self.sigma_25d_fly(t) + self.sigma_atm(t)
-        ) + 0.50 * self.sigma_25d_rr(t)
+        return (self.sigma_25d_fly(t) + self.sigma_atm(t)) + 0.50 * self.sigma_25d_rr(t)
 
     def sigma_25d_put(self, t: dt.date) -> np.ndarray[float]:
         """Compute the 25-delta put volatility."""
-        return (
-            self.sigma_25d_fly(t) + self.sigma_atm(t)
-        ) - 0.50 * self.sigma_25d_rr(t)
+        return (self.sigma_25d_fly(t) + self.sigma_atm(t)) - 0.50 * self.sigma_25d_rr(t)
 
     def alpha(self, exp_date) -> float:
         """Computes the alpha given a expiration date."""
-        compound_factor = (
-            1
-            / self.domestic_ccy_discounting_curve.discountFactor(
-                self.valuation_date, exp_date
-            )
+        compound_factor = 1 / self.domestic_ccy_discounting_curve.discountFactor(
+            self.valuation_date, exp_date
         )
         return -norm.ppf(0.25 * compound_factor)
 
@@ -174,9 +163,7 @@ class VannaVolga:
         date)"""
         fwd = self.forward(self.valuation_date, exp_date)
         time_to_expiry = Actual365(self.valuation_date, exp_date)
-        return fwd * np.exp(
-            (self.sigma_atm(exp_date) ** 2) / 2 * time_to_expiry
-        )
+        return fwd * np.exp((self.sigma_atm(exp_date) ** 2) / 2 * time_to_expiry)
 
     def k_25d_call(self, exp_date) -> float:
         """Compute the 25-delta call strike for a given smile(with certain
@@ -207,9 +194,7 @@ class VannaVolga:
     def forward(self, t_1: dt.date, t_2: dt.date) -> float:
         """Returns the foward F(t_1,t_2) between t_1 and t_2."""
         foreign_df = self.foreign_ccy_discounting_curve.discountFactor(t_1, t_2)
-        domestic_df = self.domestic_ccy_discounting_curve.discountFactor(
-            t_1, t_2
-        )
+        domestic_df = self.domestic_ccy_discounting_curve.discountFactor(t_1, t_2)
         fwd_points = foreign_df / domestic_df
         fwd = fwd_points * self.__s_t
         return fwd
@@ -318,8 +303,7 @@ class VannaVolga:
             return sigma_2 + (
                 -sigma_2
                 + np.sqrt(
-                    sigma_2**2
-                    - d_plus_k * d_minus_k * (2 * sigma_2 * d1_k + d2_k)
+                    sigma_2**2 - d_plus_k * d_minus_k * (2 * sigma_2 * d1_k + d2_k)
                 )
             ) / (d_plus_k * d_minus_k)
 

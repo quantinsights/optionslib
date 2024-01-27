@@ -38,9 +38,7 @@ class SchedulePeriod:
         validator=attrs.validators.instance_of(dt.date)
     )
 
-    _adjusted_end_date: dt.date = field(
-        validator=attrs.validators.instance_of(dt.date)
-    )
+    _adjusted_end_date: dt.date = field(validator=attrs.validators.instance_of(dt.date))
 
     @property
     def unadjusted_start_date(self) -> dt.date:
@@ -72,9 +70,7 @@ class Schedule:
     """
 
     # (unadjusted) start of the first schedule period
-    _start_date: dt.date = field(
-        validator=attrs.validators.instance_of(dt.date)
-    )
+    _start_date: dt.date = field(validator=attrs.validators.instance_of(dt.date))
 
     # (unadjusted) end of the last schedule period
     _end_date: dt.date = field()
@@ -240,15 +236,10 @@ class Schedule:
         if self._first_regular_start_date is None:
             self._first_regular_start_date = calculated_first_regular_start_date
         else:
-            if (
-                self._first_regular_start_date
-                != calculated_first_regular_start_date
-            ):
+            if self._first_regular_start_date != calculated_first_regular_start_date:
                 raise ValueError(
                     "The first regular start date must be "
-                    + dt.date.strftime(
-                        calculated_first_regular_start_date, "%Y-%m-%d"
-                    )
+                    + dt.date.strftime(calculated_first_regular_start_date, "%Y-%m-%d")
                 )
 
     def calculate_last_regular_end_date(self) -> None:
@@ -296,9 +287,7 @@ class Schedule:
             if self._last_regular_end_date != calculated_last_regular_end_date:
                 raise ValueError(
                     "The last regular end date must be "
-                    + dt.date.strftime(
-                        calculated_last_regular_end_date, "%Y-%m-%d"
-                    )
+                    + dt.date.strftime(calculated_last_regular_end_date, "%Y-%m-%d")
                 )
 
     def calculate_roll_convention(self) -> None:
@@ -336,9 +325,7 @@ class Schedule:
             if date_value.month == 2 and date_value.day in [28, 29]:
                 return True
 
-        print(
-            f"isLeapYear({date_value.year}) : {is_leap_year(date_value.year)}"
-        )
+        print(f"isLeapYear({date_value.year}) : {is_leap_year(date_value.year)}")
         if self._roll_convention == RollConventions.DAY_29:
             if (
                 date_value.month == 2
@@ -457,16 +444,12 @@ class Schedule:
             adj_end = adjust(
                 unadj_end, self.business_day_convention, self.holiday_calendar
             )
-            curr_period = SchedulePeriod(
-                unadj_start, unadj_end, adj_start, adj_end
-            )
+            curr_period = SchedulePeriod(unadj_start, unadj_end, adj_start, adj_end)
 
             if not self.valid_roll_day(unadj_end):
                 raise ValueError(
                     "The period end date {:%Y-%m-%d} must follow "
-                    "{} roll-day convention".format(
-                        unadj_end, self.roll_convention
-                    )
+                    "{} roll-day convention".format(unadj_end, self.roll_convention)
                 )
 
             self._schedule_periods.append(curr_period)
@@ -520,16 +503,12 @@ class Schedule:
             adj_end = adjust(
                 unadj_end, self.business_day_convention, self.holiday_calendar
             )
-            curr_period = SchedulePeriod(
-                unadj_start, unadj_end, adj_start, adj_end
-            )
+            curr_period = SchedulePeriod(unadj_start, unadj_end, adj_start, adj_end)
 
             if not self.valid_roll_day(unadj_start):
                 raise ValueError(
                     "The period start date {:%Y-%m-%d} must follow "
-                    "{} roll-day convention".format(
-                        unadj_start, self.roll_convention
-                    )
+                    "{} roll-day convention".format(unadj_start, self.roll_convention)
                 )
 
             self._schedule_periods.append(curr_period)
@@ -564,9 +543,7 @@ class Schedule:
         adj_start = adjust(
             unadj_start, self.business_day_convention, self.holiday_calendar
         )
-        adj_end = adjust(
-            unadj_end, self.business_day_convention, self.holiday_calendar
-        )
+        adj_end = adjust(unadj_end, self.business_day_convention, self.holiday_calendar)
 
         first_period = SchedulePeriod(
             unadjusted_start_date=unadj_start,
@@ -611,9 +588,7 @@ class Schedule:
             if not self.valid_roll_day(unadj_end):
                 raise ValueError(
                     "The period end date {:%Y-%m-%d} must fall on "
-                    "day {} of the month".format(
-                        unadj_end, self.roll_convention
-                    )
+                    "day {} of the month".format(unadj_end, self.roll_convention)
                 )
 
             self._schedule_periods.append(current_period)
@@ -622,9 +597,7 @@ class Schedule:
 
         if current != self.last_regular_end_date:
             raise ValueError(
-                "The last regular end date must fall on {:%Y-%m-%d}".format(
-                    current
-                )
+                "The last regular end date must fall on {:%Y-%m-%d}".format(current)
             )
 
         unadj_start = self.last_regular_end_date
@@ -632,9 +605,7 @@ class Schedule:
         adj_start = adjust(
             unadj_start, self.business_day_convention, self.holiday_calendar
         )
-        adj_end = adjust(
-            unadj_end, self.business_day_convention, self.holiday_calendar
-        )
+        adj_end = adjust(unadj_end, self.business_day_convention, self.holiday_calendar)
 
         last_period = SchedulePeriod(unadj_start, unadj_end, adj_start, adj_end)
 
@@ -669,11 +640,7 @@ class Schedule:
     def __repr__(self):
         """Pretty print the schedule."""
         s = ""
-        s += (
-            "Start Date : "
-            + dt.date.strftime(self.start_date, "%Y-%m-%d")
-            + "\n"
-        )
+        s += "Start Date : " + dt.date.strftime(self.start_date, "%Y-%m-%d") + "\n"
         s += (
             "First regular period start date : "
             + dt.date.strftime(self.first_regular_start_date, "%Y-%m-%d")
@@ -686,16 +653,8 @@ class Schedule:
         )
         s += "End Date : " + dt.date.strftime(self.end_date, "%Y-%m-%d") + "\n"
         s += "Frequency : " + self.frequency.__str__() + "\n"
-        s += (
-            "Calendar : "
-            + self.holiday_calendar.holiday_calendar_id.value
-            + "\n"
-        )
-        s += (
-            "Business day convention : "
-            + self.business_day_convention.value
-            + "\n"
-        )
+        s += "Calendar : " + self.holiday_calendar.holiday_calendar_id.value + "\n"
+        s += "Business day convention : " + self.business_day_convention.value + "\n"
         s += "Roll Convention : " + str(self.roll_convention.value) + "\n"
         s += "\n"
         s += (

@@ -17,18 +17,10 @@ class EuropeanVanillaFxOptionQuote:
 
     __foreign_ccy: str = field(validator=attrs.validators.instance_of(str))
     __domestic_ccy: str = field(validator=attrs.validators.instance_of(str))
-    __as_of_date: dt.date = field(
-        validator=attrs.validators.instance_of(dt.date)
-    )
-    __expiry_date: dt.date = field(
-        validator=attrs.validators.instance_of(dt.date)
-    )
-    __strike: NumericType = field(
-        validator=attrs.validators.instance_of(NumericType)
-    )
-    __vol: NumericType = field(
-        validator=attrs.validators.instance_of(NumericType)
-    )
+    __as_of_date: dt.date = field(validator=attrs.validators.instance_of(dt.date))
+    __expiry_date: dt.date = field(validator=attrs.validators.instance_of(dt.date))
+    __strike: NumericType = field(validator=attrs.validators.instance_of(NumericType))
+    __vol: NumericType = field(validator=attrs.validators.instance_of(NumericType))
     __quoteType: FxOptionsMarketQuote = field(
         validator=attrs.validators.instance_of(FxOptionsMarketQuote)
     )

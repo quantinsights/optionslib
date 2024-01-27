@@ -135,10 +135,7 @@ def bump_to_fri_or_mon(date_value: dt.date) -> dt.date:
 def christmas_bumped_sat_or_sun(year: int) -> dt.date:
     """If Christmas falls on saturday or sunday, move to 27th December."""
     base = dt.date(year, 12, 25)
-    if (
-        base.weekday() == DayOfWeek.SATURDAY
-        or base.weekday() == DayOfWeek.SUNDAY
-    ):
+    if base.weekday() == DayOfWeek.SATURDAY or base.weekday() == DayOfWeek.SUNDAY:
         return dt.date(year, 12, 27)
 
     return base
@@ -166,10 +163,7 @@ def boxing_day_bumped_sun(year: int) -> dt.date:
 def boxing_day_bumped_sat_sun(year: int) -> dt.date:
     """If boxing day is on saturday(sunday), bumped to monday(tuesday)"""
     base = dt.date(year, 12, 26)
-    if (
-        base.weekday() == DayOfWeek.SATURDAY
-        or base.weekday() == DayOfWeek.SUNDAY
-    ):
+    if base.weekday() == DayOfWeek.SATURDAY or base.weekday() == DayOfWeek.SUNDAY:
         return dt.date(year, 12, 28)
 
     return base
@@ -182,9 +176,7 @@ def add_months(start: dt.date, months: int) -> dt.date:
     try:
         end = dt.date(start.year + year_roll, month, start.day)
     except ValueError:  # day is out of range for the month
-        return add_months(
-            dt.date(start.year, start.month, start.day - 1), months
-        )
+        return add_months(dt.date(start.year, start.month, start.day - 1), months)
     else:
         return end
 
