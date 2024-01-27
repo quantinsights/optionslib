@@ -1,4 +1,5 @@
-"""Interpolator objects.
+"""
+Interpolator objects.
 
 Interpolator objects are initiated with:
     x_values - sorted list of numeric values (int, float, np.number)
@@ -21,6 +22,7 @@ Base abstract class:
     Interpolator
 Concrete implementations:
     LinearInterpolator
+
 """
 
 import datetime as dt
@@ -35,10 +37,11 @@ from optionslib.types.var_types import NumericType
 
 
 class ExtrapolateIndex(IntEnum):
-    """Helper extrapolations enum.
+    """
+    Helper extrapolations enum.
 
-    Indicates if we are in front of or in the back of the interpolation
-    range.
+    Indicates if we are in front of or in the back of the interpolation range.
+
     """
 
     FRONT = -1
@@ -49,9 +52,7 @@ class ExtrapolateIndex(IntEnum):
 class Interpolator(ABC):
     """Abstract base class for interpolator objects."""
 
-    _xs: List[NumericType] | List[dt.datetime] | np.ndarray = field(
-        alias="x_values"
-    )
+    _xs: List[NumericType] | List[dt.datetime] | np.ndarray = field(alias="x_values")
     _ys: List[NumericType] | np.ndarray = field(alias="y_values")
     _extrapolate: bool = field(
         alias="extrapolate",
@@ -119,9 +120,7 @@ class LinearInterpolator(Interpolator):
             case ExtrapolateIndex.BACK:
                 result = self._ys[-1]
             case _:
-                x_delta = self.__convert_to_float(
-                    self._xs[index + 1] - self._xs[index]
-                )
+                x_delta = self.__convert_to_float(self._xs[index + 1] - self._xs[index])
                 y_delta = self._ys[index + 1] - self._ys[index]
                 slope = y_delta / x_delta
                 result = (

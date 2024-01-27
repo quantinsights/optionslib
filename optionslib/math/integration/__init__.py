@@ -1,6 +1,8 @@
-"""Entrypoint module for integration functionalities.
+"""
+Entrypoint module for integration functionalities.
 
 Import from here and not directly.
+
 """
 
 from optionslib.math.integration.integrator import Integrator

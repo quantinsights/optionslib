@@ -1,5 +1,4 @@
-"""An integrator class that allows to perform integration using different
-schemas."""
+"""An integrator class that allows to perform integration using different schemas."""
 
 from typing import Optional, Callable, Type
 
@@ -31,6 +30,7 @@ class Integrator:
     def check_proper_integral(
         self, attribute, default_end_value
     ):  # pylint: disable=W0613
+        """Check if interval is properly defined."""
         if self.default_start >= default_end_value:
             raise ValueError("Start value must be less than end value.")
 
@@ -47,22 +47,22 @@ class Integrator:
         start: Optional[NumericType] = None,
         end: Optional[NumericType] = None,
     ) -> float:
-        """Calculates the definite integral value of a function.
+        """
+        Calculates the definite integral value of a function.
 
         Args:
             integrand: function to integrate
             start: start of integration interval
             end: end of integration interval
             config: integration configuration
+
         """
         start = start or self.default_start
         end = end or self.default_end
         config = config or self.default_config
 
         if start and end and config:
-            raise ValueError(
-                f"Integration not defined {start=} {end=} {config=}"
-            )
+            raise ValueError(f"Integration not defined {start=} {end=} {config=}")
 
         worker = self._WORKER_MAP[type(config)]
         return worker(integrand, start, end, config)

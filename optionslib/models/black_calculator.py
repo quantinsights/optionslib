@@ -1,164 +1,196 @@
+"""Black calculator."""
+
 from datetime import date
 
 import numpy as np
+from attr import define
 from scipy.stats import norm
 
 from optionslib.market.discounting_curve import DiscountingCurve, df_to_rate
 from optionslib.market.european_vanilla_fx_option import EuropeanVanillaFxOption
 from optionslib.time.day_count_basis import Actual365
 from optionslib.types.enums import (
-    FxVanillaEuropeanOptionQuoteConvention,
+    FxOptionQuoteConvention,
     DeltaConvention,
 )
 
 
-# Standard Black formula for European vanilla calls/puts
+@define
 class BlackCalculator:
-    def __init__(
-        self,
-        valuationDate: date,
-        europeanVanillaFxOption: EuropeanVanillaFxOption,
-        fxSpot: float,
-        foreignDiscountingCurve: DiscountingCurve,
-        domesticDiscountingCurve: DiscountingCurve,
-        sigma: float,
-    ):
-        self.t = valuationDate
-        self.europeanVanillaFxOption = europeanVanillaFxOption
-        self.S_t = fxSpot
-        self.foreignDiscountingCurve = foreignDiscountingCurve
-        self.domesticDiscountingCurve = domesticDiscountingCurve
-        self.tau = Actual365.year_fraction(self.t, self.T)
-        self.sigma = sigma
-        self.F = self.atTheMoneyForward()
-        self.foreignDF = self.foreignDiscountingCurve.discountFactor(
-            self.t, self.T
-        )
-        self.domesticDF = self.domesticDiscountingCurve.discountFactor(
-            self.t, self.T
+    """Standard Black formula calculator for European vanilla calls/puts."""
+
+    valuation_date: date
+    option_definition: EuropeanVanillaFxOption
+    fx_spot: float
+    foreign_discounting_curve: DiscountingCurve
+    domestic_discounting_curve: DiscountingCurve
+    sigma: float
+
+    @property
+    def year_fraction(self) -> float:
+        """Calculates year fraction from valuation date to option maturity."""
+        return Actual365.year_fraction(self.valuation_date, self.maturity)
+
+    @property
+    def d_plus(self):
+        """Calculates d plus."""
+        return (
+            np.log(self.atm_forward / self.strike)
+            + self.year_fraction * (self.sigma**2) / 2
+        ) / (self.sigma * np.sqrt(self.year_fraction))
+
+    @property
+    def d_minus(self):
+        """Calculates d minus."""
+        return (
+            np.log(self.atm_forward / self.strike)
+            - self.year_fraction * (self.sigma**2) / 2
+        ) / (self.sigma * np.sqrt(self.year_fraction))
+
+    @property
+    def omega(self):
+        """Returns option direction."""
+        return self.option_definition.option_type.value
+
+    @property
+    def maturity(self):
+        """Returns option maturity."""
+        return self.option_definition.expiry_date
+
+    @property
+    def strike(self):
+        """Returns option strike."""
+        return self.option_definition.strike
+
+    @property
+    def foreign_df(self):
+        """Returns foreign discount factor."""
+        return self.foreign_discounting_curve.discount_factor(
+            self.valuation_date, self.maturity
         )
 
-    ## Returns the forward contract strike F(0,T)
-    def atTheMoneyForward(self):
-        fwdPoints = self.foreignDF / self.domesticDF
-        F = fwdPoints * self.S_t
-        return F
-
-    def dPlus(self):
-        return (np.log(self.F / self.K) + self.tau * (self.sigma**2) / 2) / (
-            self.sigma * np.sqrt(self.tau)
+    @property
+    def domestic_df(self):
+        """Returns domestic discount factor."""
+        return self.domestic_discounting_curve.discount_factor(
+            self.valuation_date, self.maturity
         )
 
-    def dMinus(self):
-        return (np.log(self.F / self.K) - self.tau * (self.sigma**2) / 2) / (
-            self.sigma * np.sqrt(self.tau)
-        )
+    @property
+    def atm_forward(self):
+        """Returns the forward contract strike F(0,T)."""
+        return self.fx_spot * self.foreign_df / self.domestic_df
 
     def value(
         self,
-        quoteConvention: FxVanillaEuropeanOptionQuoteConvention = FxVanillaEuropeanOptionQuoteConvention.DOMESTIC_PER_UNIT_OF_FOREIGN,
+        quote_convention: FxOptionQuoteConvention,
     ):
-        omega = self.europeanVanillaFxOption.optionType
-        d_plus = self.dPlus()
-        d_minus = self.dMinus()
-        undiscountedPrice = omega * (
-            self.F * norm.cdf(omega * d_plus)
-            - self.K * norm.cdf(omega * d_minus)
+        """Prices the option"""
+        undiscounted_price = self.omega * (
+            self.atm_forward * norm.cdf(self.omega * self.d_plus)
+            - self.strike * norm.cdf(self.omega * self.d_minus)
         )
-        pv = self.domesticDF * undiscountedPrice
-        signedPV = self.europeanVanillaFxOption.direction * pv
+        pv = self.domestic_df * undiscounted_price
+        signed_pv = self.option_definition.direction * pv
 
-        if (
-            quoteConvention
-            == FxVanillaEuropeanOptionQuoteConvention.DOMESTIC_PER_UNIT_OF_FOREIGN
-        ):
-            return signedPV * 100.0
-        elif (
-            quoteConvention
-            == FxVanillaEuropeanOptionQuoteConvention.PERCENTAGE_DOMESTIC
-        ):
-            return signedPV / self.S_t * 100.0
-        elif (
-            quoteConvention
-            == FxVanillaEuropeanOptionQuoteConvention.PERCENTAGE_FOREIGN
-        ):
-            return signedPV / self.K * 100.0
-        else:
-            return signedPV / (self.S_t * self.K) * 100
+        match quote_convention:
+            case FxOptionQuoteConvention.DOMESTIC_PER_UNIT_OF_FOREIGN:
+                return signed_pv * 100.0
+            case FxOptionQuoteConvention.PERCENTAGE_DOMESTIC:
+                return signed_pv / self.fx_spot * 100.0
+            case FxOptionQuoteConvention.PERCENTAGE_FOREIGN:
+                return signed_pv / self.strike * 100.0
+            case FxOptionQuoteConvention.PERCENTAGE_DOMESTIC:
+                return signed_pv / (self.fx_spot * self.strike) * 100
+            case _:
+                raise NotImplementedError(
+                    f"Unsupported quote convention: {quote_convention}"
+                )
 
     def delta(
-        self, deltaConvention: DeltaConvention = DeltaConvention.PIPS_SPOT_DELTA
+        self,
+        delta_convention: DeltaConvention = DeltaConvention.PIPS_SPOT_DELTA,
     ):
-        omega = self.europeanVanillaFxOption.optionType
+        """Calculates sensitivity to spot."""
+        match delta_convention:
+            case DeltaConvention.PIPS_SPOT_DELTA:
+                return (
+                    self.omega
+                    * self.foreign_df
+                    * norm.cdf(self.omega * self.d_plus)
+                    * 100.00
+                )
+            case DeltaConvention.PIPS_FORWARD_DELTA:
+                return self.omega * norm.cdf(self.omega * self.d_plus) * 100.0
+            case DeltaConvention.PREMIUM_ADJUSTED_DELTA:
+                pips_spot_delta = (
+                    self.omega
+                    * self.foreign_df
+                    * norm.cdf(self.omega * self.d_plus)
+                    * 100.00
+                )
+                value = self.value(FxOptionQuoteConvention.DOMESTIC_PER_UNIT_OF_FOREIGN)
+                return pips_spot_delta - value / self.fx_spot
 
-        if deltaConvention == DeltaConvention.PIPS_SPOT_DELTA:
-            return (
-                omega * self.foreignDF * norm.cdf(omega * self.dPlus()) * 100.00
-            )
-        elif deltaConvention == DeltaConvention.PIPS_FORWARD_DELTA:
-            return omega * norm.cdf(omega * self.dPlus()) * 100.0
-        elif deltaConvention == DeltaConvention.PREMIUM_ADJUSTED_DELTA:
-            pips_spot_delta = (
-                omega * self.foreignDF * norm.cdf(omega * self.dPlus()) * 100.00
-            )
-            return pips_spot_delta - self.value() / self.S_t
-
-    def analyticGamma(self):
-        omega = self.europeanVanillaFxOption.optionType
+    def gamma(self):
+        """Calculates curvature to spot."""
         return (
-            self.foreignDF
-            * norm.cdf(omega * self.dPlus())
+            self.foreign_df
+            * norm.cdf(self.omega * self.d_plus())
             / (
                 self.sigma
-                * self.S_t
-                * np.sqrt(Actual365.year_fraction(self.t, self.T))
+                * self.fx_spot
+                * np.sqrt(Actual365.year_fraction(self.valuation_date, self.maturity))
             )
         )
 
-    def analyticTheta(self):
-        omega = self.europeanVanillaFxOption.optionType
-        Nd1 = norm.cdf(omega * self.dPlus())
-        Nd2 = norm.cdf(omega * self.dMinus())
-        r_FOR = df_to_rate(self.foreignDF, self.t, self.T)
-        r_DOM = df_to_rate(self.domesticDF, self.t, self.T)
-        theta = (
-            omega
+    def theta(self):
+        """Calculates sensitivity to time."""
+        nd1 = norm.cdf(self.omega * self.d_plus)
+        nd2 = norm.cdf(self.omega * self.d_minus)
+        r_for = df_to_rate(self.foreign_df, self.valuation_date, self.maturity)
+        r_dom = df_to_rate(self.domestic_df, self.valuation_date, self.maturity)
+        return (
+            self.omega
             * (
-                self.S_t * r_FOR * self.foreignDF * Nd1
-                - self.K * r_DOM * self.domesticDF * Nd2
+                self.fx_spot * r_for * self.foreign_df * nd1
+                - self.strike * r_dom * self.domestic_df * nd2
             )
-            - self.S_t
-            * self.foreignDF
-            * Nd1
+            - self.fx_spot
+            * self.foreign_df
+            * nd1
             * (
                 self.sigma
-                / (2 * np.sqrt(Actual365.year_fraction(self.t, self.T)))
+                / (
+                    2
+                    * np.sqrt(
+                        Actual365.year_fraction(self.valuation_date, self.maturity)
+                    )
+                )
             )
-        ) * 100.0
-
-        return theta
+            * 100.0
+        )
 
     def vega(self):
+        """Calculates sensitivity to volatility."""
         return (
-            self.S_t
-            * self.foreignDF
-            * norm.pdf(self.dPlus())
-            * np.sqrt(Actual365.year_fraction(self.t, self.T))
+            self.fx_spot
+            * self.foreign_df
+            * norm.pdf(self.d_plus)
+            * np.sqrt(Actual365.year_fraction(self.valuation_date, self.maturity))
         )
 
     def vanna(self):
-        return (
-            -self.foreignDF
-            * norm.pdf(self.dPlus())
-            * (self.dMinus() / self.sigma)
-        )
+        """Calculates second order sensitivity to volatility and spot."""
+        return -self.foreign_df * norm.pdf(self.d_plus) * self.d_minus / self.sigma
 
     def volga(self):
+        """Calculates curvature to volatility."""
         return (
-            self.S_t
-            * self.foreignDF
-            * np.sqrt(Actual365.year_fraction(self.t, self.T))
-            * norm.pdf(self.dPlus())
-            * (self.dPlus() * self.dMinus())
+            self.fx_spot
+            * self.foreign_df
+            * np.sqrt(Actual365.year_fraction(self.valuation_date, self.maturity))
+            * norm.pdf(self.d_plus())
+            * (self.d_plus() * self.d_minus())
             / self.sigma
         )

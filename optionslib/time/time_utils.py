@@ -1,5 +1,6 @@
-"""A module offering various helper functions to work with discount factors,
-dates etc."""
+"""A module offering various helper functions to work with discount factors, dates
+etc."""
+
 import calendar
 import datetime as dt
 
@@ -8,7 +9,7 @@ from optionslib.types.enums import BusinessDayConventions, DayOfWeek, Period
 
 def is_leap_year(year: int) -> bool:
     """Test if the given year is a leap year."""
-    return ((year % 4 == 0) and (not (year % 100 == 0))) or (year % 400 == 0)
+    return (year % 4 == 0 and not year % 100 == 0) or (year % 400 == 0)
 
 
 def length_of_year(year: int) -> int:
@@ -17,18 +18,13 @@ def length_of_year(year: int) -> int:
 
 
 def ensure_leap_year(date_value: dt.date) -> dt.date:
-    """Returns the 29th of February if the current year is a leap year, else
-    looks for the next near nearest 29th Feb."""
-    if is_leap_year(date_value.year):
-        return dt.date(date_value.year, 2, 29)
-    elif is_leap_year(date_value.year + 1):
-        return dt.date(date_value.year + 1, 2, 29)
-    elif is_leap_year(date_value.year + 2):
-        return dt.date(date_value.year + 2, 2, 29)
-    elif is_leap_year(date_value.year + 3):
-        return dt.date(date_value.year + 3, 2, 29)
-    else:
-        return dt.date(date_value.year + 4, 2, 29)
+    """Returns the 29th of February if the current year is a leap year, else looks for
+    the next near nearest 29th Feb."""
+    for year_delta in range(5):
+        candidate_year = date_value.year + year_delta
+        if is_leap_year(candidate_year):
+            return dt.date(candidate_year, 2, 29)
+    raise ValueError(f"Given date is not handled properly {date_value=}")
 
 
 def next_leap_day(date_value: dt.date) -> dt.date:
@@ -75,14 +71,15 @@ def last_in_month(year: int, month: int, day_of_week: DayOfWeek):
 
     while result.weekday() != day_of_week:
         result = result - dt.timedelta(days=1)
-
     return result
 
 
 def easter(year: int) -> dt.date:
-    """Butcher's algorithm to calculate the Easter day of any given year.
+    """
+    Butcher's algorithm to calculate the Easter day of any given year.
 
     Reference. https://en.wikipedia.org/wiki/Date_of_Easter
+
     """
     a = year % 19
     b = year // 100
@@ -112,65 +109,55 @@ def bump_sun_to_mon(date_value: dt.date) -> dt.date:
 
 def bump_to_mon(date_value: dt.date) -> dt.date:
     """Bumps to monday, if the given date falls on a weekend."""
-    if date_value.weekday() == DayOfWeek.SATURDAY:
-        return date_value + dt.timedelta(days=2)
-    elif date_value.weekday() == DayOfWeek.SUNDAY:
-        return date_value + dt.timedelta(days=1)
-    else:
-        return date_value
+    match date_value.weekday():
+        case DayOfWeek.SATURDAY:
+            return date_value + dt.timedelta(days=2)
+        case DayOfWeek.SUNDAY:
+            return date_value + dt.timedelta(days=1)
+        case _:
+            return date_value
 
 
 def bump_to_fri_or_mon(date_value: dt.date) -> dt.date:
     """Bumps saturday to friday and sunday to monday."""
-    if date_value.weekday() == DayOfWeek.SATURDAY:
-        return date_value - dt.timedelta(days=1)
-
-    if date_value.weekday() == DayOfWeek.SUNDAY:
-        return date_value + dt.timedelta(days=1)
-
-    return date_value
+    match date_value.weekday():
+        case DayOfWeek.SATURDAY:
+            return date_value - dt.timedelta(days=1)
+        case DayOfWeek.SUNDAY:
+            return date_value + dt.timedelta(days=1)
+        case _:
+            return date_value
 
 
 def christmas_bumped_sat_or_sun(year: int) -> dt.date:
     """If Christmas falls on saturday or sunday, move to 27th December."""
     base = dt.date(year, 12, 25)
-    if (
-        base.weekday() == DayOfWeek.SATURDAY
-        or base.weekday() == DayOfWeek.SUNDAY
-    ):
+    if base.weekday() in (DayOfWeek.SATURDAY, DayOfWeek.SUNDAY):
         return dt.date(year, 12, 27)
-
     return base
 
 
 def christmas_bumped_sun(year: int) -> dt.date:
     """If Christmas is on sunday, moved to Monday."""
     base = dt.date(year, 12, 25)
-    if base.weekday() == DayOfWeek.SUNDAY:
+    if base.weekday() is DayOfWeek.SUNDAY:
         return dt.date(year, 12, 26)
-
     return base
 
 
 def boxing_day_bumped_sun(year: int) -> dt.date:
-    """Boxing day (if Christmas is sunday, boxing day moved from Monday to
-    Tuesday)"""
+    """Boxing day (if Christmas is sunday, boxing day moved from Monday to Tuesday)"""
     base = dt.date(year, 12, 26)
-    if base.weekday() == DayOfWeek.MONDAY:
+    if base.weekday() is DayOfWeek.MONDAY:
         return dt.date(year, 12, 27)
-
     return base
 
 
 def boxing_day_bumped_sat_sun(year: int) -> dt.date:
     """If boxing day is on saturday(sunday), bumped to monday(tuesday)"""
     base = dt.date(year, 12, 26)
-    if (
-        base.weekday() == DayOfWeek.SATURDAY
-        or base.weekday() == DayOfWeek.SUNDAY
-    ):
+    if base.weekday() in (DayOfWeek.SATURDAY, DayOfWeek.SUNDAY):
         return dt.date(year, 12, 28)
-
     return base
 
 
@@ -181,11 +168,8 @@ def add_months(start: dt.date, months: int) -> dt.date:
     try:
         end = dt.date(start.year + year_roll, month, start.day)
     except ValueError:  # day is out of range for the month
-        return add_months(
-            dt.date(start.year, start.month, start.day - 1), months
-        )
-    else:
-        return end
+        return add_months(dt.date(start.year, start.month, start.day - 1), months)
+    return end
 
 
 def add_years(start: dt.date, years: int) -> dt.date:
@@ -194,39 +178,37 @@ def add_years(start: dt.date, years: int) -> dt.date:
         end = dt.date(start.year + years, start.month, start.day)
     except ValueError:
         return add_years(dt.date(start.year, start.month, start.day - 1), years)
-    else:
-        return end
+    return end
 
 
 def add_period(start: dt.date, length: int, period: Period, holiday_calendar):
     """Add period of a certain length to a date."""
-    if period == Period.DAYS:
-        end = start + dt.timedelta(days=length)
-
-    if period == Period.BUSINESS_DAYS:
-        if length == 0:
-            end = start
-        else:
-            next_date = start + dt.timedelta(days=(+1 if length > 0 else -1))
+    match period:
+        case Period.YEARS:
+            return add_years(start, years=length)
+        case Period.MONTHS:
+            return add_months(start, months=length)
+        case Period.DAYS:
+            return start + dt.timedelta(days=length)
+        case Period.BUSINESS_DAYS:
+            if not length:
+                return start
+            next_date = start + dt.timedelta(days=1 if length > 0 else -1)
             if holiday_calendar.is_holiday(next_date):
-                end = add_period(
-                    next_date, length, Period.BUSINESS_DAYS, holiday_calendar
-                )
-            else:
-                end = add_period(
+                return add_period(
                     next_date,
-                    length + (-1 if length > 0 else +1),
+                    length,
                     Period.BUSINESS_DAYS,
                     holiday_calendar,
                 )
-
-    if period == Period.MONTHS:
-        end = add_months(start, months=length)
-
-    if period == Period.YEARS:
-        end = add_years(start, years=length)
-
-    return end
+            return add_period(
+                next_date,
+                length + (-1 if length > 0 else +1),
+                Period.BUSINESS_DAYS,
+                holiday_calendar,
+            )
+        case _:
+            raise ValueError(f"Incompatible {period=}.")
 
 
 def adjust(
@@ -234,37 +216,39 @@ def adjust(
     bus_day_convention: BusinessDayConventions,
     holiday_calendar,
 ) -> dt.date:
-    """Converts an undajusted date to an adjusted date.
+    """
+    Converts an undajusted date to an adjusted date.
 
     Ref. https://en.wikipedia.org/wiki/Date_rolling
+
     """
-    if holiday_calendar.is_holiday(unadjusted_date):
-        following_date = add_period(
-            unadjusted_date, 1, Period.BUSINESS_DAYS, holiday_calendar
-        )
-        preceding_date = add_period(
-            unadjusted_date, -1, Period.BUSINESS_DAYS, holiday_calendar
-        )
-
-        if bus_day_convention == BusinessDayConventions.NO_ADJUST:
-            return unadjusted_date
-
-        if bus_day_convention == BusinessDayConventions.FOLLOWING:
-            return following_date
-
-        if bus_day_convention == BusinessDayConventions.MODIFIED_FOLLOWING:
-            if following_date.month != unadjusted_date.month:
-                return preceding_date
-            else:
-                return following_date
-
-        if bus_day_convention == BusinessDayConventions.PRECEDING:
-            return preceding_date
-
-        if bus_day_convention == BusinessDayConventions.MODIFIED_PRECEDING:
-            if preceding_date.month != unadjusted_date.month:
-                return following_date
-            else:
-                return preceding_date
-    else:
+    if not holiday_calendar.is_holiday(unadjusted_date):
         return unadjusted_date
+
+    following_date = add_period(
+        unadjusted_date, 1, Period.BUSINESS_DAYS, holiday_calendar
+    )
+    preceding_date = add_period(
+        unadjusted_date, -1, Period.BUSINESS_DAYS, holiday_calendar
+    )
+    match bus_day_convention:
+        case BusinessDayConventions.NO_ADJUST:
+            return unadjusted_date
+        case BusinessDayConventions.FOLLOWING:
+            return following_date
+        case BusinessDayConventions.PRECEDING:
+            return preceding_date
+        case BusinessDayConventions.MODIFIED_FOLLOWING:
+            return (
+                following_date
+                if following_date.month == unadjusted_date.month
+                else preceding_date
+            )
+        case BusinessDayConventions.MODIFIED_PRECEDING:
+            return (
+                preceding_date
+                if following_date.month == unadjusted_date.month
+                else following_date
+            )
+        case _:
+            raise ValueError(f"Incompatible {bus_day_convention=}.")
