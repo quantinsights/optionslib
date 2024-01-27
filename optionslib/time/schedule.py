@@ -1,4 +1,5 @@
 """Module to support cashflow schedules."""
+
 import datetime as dt
 from typing import List
 
@@ -6,6 +7,12 @@ import attrs
 from attrs import define, field
 
 from optionslib.time import time_utils
+from optionslib.time.time_utils import (
+    add_period,
+    is_leap_year,
+    get_length_of_month,
+    adjust,
+)
 from optionslib.types.enums import (
     RollConventions,
     BusinessDayConventions,
@@ -201,7 +208,7 @@ class Schedule:
 
             while date_i > self.start_date:
                 succ_date = date_i
-                date_i = utils.add_period(
+                date_i = add_period(
                     date_i,
                     -1 * self.frequency.num,
                     self.frequency.units,
@@ -221,7 +228,7 @@ class Schedule:
 
         if self.stub_convention == StubConvention.LONG_INITIAL:
             first_date = loop_back()
-            calculated_first_regular_start_date = utils.add_period(
+            calculated_first_regular_start_date = add_period(
                 first_date,
                 self.frequency.num,
                 self.frequency.units,
@@ -254,7 +261,7 @@ class Schedule:
 
             while date_i < self.end_date:
                 prev_date = date_i
-                date_i = utils.add_period(
+                date_i = add_period(
                     date_i,
                     self.frequency.num,
                     self.frequency.units,
@@ -274,7 +281,7 @@ class Schedule:
 
         if self.stub_convention == StubConvention.LONG_FINAL:
             last_date = loop_forward()
-            calculated_last_regular_end_date = utils.add_period(
+            calculated_last_regular_end_date = add_period(
                 last_date,
                 -1 * self.frequency.num,
                 self.frequency.units,
@@ -331,13 +338,13 @@ class Schedule:
                 return True
 
         print(
-            f"isLeapYear({date_value.year}) : {utils.is_leap_year(date_value.year)}"
+            f"isLeapYear({date_value.year}) : {is_leap_year(date_value.year)}"
         )
         if self._roll_convention == RollConventions.DAY_29:
             if (
                 date_value.month == 2
                 and date_value.day in [28]
-                and (not (utils.is_leap_year(date_value.year)))
+                and (not (is_leap_year(date_value.year)))
             ):
                 return True
 
@@ -433,22 +440,22 @@ class Schedule:
 
         while current < self.last_regular_end_date:
             unadj_start = current
-            unadj_end = utils.add_period(
+            unadj_end = add_period(
                 unadj_start,
                 self.frequency.num,
                 self.frequency.units,
                 self.holiday_calendar,
             )
 
-            if self.roll_convention <= utils.get_length_of_month(unadj_end):
+            if self.roll_convention <= get_length_of_month(unadj_end):
                 unadj_end = dt.date(
                     unadj_end.year, unadj_end.month, self.roll_convention
                 )
 
-            adj_start = utils.adjust(
+            adj_start = adjust(
                 unadj_start, self.business_day_convention, self.holiday_calendar
             )
-            adj_end = utils.adjust(
+            adj_end = adjust(
                 unadj_end, self.business_day_convention, self.holiday_calendar
             )
             curr_period = SchedulePeriod(
@@ -467,13 +474,13 @@ class Schedule:
 
             current = unadj_end
 
-        adjusted_last_reg = utils.adjust(
+        adjusted_last_reg = adjust(
             self.last_regular_end_date,
             self.business_day_convention,
             self.holiday_calendar,
         )
 
-        adjusted_end_date = utils.adjust(
+        adjusted_end_date = adjust(
             self.end_date, self.business_day_convention, self.holiday_calendar
         )
 
@@ -496,22 +503,22 @@ class Schedule:
 
         while current > self.first_regular_start_date:
             unadj_end = current
-            unadj_start = utils.add_period(
+            unadj_start = add_period(
                 unadj_end,
                 -1 * self.frequency.num,
                 self.frequency.units,
                 self.holiday_calendar,
             )
 
-            if self.roll_convention <= utils.get_length_of_month(unadj_start):
+            if self.roll_convention <= get_length_of_month(unadj_start):
                 unadj_start = dt.date(
                     unadj_start.year, unadj_start.month, self.roll_convention
                 )
 
-            adj_start = utils.adjust(
+            adj_start = adjust(
                 unadj_start, self.business_day_convention, self.holiday_calendar
             )
-            adj_end = utils.adjust(
+            adj_end = adjust(
                 unadj_end, self.business_day_convention, self.holiday_calendar
             )
             curr_period = SchedulePeriod(
@@ -530,13 +537,13 @@ class Schedule:
 
             current = unadj_start
 
-        adjusted_first_reg = utils.adjust(
+        adjusted_first_reg = adjust(
             self.first_regular_start_date,
             self.business_day_convention,
             self.holiday_calendar,
         )
 
-        adjusted_start_date = utils.adjust(
+        adjusted_start_date = adjust(
             self.start_date, self.business_day_convention, self.holiday_calendar
         )
 
@@ -555,10 +562,10 @@ class Schedule:
 
         unadj_start = self.start_date
         unadj_end = self.first_regular_start_date
-        adj_start = utils.adjust(
+        adj_start = adjust(
             unadj_start, self.business_day_convention, self.holiday_calendar
         )
-        adj_end = utils.adjust(
+        adj_end = adjust(
             unadj_end, self.business_day_convention, self.holiday_calendar
         )
 
@@ -576,22 +583,22 @@ class Schedule:
 
         while current < self.last_regular_end_date:
             unadj_start = current
-            unadj_end = utils.add_period(
+            unadj_end = add_period(
                 start=unadj_start,
                 length=self.frequency.num,
                 period=self.frequency.units,
                 holiday_calendar=self.holiday_calendar,
             )
 
-            if self.roll_convention <= utils.get_length_of_month(unadj_end):
+            if self.roll_convention <= get_length_of_month(unadj_end):
                 unadj_end = dt.date(
                     unadj_end.year, unadj_end.month, self.roll_convention
                 )
 
-            adj_start = utils.adjust(
+            adj_start = adjust(
                 unadj_start, self.business_day_convention, self.holiday_calendar
             )
-            adj_end = utils.adjust(
+            adj_end = adjust(
                 unadj_end, self.business_day_convention, self.holiday_calendar
             )
 
@@ -623,10 +630,10 @@ class Schedule:
 
         unadj_start = self.last_regular_end_date
         unadj_end = self.end_date
-        adj_start = utils.adjust(
+        adj_start = adjust(
             unadj_start, self.business_day_convention, self.holiday_calendar
         )
-        adj_end = utils.adjust(
+        adj_end = adjust(
             unadj_end, self.business_day_convention, self.holiday_calendar
         )
 
