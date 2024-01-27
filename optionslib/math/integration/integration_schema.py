@@ -23,13 +23,15 @@ def rectangle_rule(
     end: NumericType,
     config: RectangleConfig,
 ) -> NumericType:
-    """Implementation of the rectangle rule for integration.
+    """
+    Implementation of the rectangle rule for integration.
 
     Args:
         integrand: function to integrate
         start: start of integration interval
         end: end of integration interval
         config: integration configuration
+
     """
     steps = config.steps
     x_points = np.linspace(start, end, steps)
@@ -44,13 +46,15 @@ def monte_carlo(
     end: NumericType,
     config: MonteCarloConfig,
 ) -> NumericType:
-    """Implementation of the monte carlo schema for integration.
+    """
+    Implementation of the monte carlo schema for integration.
 
     Args:
         integrand: function to integrate
         start: start of integration interval
         end: end of integration interval
         config: integration configuration
+
     """
     random_points = config.random_points
     x_points = np.random.uniform(start, end, random_points)

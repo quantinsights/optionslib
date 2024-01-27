@@ -1,5 +1,4 @@
-"""An integrator class that allows to perform integration using different
-schemas."""
+"""An integrator class that allows to perform integration using different schemas."""
 
 from typing import Optional, Callable, Type
 
@@ -48,13 +47,15 @@ class Integrator:
         start: Optional[NumericType] = None,
         end: Optional[NumericType] = None,
     ) -> float:
-        """Calculates the definite integral value of a function.
+        """
+        Calculates the definite integral value of a function.
 
         Args:
             integrand: function to integrate
             start: start of integration interval
             end: end of integration interval
             config: integration configuration
+
         """
         start = start or self.default_start
         end = end or self.default_end

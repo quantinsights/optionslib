@@ -40,7 +40,6 @@ in-place = true
 black = true
 pre-summary-newline = true
 blank = true
-force-wrap = true
 
 
 [tool.pylint.main]

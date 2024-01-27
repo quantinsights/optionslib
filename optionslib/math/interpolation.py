@@ -1,4 +1,5 @@
-"""Interpolator objects.
+"""
+Interpolator objects.
 
 Interpolator objects are initiated with:
     x_values - sorted list of numeric values (int, float, np.number)
@@ -21,6 +22,7 @@ Base abstract class:
     Interpolator
 Concrete implementations:
     LinearInterpolator
+
 """
 
 import datetime as dt
@@ -35,10 +37,11 @@ from optionslib.types.var_types import NumericType
 
 
 class ExtrapolateIndex(IntEnum):
-    """Helper extrapolations enum.
+    """
+    Helper extrapolations enum.
 
-    Indicates if we are in front of or in the back of the interpolation
-    range.
+    Indicates if we are in front of or in the back of the interpolation range.
+
     """
 
     FRONT = -1

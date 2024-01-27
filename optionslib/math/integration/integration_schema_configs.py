@@ -1,4 +1,5 @@
-"""Helper config dataclasses falling under IntegrationConfig umbrella.
+"""
+Helper config dataclasses falling under IntegrationConfig umbrella.
 
 Example use:
 integrator = Integrator(
@@ -6,6 +7,7 @@ integrator = Integrator(
     default_start=start,
     default_end=end,
 )
+
 """
 
 from typing import Union
