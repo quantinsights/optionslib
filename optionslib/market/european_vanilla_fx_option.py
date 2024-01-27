@@ -1,7 +1,6 @@
 """A module for holding FX option market quotes."""
 
 import datetime as dt
-from datetime import date
 from typing import List
 
 import attrs
@@ -15,37 +14,29 @@ from optionslib.types.var_types import NumericType
 class EuropeanVanillaFxOptionQuote:
     """Python dataclass for European Vanilla Fx Option Quote."""
 
-    __foreign_ccy: str = field(validator=attrs.validators.instance_of(str))
-    __domestic_ccy: str = field(validator=attrs.validators.instance_of(str))
-    __as_of_date: dt.date = field(validator=attrs.validators.instance_of(dt.date))
-    __expiry_date: dt.date = field(validator=attrs.validators.instance_of(dt.date))
-    __strike: NumericType = field(validator=attrs.validators.instance_of(NumericType))
-    __vol: NumericType = field(validator=attrs.validators.instance_of(NumericType))
-    __quoteType: FxOptionsMarketQuote = field(
+    foreign_ccy: str = field(validator=attrs.validators.instance_of(str))
+    domestic_ccy: str = field(validator=attrs.validators.instance_of(str))
+    as_of_date: dt.date = field(validator=attrs.validators.instance_of(dt.date))
+    expiry_date: dt.date = field(validator=attrs.validators.instance_of(dt.date))
+    strike: NumericType = field(validator=attrs.validators.instance_of(NumericType))
+    vol: NumericType = field(validator=attrs.validators.instance_of(NumericType))
+    quote_type: FxOptionsMarketQuote = field(
         validator=attrs.validators.instance_of(FxOptionsMarketQuote)
     )
 
 
+@define
 class EuropeanVanillaFxOption:
-    def __init__(
-        self,
-        tradeDate: date,
-        expiryDate: date,
-        strike: float,
-        foreignCurrency: str,
-        domesticCurrency: str,
-        optionType: OptionPayoff,
-        ccy1Notional: float = 1.0,
-        direction: Direction = Direction.BUY,
-    ):
-        self.t0 = tradeDate
-        self.T = expiryDate
-        self.K = strike
-        self.domesticCurrency = domesticCurrency
-        self.foreignCurrency = foreignCurrency
-        self.optionType = optionType
-        self.ccy1Notional = ccy1Notional
-        self.direction = direction
+    """Class to represent European option instrument."""
+
+    trade_date: dt.date
+    expiry_date: dt.date
+    strike: float
+    foreign_currency: str
+    domestic_currency: str
+    option_type: OptionPayoff
+    ccy1_notional: float = field(default=1.0)
+    direction: Direction = field(default=Direction.BUY)
 
 
-QuotesType = List[EuropeanVanillaFxOptionQuote]
+QuotesListType = List[EuropeanVanillaFxOptionQuote]

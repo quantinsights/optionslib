@@ -18,15 +18,15 @@ from optionslib.market.discounting_curve import DiscountingCurve
 from optionslib.time.day_count_basis import Actual365
 from optionslib.types.enums import FxOptionsMarketQuote
 from optionslib.types.var_types import NumericType
-from optionslib.market.european_vanilla_fx_option import QuotesType
+from optionslib.market.european_vanilla_fx_option import QuotesListType
 
 
 @define
 class VannaVolga:
     """This is an abstraction of the Vanna-Volga approximation."""
 
-    __fx_option_market_quotes: QuotesType = field(
-        validator=attrs.validators.instance_of(QuotesType)
+    __fx_option_market_quotes: QuotesListType = field(
+        validator=attrs.validators.instance_of(QuotesListType)
     )
     __s_t: float = field(
         validator=attrs.validators.and_(
@@ -41,9 +41,9 @@ class VannaVolga:
     )
 
     @property
-    def fx_option_market_quotes(self) -> QuotesType:
+    def fx_option_market_quotes(self) -> QuotesListType:
         """Get FX option market quotes."""
-        return self.__foreign_ccy_discounting_curve
+        return self.__fx_option_market_quotes
 
     @property
     def s_t(self):
@@ -156,7 +156,7 @@ class VannaVolga:
 
     def alpha(self, exp_date) -> float:
         """Computes the alpha given a expiration date."""
-        compound_factor = 1 / self.domestic_ccy_discounting_curve.discountFactor(
+        compound_factor = 1 / self.domestic_ccy_discounting_curve.discount_factor(
             self.valuation_date, exp_date
         )
         return -norm.ppf(0.25 * compound_factor)
@@ -195,8 +195,8 @@ class VannaVolga:
 
     def forward(self, t_1: dt.date, t_2: dt.date) -> float:
         """Returns the foward F(t_1,t_2) between t_1 and t_2."""
-        foreign_df = self.foreign_ccy_discounting_curve.discountFactor(t_1, t_2)
-        domestic_df = self.domestic_ccy_discounting_curve.discountFactor(t_1, t_2)
+        foreign_df = self.foreign_ccy_discounting_curve.discount_factor(t_1, t_2)
+        domestic_df = self.domestic_ccy_discounting_curve.discount_factor(t_1, t_2)
         fwd_points = foreign_df / domestic_df
         fwd = fwd_points * self.__s_t
         return fwd

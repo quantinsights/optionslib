@@ -31,8 +31,8 @@ class BlackCalculator:
         self.tau = Actual365.year_fraction(self.t, self.T)
         self.sigma = sigma
         self.F = self.atTheMoneyForward()
-        self.foreignDF = self.foreignDiscountingCurve.discountFactor(self.t, self.T)
-        self.domesticDF = self.domesticDiscountingCurve.discountFactor(self.t, self.T)
+        self.foreignDF = self.foreignDiscountingCurve.discount_factor(self.t, self.T)
+        self.domesticDF = self.domesticDiscountingCurve.discount_factor(self.t, self.T)
 
     ## Returns the forward contract strike F(0,T)
     def atTheMoneyForward(self):

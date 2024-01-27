@@ -1,3 +1,8 @@
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+
 [tool.poetry]
 name = "optionslib"
 version = "0.1.0"
@@ -14,7 +19,6 @@ scipy = "^1.11"
 pandas = "^2.2.0"
 flake8 = "^7.0.0"
 
-
 [tool.poetry.group.dev.dependencies]
 black = {extras = ["jupyter"], version = "^24.0"}
 mypy = "^1.7"
@@ -24,10 +28,6 @@ pre-commit = "^3.5"
 doxy = "^0.3.2"
 coverage = "^7.3.2"
 pylint = "^3.0"
-
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
 
 
 [tool.black]

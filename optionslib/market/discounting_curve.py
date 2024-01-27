@@ -1,176 +1,81 @@
-import datetime
-import datetime as dt
-from datetime import date, timedelta
+"""Discounting Curve."""
 
+import datetime as dt
 import numpy as np
+from attr import define, field
 
 import optionslib.utils.visualisation
-from optionslib.math.interpolators import LinearInterpolator
+from optionslib.math.interpolation import LinearInterpolator
 from optionslib.time.day_count_basis import Actual365
 from optionslib.types.enums import DiscountingInterpolationMethod
 
 
-def df_to_zero(df: float, t_1: dt.date, t_2: dt.date) -> float:
+def df_to_zero(discount_factor: float, t_1: dt.date, t_2: dt.date) -> float:
     """Converts the discount factor P(t,T) to the annually compounded spot interest rate
     Y(t,T)."""
     tau = Actual365.year_fraction(t_1, t_2)
-    if tau == 0.0:
-        return 0.0
-
-    return 1 / ((df) ** (1 / tau)) - 1
+    return 1 / discount_factor ** (1 / tau) - 1 if tau else 0
 
 
-def df_to_rate(df: float, t_1: dt.date, t_2: dt.date) -> float:
+def df_to_rate(discount_factor: float, t_1: dt.date, t_2: dt.date) -> float:
     """Converts the discount factor P(t,T) to continuously compounded spot interest rate
     R(t)"""
     tau = Actual365.year_fraction(t_1, t_2)
-    if tau == 0.0:
-        return 0.0
-
-    return -(np.log(df)) / tau
+    return -(np.log(discount_factor)) / tau if tau else 0
 
 
 def zero_to_df(y: float, t_1: dt.date, t_2: dt.date) -> float:
     """Converts the annually compounded spot interest rate Y(t,T) to a discount factor
     P(t,T)."""
     tau = Actual365.year_fraction(t_1, t_2)
-    if tau == 0.0:
-        return 1.0
-
-    return 1 / ((1 + y) ** tau)
+    return 1 / ((1 + y) ** tau) if tau else 1
 
 
-def df_to_forward(df1, df2, t, s) -> float:
+def df_to_forward(discount_factor1, discount_factor2, t_1, t_2) -> float:
     """Extracts the forward from a pair of discount factors."""
-    tau = Actual365.year_fraction(t, s)
-    return (1 / tau) * (df1 / df2 - 1)
+    tau = Actual365.year_fraction(t_1, t_2)
+    return (1 / tau) * (discount_factor1 / discount_factor2 - 1) if tau else 0
 
 
-## A curve object that stores discount factors.
-#
-# A `DiscountingCurve` object stores a vector of dates and discount factors.
-# There is a need to value all instruments consistently within a single valuation
-# framework. For this we need a risk-free discounting curve which will be a continuous
-# curve (because this is the standard format for all option pricing formulae).
-#
-# We establish a few important results.
-#
-# Definition. (Risk-free asset). Consider an asset with the price process \f$(B_t:t \in [0,T])\f$
-# which has the dynamics:
-# $$dB(t) = r(t)B(t)dt$$
-#
-# where \f$r(t)\f$ is any adapted process. \f$B_t\f$ has no driving Wiener process (\f$dW_t\f$ term).
-# Such an asset is said to be a risk-free asset. This corresponds to a bank account with (possibly stochastic
-# short interest rate \f$r(t)\f$. Note, that the bank-account is *locally risk-free*, in the sense that,
-# even if the short rate is a random process, the return \f$r(t)\f$ over an infinitesimal time-period
-# \f$dt\f$ is risk-free (that is deterministic, given the information available at time \f$t\f$). However,
-# the return of \f$B\f$ over a longer time period is typically stochastic.
-#
-# Using ODE cookbook methods, we can solve the above equation using separation of variables:
-# $$B(t) = B(0) e^{\int_{0}^{t} r(s) ds}$$
-#
-# Definition. (Discounting process). The discounting process is defined as \f$D(t)=\frac{1}{B(t)}\f$. It is
-# easy to see that the dynamics of \f$D(t)\f$ is:
-# $$D(t) = -r(t)D(t)dt$$
-#
-# with solution
-# $$D(0) = D(t)e^{-\int_{0}^{t} r(s) ds}$$
-#
-# Definition. (Stochastic Discount Factor). The (stochastic) discount factor between two time instants
-# \f$t\f$ and \f$T\f$ is the amount at time \f$t\f$ equal to one unit of currency payable at time \f$T\f$
-# and is given by:
-# $$D(t,T) = \frac{B(t)}{B(T)} = e^{-\int_{t}^{T} r(s) ds}$$
-#
-# Definition. (Zero coupon bond). A \f$T\f$ maturity zero-coupon bond is a contract that guarantees its holder
-# the payment of one unit of currency at time \f$T\f$, with no intermediate payments. The contract value at time
-# \f$t < T\f$ is denoted by \f$P(t,T)\f$. Clearly, \f$P(T,T) = 1\f$ for all \f$T\f$.
-#
-# By the risk neutral pricing formula, the price \f$P(t,T)\f$ of this claim at time \f$t\f$ is given by:
-#
-# $$\frac{P(t,T)}{B(t)} = \mathbb{E}^{\mathbb{Q}}\left[\frac{1}{B(T)}|\mathcal{F}_t\right]$$
-#
-# In other words,
-#  $$P(t,T) = \mathbb{E}^{\mathbb{Q}}\left[\frac{B(t)}{B(T)}|\mathcal{F}_t\right]= \mathbb{E}^{\mathbb{Q}}\left[D(t,T)|\mathcal{F}_t\right]$$
-#
-# What is the relationship between the stochastic discount factor \f$D(t,T)\f$ and the zero-coupon bond price \f$P(t,T)\f$
-# for each pair \f$(t,T)\f$? If the rates \f$r\f$ are deterministic, then \f$D\f$ is deterministic as well and
-# \f$D(t,T) = P(t,T)\f$. However, if the rates are stochastic, \f$D(t,T)\f$ is a random quantity at time \f$t\f$
-# depending on the future evolution of the rates \f$r\f$ between \f$t\f$ and \f$T\f$.
-#
-# *Remark.* It is common to refer to the ZCB price \f$P(t,T)\f$ as just the discount factor.
-#
-#  Definition (Continuously compounded spot interest rate). The continuously compounded spot interest rate prevailing
-# at time \f$t\f$ for the maturity \f$T\f$ is denoted by \f$R(t,T)\f$ and is the constant rate at which an investment
-# of \f$P(t,T)\f$ units of currency at time \f$t\f$ accrues continuous to yield a unit amount of currency at
-# maturity \f$T\f$. In formulas:
-# $$ P(t,T)\exp{(R(t,T)\tau(t,T))} = 1$$
-#
-# or
-# $$ R(t,T) = -\frac{\ln P(t,T)}{\tau(t,T)}$$
-#
-# Definition (Annually compounded spot interest rate). The annually compounded spot interest rate prevailing at
-# time \f$t\f$ for the maturity \f$T\f$ is denoted by \f$Y(t,T)\f$ and is the constant rate at which
-# investment has to be made to produce an amount of one unit of currency at maturity starting from
-# \f$P(t,T)\f$ units of currency at time \f$t\f$, when reinvesting the obtained amounts once a year. In formulas,
-# $$P(t,T)[1 + Y(t,T)]^{\tau(t,T)} = 1$$
-#
-# Solving for \f$Y(t,T)\f$, we have:
-#
-# $$Y(t,T) := \frac{1}{[P(t,T)]^{\frac{1}{\tau(t,T)}}} - 1$$
-#
-# Thus, zero-coupon bond prices can be expressed in terms of annually compounded rates as:
-#
-# $$P(t,T) = \frac{1}{[1+Y(t,T)]^{\tau(t,T)}}$$
-#
-# Definition (Simply-compounded spot interest rate). The simply compounded spot interest rate prevailing at
-# time \f$t\f$ for maturity \f$T\f$ is denoted by \f$L(t,T)\f$ and is the constant rate at which
-# an investment has to be made to produce one unit of currency at maturity, starting from \f$P(t,T)\f$
-# units of currency at time \f$t\f$, when accruing occurs proportionally to the investment time.
-# In formulas:
-# $$P(t,T)[1 + L(t,T) \times \tau(t,T)]=1$$
-#
-# Solving for \f$L(t,T)\f$, we have:
-# $$L(t,T) := \frac{1 - P(t,T)}{\tau(t,T)P(t,T)}$$
-#
-# Reference : http://www.deriscope.com/docs/Hagan_West_curves_AMF.pdf
-#
-
-
+@define
 class DiscountingCurve:
-    def __init__(
-        self,
-        dates: np.ndarray,
-        discountFactors: np.ndarray,
-        discInterpMethod: DiscountingInterpolationMethod = DiscountingInterpolationMethod.FINANCIAL_CUBIC_SPLINE,
-    ):
-        self.dates = dates
-        self.dfs = discountFactors
-        self.DiscountingInterpolationMethod = discInterpMethod
+    """Class to represent a discount curve object."""
 
-    def dateSetForPlot(self):
-        anchorDate = self.dates[0]
-        terminalDate = anchorDate + datetime.timedelta(days=365 * 5)
-        nPoints = (terminalDate - anchorDate).days + 1
+    dates: np.ndarray[dt.date]
+    discount_factors: np.ndarray[float]
+    interpolation_method: DiscountingInterpolationMethod = field(
+        default=DiscountingInterpolationMethod.FINANCIAL_CUBIC_SPLINE
+    )
+
+    def date_set_for_plot(self):
+        """Sets up the dates for plotting."""
+        anchor_date = self.dates[0]
+        terminal_date = anchor_date + dt.timedelta(days=365 * 5)
+        n_points = (terminal_date - anchor_date).days + 1
         return (
-            anchorDate,
-            [anchorDate + timedelta(days=i) for i in range(nPoints)],
-            nPoints,
+            anchor_date,
+            [anchor_date + dt.timedelta(days=i) for i in range(n_points)],
+            n_points,
         )
 
-    def plotDFs(self):
-        startDate, dates, n = self.dateSetForPlot()
-        discountFactors = [self.discountFactor(startDate, dates[i]) for i in range(n)]
+    def plot_discount_factors(self):
+        """Plot discount factors."""
+        start_date, dates, n = self.date_set_for_plot()
+        discount_factors = [
+            self.discount_factor(start_date, dates[i]) for i in range(n)
+        ]
         optionslib.utils.visualisation.draw(
             x=dates,
-            y=discountFactors,
+            y=discount_factors,
             xlabel=r"Time $t$",
             ylabel=r"Discount factor $P(0,t)$",
             title="Discount factor curve",
         )
 
-    def plotRates(self):
-        startDate, dates, n = self.dateSetForPlot()
-        rates = [self.rate(startDate, dates[i]) for i in range(n)]
+    def plot_rates(self):
+        """Plots the rates."""
+        start_date, dates, n = self.date_set_for_plot()
+        rates = [self.rate(start_date, dates[i]) for i in range(n)]
         optionslib.utils.visualisation.draw(
             x=dates,
             y=rates,
@@ -179,154 +84,103 @@ class DiscountingCurve:
             title="Rates curve",
         )
 
-    def plotZeroCouponCurve(self):
-        startDate, dates, n = self.dateSetForPlot()
-        zeroCouponRates = [self.zero(startDate, dates[i]) for i in range(n)]
+    def plot_zero_coupon_curve(self):
+        """Plots the zero coupon curve."""
+        start_date, dates, n = self.date_set_for_plot()
+        zero_coupon_rates = [self.zero(start_date, dates[i]) for i in range(n)]
         optionslib.utils.visualisation.draw(
             x=dates,
-            y=zeroCouponRates,
+            y=zero_coupon_rates,
             xlabel=r"Time $t$",
             ylabel=r"Zero coupon $Y(0,t)$",
             title="Zero Coupon curve",
         )
 
-    def plotForwardCurve(self):
-        startDate, dates, n = self.dateSetForPlot()
-        forwardRates = [
-            self.forward(startDate, dates[i], dates[i] + datetime.timedelta(days=365))
+    def plot_forward_curve(self):
+        """Plot the forward rates."""
+        start_date, dates, n = self.date_set_for_plot()
+        forward_rates = [
+            self.forward(start_date, dates[i], dates[i] + dt.timedelta(days=365))
             for i in range(n)
         ]
         optionslib.utils.visualisation.draw(
             x=dates,
-            y=forwardRates,
+            y=forward_rates,
             xlabel=r"Time $t$",
             ylabel=r"Forward $F(0,T,S)$",
             title="1y Forward curve",
         )
 
-    ## Returns the discount factor P(t,T) between times t and T.
-    def discountFactor(self, t: datetime.date, T: datetime.date):
-        anchorDate = self.dates[0]
-        result = 0.0
-        interpolator = None
+    def discount_factor(self, t_1: dt.datetime.date, t_2: dt.datetime.date) -> float:
+        """Returns the discount factor P(t,T) between times t and T."""
+        anchor_date = self.dates[0]
 
-        if (
-            self.DiscountingInterpolationMethod
-            == DiscountingInterpolationMethod.LINEAR_ON_DISCOUNT_FACTORS
-        ):
-            interpolator = LinearInterpolator(self.dates, self.dfs)
+        match self.interpolation_method:
+            case DiscountingInterpolationMethod.LINEAR_ON_DISCOUNT_FACTORS:
+                interpolator = LinearInterpolator(self.dates, self.discount_factors)
+                # P(0,T) = P(0,t) x P(t,T)
+                return interpolator(t_2) / interpolator(t_1)
+            case DiscountingInterpolationMethod.LINEAR_ON_RATES:
+                rates = np.ndarray(
+                    [self.rate(anchor_date, t_1) for i in len(self.discount_factors)]
+                )
+                interpolator = LinearInterpolator(self.dates, rates)
 
-            # The discount factor P(0,t)
-            df_t = interpolator(t)
+                def compound_from_anchor(t):
+                    r_t = interpolator(t)
+                    tau_t = Actual365.year_fraction(anchor_date, t)
+                    return np.exp(r_t * tau_t)
 
-            # The discount factor P(0,T)
-            df_T = interpolator(T)
+                # e^(R(t,T)tau(t,T)) = e^(R(0,T)tau(0,T))/e^(R(0,t)tau(0,t))
+                return compound_from_anchor(t_1) / compound_from_anchor(t_2)
+            case DiscountingInterpolationMethod.LINEAR_ON_LOG_OF_RATES:
+                log_rates = np.ndarray(
+                    [np.log(self.rate(anchor_date, t_)) for t_ in self.dates]
+                )
+                interpolator = LinearInterpolator(self.dates, log_rates)
 
-            # We know that, P(0,T) = P(0,t) x P(t,T)
-            result = (df_T) / (df_t)
+                def compound_from_anchor_log(t):
+                    log_r_t = interpolator(t)
+                    r_t = np.exp(log_r_t)
+                    tau_t = Actual365.year_fraction(anchor_date, t)
+                    return np.exp(r_t * tau_t)
 
-        if (
-            self.DiscountingInterpolationMethod
-            == DiscountingInterpolationMethod.LINEAR_ON_RATES
-        ):
-            rates = np.ndarray([self.rate(anchorDate, t) for i in len(self.dfs)])
+                return compound_from_anchor_log(t_1) / compound_from_anchor_log(t_2)
+            case DiscountingInterpolationMethod.LINEAR_ON_LOG_OF_DISCOUNT_FACTORS:
+                log_dfs = np.log(self.discount_factors)
+                interpolator = LinearInterpolator(self.dates, log_dfs)
 
-            interpolator = LinearInterpolator(self.dates, rates)
+                log_p_t_1 = interpolator(t_1)
+                log_p_t_2 = interpolator(t_2)
+                p_t_1 = np.exp(log_p_t_1)
+                p_t_2 = np.exp(log_p_t_2)
+                return p_t_2 / p_t_1
+            case _:
+                raise NotImplementedError("Not implemented yet")
 
-            # The rate R(0,t)
-            r_t = interpolator(t)
+    def zero(self, t_1: dt.datetime.date, t_2: dt.datetime.date) -> float:
+        """Returns the annual compounded spot interest rate(zero) Y(t,T) between times t
+        and T."""
+        return df_to_zero(
+            self.discount_factor(t_1, t_2),
+            t_1,
+            t_2,
+        )
 
-            # The rate R(0,T)
-            r_T = interpolator(T)
+    def rate(self, t_1: dt.datetime.date, t_2: dt.datetime.date) -> float:
+        """Returns the continuous compounded spot rate R(t,T) between times t and T."""
+        return df_to_rate(
+            self.discount_factor(t_1, t_2),
+            t_1,
+            t_2,
+        )
 
-            # We know that e^(R(t,T)tau(t,T)) = e^(R(0,T)tau(0,T))/e^(R(0,t)tau(0,t))
-            tau_t = Actual365.year_fraction(anchorDate, t)
-            tau_T = Actual365.year_fraction(anchorDate, T)
-
-            compoundFactor = np.exp(r_T * tau_T) / np.exp(r_t * tau_t)
-            result = 1 / compoundFactor
-
-        if (
-            self.DiscountingInterpolationMethod
-            == DiscountingInterpolationMethod.LINEAR_ON_LOG_OF_RATES
-        ):
-            logRates = np.ndarray(
-                [np.log(self.rate(anchorDate, t)) for i in len(self.dfs)]
-            )
-
-            interpolator = LinearInterpolator(self.dates, logRates)
-
-            # log R(0,t)
-            logR_t = interpolator(t)
-
-            # log R(0,T)
-            logR_T = interpolator(T)
-
-            R_t = np.exp(logR_t)
-            R_T = np.exp(logR_T)
-
-            tau_t = Actual365.year_fraction(anchorDate, t)
-            tau_T = Actual365.year_fraction(anchorDate, T)
-
-            compoundFactor = np.exp(R_t * tau_T) / np.exp(R_T * tau_t)
-            result = 1 / compoundFactor
-
-        if (
-            self.DiscountingInterpolationMethod
-            == DiscountingInterpolationMethod.LINEAR_ON_LOG_OF_DISCOUNT_FACTORS
-        ):
-            logDfs = np.log(self.dfs)
-
-            interpolator = LinearInterpolator(self.dates, logDfs)
-
-            # log P(0,t)
-            logP_t = interpolator(t)
-
-            # log P(0,T)
-            logP_T = interpolator(T)
-
-            P_t = np.exp(logP_t)
-            P_T = np.exp(logP_T)
-            return P_T / P_t
-
-    ## Returns the annual compounded spot interest rate(zero) Y(t,T) between times t and T
-    def zero(self, t: date, T: date):
-        return df_to_zero(self.discountFactor(t, T), t, T)
-
-    ## Returns the continuous compounded spot rate R(t,T) between times t and T
-    def rate(self, t: date, T: date):
-        return df_to_rate(self.discountFactor(t, T), t, T)
-
-    ## Returns the simply compounded forward rate F(t;T,S) between times T and S, as observed on t
-    def forward(self, t: date, T: date, S: date):
-        return df_to_forward(self.discountFactor(t, T), self.discountFactor(t, S), T, S)
-
-
-if __name__ == "__main__":
-    dates = [
-        datetime.date(2023, 1, 1),
-        datetime.date(2024, 1, 1),
-        datetime.date(2025, 1, 1),
-        datetime.date(2026, 1, 1),
-        datetime.date(2027, 1, 1),
-        datetime.date(2028, 1, 1),
-    ]
-
-    dfs = [
-        1.00,
-        (1.05) ** (-1),
-        (1.05) ** (-2),
-        (1.05) ** (-3),
-        (1.05) ** (-4),
-        (1.05) ** (-5),
-    ]
-
-    discountingCurve = DiscountingCurve(
-        dates,
-        dfs,
-        DiscountingInterpolationMethod.LINEAR_ON_LOG_OF_DISCOUNT_FACTORS,
-    )
-    today = datetime.date(2023, 1, 1)
-    df = discountingCurve.discountFactor(today, datetime.date(2024, 6, 1))
-    print(f"DF = {df}")
-    discountingCurve.plotZeroCouponCurve()
+    def forward(self, as_of: dt.date, t_1: dt.date, t_2: dt.date) -> float:
+        """Returns the simply compounded forward rate F(t;T,S) between times T and S, as
+        observed on t."""
+        return df_to_forward(
+            self.discount_factor(as_of, t_1),
+            self.discount_factor(as_of, t_2),
+            t_1,
+            t_2,
+        )
