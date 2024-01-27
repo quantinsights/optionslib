@@ -1,5 +1,5 @@
-"""This module contains functionality that supports volatility surfaces for FX
-options markets."""
+"""This module contains functionality that supports volatility surfaces for FX options
+markets."""
 
 import datetime as dt
 from typing import List
@@ -41,13 +41,14 @@ class FxVolatilitySurfacePoint:
 @define
 class FxVolatilitySurface:
     """
-    An class representing the Fx Volatility surface, which is a scalar field
-    F : R^2 -> R. The x-axis is the strike/moneyness of options and the y-axis
-    is the time-to-expiration. The z-axis is the implied vol.
+    An class representing the Fx Volatility surface, which is a scalar field F : R^2 ->
+    R. The x-axis is the strike/moneyness of options and the y-axis is the time-to-
+    expiration. The z-axis is the implied vol.
 
-    A volatility surface can use any parametric model such as Vanna-Volga or
-    SABR to compute vol. The underlying model is specified using
+    A volatility surface can use any parametric model such as Vanna-Volga or SABR to
+    compute vol. The underlying model is specified using
     fx_volatility_surface_parametric_model_type argument.
+
     """
 
     __fx_option_market_quotes: EuropeanVanillaFxOptionQuote = field(

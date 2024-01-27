@@ -1,5 +1,5 @@
-"""A module offering various helper functions to work with discount factors,
-dates etc."""
+"""A module offering various helper functions to work with discount factors, dates
+etc."""
 
 import calendar
 import datetime as dt
@@ -18,8 +18,8 @@ def length_of_year(year: int) -> int:
 
 
 def ensure_leap_year(date_value: dt.date) -> dt.date:
-    """Returns the 29th of February if the current year is a leap year, else
-    looks for the next near nearest 29th Feb."""
+    """Returns the 29th of February if the current year is a leap year, else looks for
+    the next near nearest 29th Feb."""
     if is_leap_year(date_value.year):
         return dt.date(date_value.year, 2, 29)
     elif is_leap_year(date_value.year + 1):
@@ -81,9 +81,11 @@ def last_in_month(year: int, month: int, day_of_week: DayOfWeek):
 
 
 def easter(year: int) -> dt.date:
-    """Butcher's algorithm to calculate the Easter day of any given year.
+    """
+    Butcher's algorithm to calculate the Easter day of any given year.
 
     Reference. https://en.wikipedia.org/wiki/Date_of_Easter
+
     """
     a = year % 19
     b = year // 100
@@ -151,8 +153,7 @@ def christmas_bumped_sun(year: int) -> dt.date:
 
 
 def boxing_day_bumped_sun(year: int) -> dt.date:
-    """Boxing day (if Christmas is sunday, boxing day moved from Monday to
-    Tuesday)"""
+    """Boxing day (if Christmas is sunday, boxing day moved from Monday to Tuesday)"""
     base = dt.date(year, 12, 26)
     if base.weekday() == DayOfWeek.MONDAY:
         return dt.date(year, 12, 27)
@@ -227,9 +228,11 @@ def adjust(
     bus_day_convention: BusinessDayConventions,
     holiday_calendar,
 ) -> dt.date:
-    """Converts an undajusted date to an adjusted date.
+    """
+    Converts an undajusted date to an adjusted date.
 
     Ref. https://en.wikipedia.org/wiki/Date_rolling
+
     """
     if holiday_calendar.is_holiday(unadjusted_date):
         following_date = add_period(

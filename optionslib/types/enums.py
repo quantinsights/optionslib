@@ -68,14 +68,15 @@ class DiscountingInterpolationMethod(IntEnum):
 
 
 class RollConventions(IntEnum):
-    """The purpose of this convention is to define how to roll dates when
-    building a schedule.
+    """
+    The purpose of this convention is to define how to roll dates when building a
+    schedule.
 
-    The standard approach in building a schedule is to start with a base
-    unadjusted date (one that does not have a business day convention
-    applied). To get the next date in the schedule, we take the base
-    date and the coupon tenor. Once this date is calculated, a roll-
-    convention is applied to compute the next schedule date.
+    The standard approach in building a schedule is to start with a base unadjusted date
+    (one that does not have a business day convention applied). To get the next date in
+    the schedule, we take the base date and the coupon tenor. Once this date is
+    calculated, a roll- convention is applied to compute the next schedule date.
+
     """
 
     DAY_1 = (1,)
@@ -121,12 +122,13 @@ class RollConventions(IntEnum):
 
 
 class BusinessDayConventions(StrEnum):
-    """When processing dates in finance, a cashflow cannot occur on a business
-    holiday.
+    """
+    When processing dates in finance, a cashflow cannot occur on a business holiday.
 
-    So, any non-business dates have to be converted to a nearby valid
-    business date. The business day convention together with the holiday
-    calendar defines exactly how this adjustment is to be made.
+    So, any non-business dates have to be converted to a nearby valid business date. The
+    business day convention together with the holiday calendar defines exactly how this
+    adjustment is to be made.
+
     """
 
     NO_ADJUST = "No adjustment"
@@ -166,10 +168,11 @@ class Period(StrEnum):
 
 
 class StubConvention(StrEnum):
-    """A stub is an irregular period in the front or rear of the schedule.
+    """
+    A stub is an irregular period in the front or rear of the schedule.
 
-    The StubConvention determines how a stub is created during schedule
-    generation.
+    The StubConvention determines how a stub is created during schedule generation.
+
     """
 
     NONE = "None"

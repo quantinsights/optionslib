@@ -12,10 +12,12 @@ from optionslib.types.enums import DayOfWeek, HolidayCalendarId
 
 @define
 class HolidayCalendar:
-    """In many calculations in financial mathematics, we are interested to know
-    if a given date is a business date or not.
+    """
+    In many calculations in financial mathematics, we are interested to know if a given
+    date is a business date or not.
 
     This class implements a few standard calendars.
+
     """
 
     __first_weekend_day = field(
@@ -59,17 +61,21 @@ class HolidayCalendar:
         return self.__holiday_dates
 
     def generate_calendar(self) -> None:
-        """Generates the holiday calendar Reference.
+        """
+        Generates the holiday calendar Reference.
 
         https://github.com/OpenGamma/Strata/blob/main/modules/basics/src/main/java/com/opengamma/strata/basics/date/GlobalHolidayCalendars.java
+
         """
         if self.holiday_calendar_id == HolidayCalendarId.LONDON:
             self.generate_london_calendar()
 
     def generate_london_calendar(self) -> None:
-        """Algorithm for the London holiday calendar dates.
+        """
+        Algorithm for the London holiday calendar dates.
 
         Reference. https://www.gov.uk/bank-holidays
+
         """
         holidays = []
 
@@ -139,8 +145,8 @@ class HolidayCalendar:
         self.__holiday_dates = holidays
 
     def remove_sat_sun(self, holidays: List[dt.date]) -> List[dt.date]:
-        """Removes the first weekend day and second weekend day from the list
-        of holidays."""
+        """Removes the first weekend day and second weekend day from the list of
+        holidays."""
         return list(
             filter(
                 lambda x: x.weekday() != self.first_weekend_day

@@ -11,8 +11,8 @@ from optionslib.types.enums import DiscountingInterpolationMethod
 
 
 def df_to_zero(df: float, t_1: dt.date, t_2: dt.date) -> float:
-    """Converts the discount factor P(t,T) to the annually compounded spot
-    interest rate Y(t,T)."""
+    """Converts the discount factor P(t,T) to the annually compounded spot interest rate
+    Y(t,T)."""
     tau = Actual365.year_fraction(t_1, t_2)
     if tau == 0.0:
         return 0.0
@@ -21,8 +21,8 @@ def df_to_zero(df: float, t_1: dt.date, t_2: dt.date) -> float:
 
 
 def df_to_rate(df: float, t_1: dt.date, t_2: dt.date) -> float:
-    """Converts the discount factor P(t,T) to continuously compounded spot
-    interest rate R(t)"""
+    """Converts the discount factor P(t,T) to continuously compounded spot interest rate
+    R(t)"""
     tau = Actual365.year_fraction(t_1, t_2)
     if tau == 0.0:
         return 0.0
@@ -31,8 +31,8 @@ def df_to_rate(df: float, t_1: dt.date, t_2: dt.date) -> float:
 
 
 def zero_to_df(y: float, t_1: dt.date, t_2: dt.date) -> float:
-    """Converts the annually compounded spot interest rate Y(t,T) to a discount
-    factor P(t,T)."""
+    """Converts the annually compounded spot interest rate Y(t,T) to a discount factor
+    P(t,T)."""
     tau = Actual365.year_fraction(t_1, t_2)
     if tau == 0.0:
         return 1.0

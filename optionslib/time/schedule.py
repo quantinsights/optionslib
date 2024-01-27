@@ -63,10 +63,11 @@ class SchedulePeriod:
 
 @define
 class Schedule:
-    """A complete schedule consisting of a list of `SchedulePeriods`.
+    """
+    A complete schedule consisting of a list of `SchedulePeriods`.
 
-    This typically forms the basis of financial calculations such as
-    accrued interest.
+    This typically forms the basis of financial calculations such as accrued interest.
+
     """
 
     # (unadjusted) start of the first schedule period
