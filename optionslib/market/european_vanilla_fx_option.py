@@ -1,7 +1,6 @@
 """A module for holding FX option market quotes."""
 
 import datetime as dt
-from typing import List
 
 import attrs
 from attrs import define, field
@@ -37,6 +36,3 @@ class EuropeanVanillaFxOption:
     option_type: OptionPayoff
     ccy1_notional: float = field(default=1.0)
     direction: Direction = field(default=Direction.BUY)
-
-
-QuotesListType = List[EuropeanVanillaFxOptionQuote]

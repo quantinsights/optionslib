@@ -10,7 +10,7 @@ class Direction(IntEnum):
     SELL = -1
 
 
-class FxVanillaEuropeanOptionQuoteConvention(IntEnum):
+class FxOptionQuoteConvention(IntEnum):
     """Fx option quote conventions."""
 
     DOMESTIC_PER_UNIT_OF_FOREIGN = auto()
