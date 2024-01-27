@@ -1,4 +1,5 @@
 """This module contains global-accessible enums."""
+
 from enum import Enum, IntEnum, StrEnum, auto
 
 

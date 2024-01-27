@@ -4,6 +4,7 @@ smile.
 Reference.
 https://quantophile.github.io/mathsummaries/post/2023/11/26/implementing-vanna-volga/
 """
+
 import datetime as dt
 from typing import Union
 
@@ -329,15 +330,11 @@ class VannaVolga:
 
     def d_plus(self, fwd, k, tau, sigma):
         """Returns d+ in the Black-Scholes model."""
-        return (np.log(fwd / k) + tau * (sigma**2) / 2) / (
-            sigma * np.sqrt(tau)
-        )
+        return (np.log(fwd / k) + tau * (sigma**2) / 2) / (sigma * np.sqrt(tau))
 
     def d_minus(self, fwd, k, tau, sigma):
         """Returns d- in the Black-Scholes model."""
-        return (np.log(fwd / k) - tau * (sigma**2) / 2) / (
-            sigma * np.sqrt(tau)
-        )
+        return (np.log(fwd / k) - tau * (sigma**2) / 2) / (sigma * np.sqrt(tau))
 
 
 VolatilitySurfaceModel = Union[VannaVolga]

@@ -7,6 +7,7 @@ integrator = Integrator(
     default_end=end,
 )
 """
+
 from typing import Union
 
 from attrs import define, field, validators

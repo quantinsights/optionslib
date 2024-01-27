@@ -1,4 +1,5 @@
 """Hoare's quicksort algorithm."""
+
 from typing import List, Any
 
 

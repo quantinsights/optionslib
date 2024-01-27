@@ -1,4 +1,5 @@
 """This module provides functionality to working with holiday calendars."""
+
 import datetime as dt
 from typing import List
 

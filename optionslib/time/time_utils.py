@@ -1,5 +1,6 @@
 """A module offering various helper functions to work with discount factors,
 dates etc."""
+
 import calendar
 import datetime as dt
 

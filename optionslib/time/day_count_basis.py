@@ -2,6 +2,7 @@
 
 Reference.  https://en.wikipedia.org/wiki/Day_count_convention.
 """
+
 import datetime as dt
 from abc import ABC, abstractmethod
 

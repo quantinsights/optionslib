@@ -1,4 +1,5 @@
 """A module that supports periodic frequency in finance."""
+
 import attrs
 from attrs import define, field
 

@@ -1,4 +1,5 @@
 """A module for holding FX option market quotes."""
+
 import datetime as dt
 from datetime import date
 from typing import List

@@ -1,5 +1,6 @@
 """This module contains functionality that supports volatility surfaces for FX
 options markets."""
+
 import datetime as dt
 from typing import List
 
@@ -54,7 +55,9 @@ class FxVolatilitySurface:
             List[EuropeanVanillaFxOptionQuote]
         )
     )
-    __fx_volatility_surface_parametric_model_type: FxVolatilitySurfaceParametricModel = field(
+    __fx_volatility_surface_parametric_model_type: (
+        FxVolatilitySurfaceParametricModel
+    ) = field(
         validator=attrs.validators.instance_of(
             FxVolatilitySurfaceParametricModel
         )
