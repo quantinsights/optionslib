@@ -18,6 +18,7 @@ from attrs import define, field, validators
 @define
 class RectangleConfig:
     """Config dataclass for rectangle integration."""
+
     steps: int = field(
         validator=validators.and_(validators.instance_of(int), validators.ge(0))
     )
@@ -26,6 +27,7 @@ class RectangleConfig:
 @define
 class MonteCarloConfig:
     """Config dataclass for Monte Carlo integration."""
+
     random_points: int = field(
         validator=validators.and_(validators.instance_of(int), validators.ge(0))
     )
