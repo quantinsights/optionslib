@@ -1,3 +1,5 @@
+"""Commonly used types."""
+
 import datetime as dt
 from typing import Union, Dict
 

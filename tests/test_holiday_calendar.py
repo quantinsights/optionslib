@@ -9,10 +9,13 @@ from optionslib.types.enums import DayOfWeek, HolidayCalendarId
 
 class TestHolidayCalendar(unittest.TestCase):
     """Unit tests for HolidayCalendar."""
+
     __london_calendar = HolidayCalendar(
         DayOfWeek.SATURDAY, DayOfWeek.SUNDAY, HolidayCalendarId.LONDON
     )
+
     def test_christmas(self):
+        """Test Christmas calculation."""
         self.assertEqual(
             self.__london_calendar.is_holiday(dt.date(2023, 12, 25)),
             True,
@@ -28,6 +31,7 @@ class TestHolidayCalendar(unittest.TestCase):
         )
 
     def test_boxing_day(self):
+        """Test Boxing Day calculation."""
         self.assertEqual(
             self.__london_calendar.is_holiday(dt.date(2023, 12, 26)),
             True,
@@ -43,6 +47,7 @@ class TestHolidayCalendar(unittest.TestCase):
         )
 
     def test_weekend(self):
+        """Test weekend calculation."""
         self.assertEqual(
             self.__london_calendar.is_holiday(dt.date(2023, 12, 9)),
             True,
@@ -51,6 +56,7 @@ class TestHolidayCalendar(unittest.TestCase):
         )
 
     def test_spring_day(self):
+        """Test Spring Day calculation."""
         self.assertEqual(
             self.__london_calendar.is_holiday(dt.date(2024, 5, 27)),
             True,
@@ -59,6 +65,7 @@ class TestHolidayCalendar(unittest.TestCase):
         )
 
     def test_early_may(self):
+        """Test Early May calculation."""
         self.assertEqual(
             self.__london_calendar.is_holiday(dt.date(2024, 5, 6)),
             True,

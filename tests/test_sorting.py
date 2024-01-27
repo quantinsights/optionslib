@@ -9,6 +9,7 @@ class TestQuickSort(unittest.TestCase):
     """Unit tests for quick_sort."""
 
     def test_quicksort1(self):
+        """Unit test for quick_sort."""
         arr = [4, 6, 2, 5, 7, 9, 1, 3]
         quick_sort(arr)
         self.assertEqual(arr, [1, 2, 3, 4, 5, 6, 7, 9])

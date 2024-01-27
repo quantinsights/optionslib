@@ -31,6 +31,7 @@ class Integrator:
     def check_proper_integral(
         self, attribute, default_end_value
     ):  # pylint: disable=W0613
+        """Check if interval is properly defined."""
         if self.default_start >= default_end_value:
             raise ValueError("Start value must be less than end value.")
 

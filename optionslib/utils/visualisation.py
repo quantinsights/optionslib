@@ -1,3 +1,5 @@
+"""Utility functions for visualisation."""
+
 from typing import Any
 
 from matplotlib import pyplot as plt

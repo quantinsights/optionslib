@@ -8,8 +8,9 @@ def partition(arr: List[Any], low: int, high: int) -> int:
     consisting of all elements smaller to the pivot, the other consisting of
     all elements larger than the pivot.
 
-    The pivot for convenience is chosen to be the first element of the array. The routine determines
-    the partition_idx: the position where the pivot must be placed, so that:
+    The pivot for convenience is chosen to be the first element of the array.
+    The routine determines the partition_idx -
+    the position where the pivot must be placed, so that:
 
     L=A[low...partition_idx-1] has elements <= pivot,
     R=A[partition_idx+1...high] has elements > pivot.
