@@ -3,7 +3,7 @@
 from datetime import date
 
 import numpy as np
-from attr import define
+from attr import define, field
 from scipy.stats import norm
 
 from optionslib.market.discounting_curve import DiscountingCurve, df_to_rate
@@ -26,26 +26,13 @@ class BlackCalculator:
     domestic_discounting_curve: DiscountingCurve
     sigma: float
 
-    @property
-    def year_fraction(self) -> float:
-        """Calculates year fraction from valuation date to option maturity."""
-        return Actual365.year_fraction(self.valuation_date, self.maturity)
-
-    @property
-    def d_plus(self):
-        """Calculates d plus."""
-        return (
-            np.log(self.atm_forward / self.strike)
-            + self.year_fraction * (self.sigma**2) / 2
-        ) / (self.sigma * np.sqrt(self.year_fraction))
-
-    @property
-    def d_minus(self):
-        """Calculates d minus."""
-        return (
-            np.log(self.atm_forward / self.strike)
-            - self.year_fraction * (self.sigma**2) / 2
-        ) / (self.sigma * np.sqrt(self.year_fraction))
+    # internal
+    __year_fraction: float | None = field(init=False, default=None)
+    __d_plus: float | None = field(init=False, default=None)
+    __d_minus: float | None = field(init=False, default=None)
+    __domestic_df: float | None = field(init=False, default=None)
+    __foreign_df: float | None = field(init=False, default=None)
+    __atm_forward: float | None = field(init=False, default=None)
 
     @property
     def omega(self):
@@ -63,23 +50,58 @@ class BlackCalculator:
         return self.option_definition.strike
 
     @property
+    def year_fraction(self) -> float:
+        """Calculates year fraction from valuation date to option maturity."""
+        if self.__year_fraction is None:
+            self.__year_fraction = Actual365.year_fraction(
+                self.valuation_date, self.maturity
+            )
+        return self.__year_fraction
+
+    @property
+    def d_plus(self):
+        """Calculates d plus."""
+        if self.__d_plus is None:
+            self.__d_plus = (
+                np.log(self.atm_forward / self.strike)
+                + self.year_fraction * (self.sigma**2) / 2
+            ) / (self.sigma * np.sqrt(self.year_fraction))
+        return self.__d_plus
+
+    @property
+    def d_minus(self):
+        """Calculates d minus."""
+        if self.__d_minus is None:
+            self.__d_minus = (
+                np.log(self.atm_forward / self.strike)
+                - self.year_fraction * (self.sigma**2) / 2
+            ) / (self.sigma * np.sqrt(self.year_fraction))
+        return self.__d_minus
+
+    @property
     def foreign_df(self):
         """Returns foreign discount factor."""
-        return self.foreign_discounting_curve.discount_factor(
-            self.valuation_date, self.maturity
-        )
+        if self.__foreign_df is None:
+            self.__foreign_df = self.foreign_discounting_curve.discount_factor(
+                self.valuation_date, self.maturity
+            )
+        return self.__foreign_df
 
     @property
     def domestic_df(self):
         """Returns domestic discount factor."""
-        return self.domestic_discounting_curve.discount_factor(
-            self.valuation_date, self.maturity
-        )
+        if self.__domestic_df is None:
+            self.__domestic_df = self.domestic_discounting_curve.discount_factor(
+                self.valuation_date, self.maturity
+            )
+        return self.__domestic_df
 
     @property
     def atm_forward(self):
         """Returns the forward contract strike F(0,T)."""
-        return self.fx_spot * self.foreign_df / self.domestic_df
+        if self.__atm_forward is None:
+            self.__atm_forward = self.fx_spot * self.foreign_df / self.domestic_df
+        return self.__atm_forward
 
     def value(
         self,

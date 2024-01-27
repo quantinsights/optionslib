@@ -25,44 +25,25 @@ from optionslib.types.var_types import NumericType
 class VannaVolga:
     """This is an abstraction of the Vanna-Volga approximation."""
 
-    __fx_option_market_quotes: list[EuropeanVanillaFxOptionQuote] = field(
+    fx_option_market_quotes: list[EuropeanVanillaFxOptionQuote] = field(
         validator=attrs.validators.instance_of(list[EuropeanVanillaFxOptionQuote])
     )
-    __s_t: float = field(
+    spot: float = field(
         validator=attrs.validators.and_(
             attrs.validators.instance_of(NumericType), attrs.validators.ge(0)
         )
     )
-    __foreign_ccy_discounting_curve: DiscountingCurve = field(
+    foreign_ccy_discounting_curve: DiscountingCurve = field(
         validator=attrs.validators.instance_of(DiscountingCurve)
     )
-    __domestic_ccy_discounting_curve: DiscountingCurve = field(
+    domestic_ccy_discounting_curve: DiscountingCurve = field(
         validator=attrs.validators.instance_of(DiscountingCurve)
     )
 
+    # internal
     __risk_rev: dict[dt.date, float] = field(init=False)
     __stdl: dict[dt.date, float] = field(init=False)
     __vwb: dict[dt.date, float] = field(init=False)
-
-    @property
-    def fx_option_market_quotes(self) -> list[EuropeanVanillaFxOptionQuote]:
-        """Get FX option market quotes."""
-        return self.__fx_option_market_quotes
-
-    @property
-    def spot(self):
-        """Return the value of the underlying at time t(TODAY)"""
-        return self.__s_t
-
-    @property
-    def foreign_ccy_discounting_curve(self) -> DiscountingCurve:
-        """Returns the foreign currency discounting curve."""
-        return self.__foreign_ccy_discounting_curve
-
-    @property
-    def domestic_ccy_discounting_curve(self) -> DiscountingCurve:
-        """Returns the domestic currency discounting curve."""
-        return self.__domestic_ccy_discounting_curve
 
     @property
     def valuation_date(self) -> dt.date:
@@ -181,7 +162,7 @@ class VannaVolga:
         foreign_df = self.foreign_ccy_discounting_curve.discount_factor(t_1, t_2)
         domestic_df = self.domestic_ccy_discounting_curve.discount_factor(t_1, t_2)
         fwd_points = foreign_df / domestic_df
-        fwd = fwd_points * self.__s_t
+        fwd = fwd_points * self.spot
         return fwd
 
     def y_1(self, k_1, k_2, k_3, k):
