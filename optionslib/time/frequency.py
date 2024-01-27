@@ -25,10 +25,12 @@ class Frequency:
 
     @property
     def num(self):
+        """Returns the number of periods in frequency."""
         return self._num
 
     @property
     def units(self):
+        """Returns the unit of frequency."""
         return self._units
 
     def __repr__(self):

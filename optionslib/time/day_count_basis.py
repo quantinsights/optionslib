@@ -8,7 +8,7 @@ Reference.  https://en.wikipedia.org/wiki/Day_count_convention.
 import datetime as dt
 from abc import ABC, abstractmethod
 
-from optionslib.time import time_utils
+from optionslib.time.time_utils import length_of_year
 
 
 class DayCountBase(ABC):
@@ -25,7 +25,6 @@ class DayCountBase(ABC):
     def year_fraction(d_1: dt.date, d_2: dt.date) -> float:
         """Each child class must provide an implementation of the year_fraction()
         method."""
-        pass
 
 
 class Actual360(DayCountBase):
@@ -71,14 +70,14 @@ class ActualActual(DayCountBase):
         y_2 = d_2.year
 
         if y_1 == y_2:
-            return (d_2 - d_1).days / utils.length_of_year(y_1)
-        else:
-            j_i = dt.date(y_1 + 1, 1, 1)
-            j_f = dt.date(y_2, 1, 1)
-            n_i = utils.length_of_year(y_1)
-            n_f = utils.length_of_year(y_2)
-            y = y_2 - y_1
-            return (j_i - d_1).days / n_i + y + (d_2 - j_f).days / n_f
+            return (d_2 - d_1).days / length_of_year(y_1)
+
+        j_i = dt.date(y_1 + 1, 1, 1)
+        j_f = dt.date(y_2, 1, 1)
+        n_i = length_of_year(y_1)
+        n_f = length_of_year(y_2)
+        y = y_2 - y_1
+        return (j_i - d_1).days / n_i + y + (d_2 - j_f).days / n_f
 
 
 class Thirty360(DayCountBase):
