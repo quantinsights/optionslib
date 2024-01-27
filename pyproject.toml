@@ -4,6 +4,7 @@ version = "0.1.0"
 authors = ["quantophile", "bwrob"]
 description = ""
 readme = "README.md"
+packages = [{ include = "optionslib" }, ]
 
 [tool.poetry.dependencies]
 python = "^3.11"
@@ -13,7 +14,7 @@ scipy = "^1.11"
 pandas = "^2.2.0"
 
 [tool.poetry.group.dev.dependencies]
-black = {extras = ["jupyter"], version = "*"}
+black = {extras = ["jupyter"], version = "^24.0"}
 pylint = "^3.0"
 mypy = "^1.7"
 docformatter = "^1.7"
@@ -28,4 +29,4 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.black]
 line-length = 80
-target-version = ["py311"]
+target-version = ["py312"]

@@ -6,7 +6,8 @@ from typing import List
 import attrs
 from attrs import define, field
 
-from optionslib.time import time_utils
+from optionslib.time.frequency import Frequency
+from optionslib.time.holiday_calendar import HolidayCalendar
 from optionslib.time.time_utils import (
     add_period,
     is_leap_year,
@@ -19,8 +20,6 @@ from optionslib.types.enums import (
     Period,
     StubConvention,
 )
-from optionslib.time.frequency import Frequency
-from optionslib.time.holiday_calendar import HolidayCalendar
 
 
 @define
