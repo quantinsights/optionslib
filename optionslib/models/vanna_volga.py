@@ -15,7 +15,7 @@ from attrs import define, field
 from scipy.stats import norm
 
 from optionslib.market.discounting_curve import DiscountingCurve
-from optionslib.market.european_vanilla_fx_option import EuropeanVanillaFxOptionQuote
+from optionslib.products.european_vanilla_fx_option import EuropeanVanillaFxOptionQuote
 from optionslib.time.day_count_basis import Actual365
 from optionslib.types.enums import FxOptionsMarketQuote
 from optionslib.types.var_types import NumericType
