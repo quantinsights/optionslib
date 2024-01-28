@@ -7,7 +7,7 @@ from typing import List
 import attrs
 from attrs import define, field
 
-from optionslib.market.european_vanilla_fx_option import (
+from optionslib.products.european_vanilla_fx_option import (
     EuropeanVanillaFxOptionQuote,
 )
 from optionslib.models.vanna_volga import VannaVolga, VolatilitySurfaceModel
