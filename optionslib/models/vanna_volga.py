@@ -1,9 +1,8 @@
-"""
-This module implements the Vanna-Volga approximation for constructing a smile.
+"""This module implements the Vanna-Volga approximation for constructing a
+smile.
 
 Reference.
 https://quantophile.github.io/mathsummaries/post/2023/11/26/implementing-vanna-volga/
-
 """
 
 import datetime as dt
@@ -126,14 +125,15 @@ class VannaVolga:
         return -norm.ppf(0.25 * compound_factor)
 
     def k_atm_call(self, exp_date) -> float:
-        """Compute the ATM strike for a given smile(with certain expiration date)"""
+        """Compute the ATM strike for a given smile(with certain expiration
+        date)"""
         fwd = self.forward(self.valuation_date, exp_date)
         time_to_expiry = Actual365.year_fraction(self.valuation_date, exp_date)
         return fwd * np.exp((self.sigma_atm(exp_date) ** 2) / 2 * time_to_expiry)
 
     def k_25d_call(self, exp_date) -> float:
-        """Compute the 25-delta call strike for a given smile(with certain expiration
-        date)"""
+        """Compute the 25-delta call strike for a given smile(with certain
+        expiration date)"""
         fwd = self.forward(self.valuation_date, exp_date)
         time_to_expiry = Actual365.year_fraction(self.valuation_date, exp_date)
 
@@ -145,8 +145,8 @@ class VannaVolga:
         )
 
     def k_25d_put(self, exp_date) -> float:
-        """Compute the 25-delta put strike for a given smile(with certain expiration
-        date)"""
+        """Compute the 25-delta put strike for a given smile(with certain
+        expiration date)"""
         fwd = self.forward(self.valuation_date, exp_date)
         time_to_expiry = Actual365.year_fraction(self.valuation_date, exp_date)
 
@@ -166,19 +166,22 @@ class VannaVolga:
         return fwd
 
     def y_1(self, k_1, k_2, k_3, k):
-        """Returns the term y_1 in first order linear approximation of VV- smile."""
+        """Returns the term y_1 in first order linear approximation of VV-
+        smile."""
         return (np.log(k_2 / k) * np.log(k_3 / k)) / (
             np.log(k_3 / k_1) * np.log(k_2 / k_1)
         )
 
     def y_2(self, k_1, k_2, k_3, k):
-        """Returns the term y_2 in first order linear approximation of VV- smile."""
+        """Returns the term y_2 in first order linear approximation of VV-
+        smile."""
         return (np.log(k / k_1) * np.log(k_3 / k)) / (
             np.log(k_2 / k_1) * np.log(k_3 / k_2)
         )
 
     def y_3(self, k_1, k_2, k_3, k):
-        """Returns the term y_3 in first order linear approximation of VV- smile."""
+        """Returns the term y_3 in first order linear approximation of VV-
+        smile."""
         return (np.log(k / k_1) * np.log(k / k_2)) / (
             np.log(k_3 / k_1) * np.log(k_3 / k_2)
         )
@@ -216,7 +219,8 @@ class VannaVolga:
         sigma_2: float,
         sigma_3: float,
     ) -> float:
-        """Returns the term D2(K) in the second-order approximation of VV- smile."""
+        """Returns the term D2(K) in the second-order approximation of VV-
+        smile."""
         fwd = self.forward(self.valuation_date, t_exp)
         tau = Actual365.year_fraction(self.valuation_date, t_exp)
         return (
