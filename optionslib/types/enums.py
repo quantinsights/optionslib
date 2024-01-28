@@ -181,3 +181,18 @@ class StubConvention(StrEnum):
     SHORT_FINAL = "Short Final"
     LONG_FINAL = "Long Final"
     BOTH = "Both"
+
+
+class BondQuoteConvention(StrEnum):
+    """
+    A bond mark could be one of several types:
+    - yield
+    - z-spread on top of a sovereign risk-free curve
+    - clean price
+    - dirty price
+    """
+
+    YIELD = "Yield"
+    Z_SPREAD = "Z-Spread"
+    CLEAN_PRICE = "Clean-price"
+    DIRTY_PRICE = "Dirty-Price"
