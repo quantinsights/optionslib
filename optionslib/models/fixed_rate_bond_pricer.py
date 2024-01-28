@@ -191,6 +191,6 @@ class FixedRateBondPricer:
             num_of_periods += 1
 
         # Normalization
-        return pv / self._notionals_per_coupon[0]
+        return pv / self._notionals_per_coupon[self._coupon_idx]
 
 
