@@ -36,10 +36,43 @@ class TestFixedRateBond(unittest.TestCase):
             frequency=2,
         )
 
-        # dummy discounting curve
+        # mocked discounting curve
         self.discounting_curve = DiscountingCurve(
-            dates=[dt.date(2024, 1, 23)],
-            discount_factors=[1.0],
+            dates=[
+                dt.date(2024, 1, 23),
+                dt.date(2024, 4, 16),
+                dt.date(2024, 10, 16),
+                dt.date(2025, 4, 16),
+                dt.date(2025, 10, 16),
+                dt.date(2026, 4, 16),
+                dt.date(2026, 10, 16),
+                dt.date(2027, 4, 16),
+                dt.date(2027, 10, 16),
+                dt.date(2028, 4, 16),
+                dt.date(2028, 10, 16),
+                dt.date(2029, 4, 16),
+                dt.date(2029, 10, 16),
+                dt.date(2030, 4, 16),
+                dt.date(2030, 10, 16),
+                dt.date(2031, 4, 16),
+                dt.date(2031, 10, 16),
+                dt.date(2032, 4, 16),
+                dt.date(2032, 10, 16),
+                dt.date(2033, 4, 16),
+                dt.date(2033, 10, 16),
+                dt.date(2034, 4, 16),
+                dt.date(2034, 10, 16),
+                dt.date(2035, 4, 16),
+                dt.date(2035, 10, 16),
+                dt.date(2036, 4, 16),
+                dt.date(2036, 10, 16),
+                dt.date(2037, 4, 16),
+                dt.date(2037, 10, 16),
+                dt.date(2038, 4, 16),
+                dt.date(2038, 10, 16),
+                dt.date(2039, 4, 16),
+            ],
+            discount_factors=[np.exp(-0.04 * t / 2) for t in range(32)],
             interpolation_method=DiscountingInterpolationMethod.LINEAR_ON_LOG_OF_DISCOUNT_FACTORS,
         )
 
@@ -48,6 +81,7 @@ class TestFixedRateBond(unittest.TestCase):
             bond=self.bond,
             discounting_curve=self.discounting_curve,
             clean_price=0.994735,
+            z_spread=0.00256,
         )
 
     def test_fixed_rate_bond_price_to_par(self):
@@ -84,4 +118,13 @@ class TestFixedRateBond(unittest.TestCase):
             0.0116875,
             places=5,
             msg="Failed test_fixed_rate_bond_accrued_interest, the accrued interest must be 1.116875%",
+        )
+
+    def test_fixed_rate_bond_pv(self):
+        # Compute the pv of the bond
+        self.assertAlmostEqual(
+            self.pricer.pv() / 10e6,
+            0.994735,
+            places=3,
+            msg="Failed test_fixed_rate_bond_accrued_interest, the pv must be 99.4735%!",
         )

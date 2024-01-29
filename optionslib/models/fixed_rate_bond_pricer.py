@@ -1,12 +1,11 @@
 """A pricer for fixed rate bonds."""
 
-
 import datetime as dt
 from typing import Optional
 import numpy as np
 import scipy.optimize
 import attrs
-from attrs import define,field
+from attrs import define, field
 
 from optionslib.market.discounting_curve import DiscountingCurve
 from optionslib.products.fixed_rate_bond import FixedRateBond
@@ -17,43 +16,44 @@ from optionslib.types.var_types import NumericType
 class FixedRateBondPricer:
     """A pricer for fixed coupon bonds."""
 
-    _pv_date: dt.date = field(
+    pv_date: dt.date = field(
         alias="pv_date", validator=attrs.validators.instance_of(dt.date)
     )
 
-    _bond: FixedRateBond = field(
+    bond: FixedRateBond = field(
         alias="bond", validator=attrs.validators.instance_of(FixedRateBond)
     )
 
-    _discounting_curve: DiscountingCurve = field(
+    discounting_curve: DiscountingCurve = field(
         alias="discounting_curve",
         validator=attrs.validators.instance_of(DiscountingCurve),
     )
 
-    _z_spread: Optional[NumericType] = field(
+    z_spread: Optional[NumericType] = field(
         alias="z_spread",
         default=None,
         validator=attrs.validators.instance_of(Optional[NumericType]),
     )
 
-    _clean_price: Optional[NumericType] = field(
+    clean_price: Optional[NumericType] = field(
         alias="clean_price",
         default=None,
         validator=attrs.validators.instance_of(Optional[NumericType]),
     )
 
-    _dirty_price: Optional[NumericType] = field(
+    dirty_price: Optional[NumericType] = field(
         alias="dirty_price",
         default=None,
         validator=attrs.validators.instance_of(Optional[NumericType]),
     )
 
-    _yield_to_maturity: Optional[NumericType] = field(
+    yield_to_maturity: Optional[NumericType] = field(
         alias="yield_to_maturity",
         default=None,
         validator=attrs.validators.instance_of(Optional[NumericType]),
     )
 
+    # internal
     _is_bullet: bool = field(init=False)
     _coupon_idx: int = field(init=False)
     _notionals_per_coupon: np.ndarray = field(init=False)
@@ -87,31 +87,6 @@ class FixedRateBondPricer:
             ]
         )
 
-    @property
-    def pv_date(self) -> dt.date:
-        """Get the pv date."""
-        return self._pv_date
-
-    @property
-    def bond(self) -> FixedRateBond:
-        """Get the fixed rate bond instrument."""
-        return self._bond
-
-    @property
-    def discounting_curve(self) -> DiscountingCurve:
-        """Get the risk-free discounting curve."""
-        return self._discounting_curve
-
-    @property
-    def z_spread(self):
-        """Get the z-spread for the bond."""
-        return self._z_spread
-
-    @property
-    def clean_price(self):
-        """Get the clean price of the bond."""
-        return self._clean_price
-
     def accrued_interest(self):
         """Convert the clean-price to a dirty price."""
         accrual_start_date = self.bond.accrual_schedule.schedule_periods[
@@ -138,33 +113,31 @@ class FixedRateBondPricer:
     def clean_price_to_dirty_price(self):
         """Convert the clean-price to a dirty price."""
 
-        if self._clean_price > 0.0:
+        if self.clean_price > 0.0:
 
-            self._dirty_price = self._clean_price + self.accrued_interest()
+            self.dirty_price = self.clean_price + self.accrued_interest()
 
-            return self._dirty_price
+            return self.dirty_price
 
         return None
 
     def dirty_price_to_clean_price(self):
         """Convert the dirty-price to a clean price."""
 
-        if self._dirty_price > 0.0:
+        if self.dirty_price > 0.0:
 
-            self._clean_price = self._dirty_price + self.accrued_interest()
+            self.clean_price = self.dirty_price + self.accrued_interest()
 
-            return self._clean_price
+            return self.clean_price
 
         return None
 
     def clean_price_to_yield(self) -> Optional[float]:
-        """
-        Solves for the yield of the bond, given a clean price.
-        """
-        if self._clean_price > 0.0:
+        """Solves for the yield of the bond, given a clean price."""
+        if self.clean_price > 0.0:
 
             def f(x):
-                return self.yield_to_clean_price(x) - self._clean_price
+                return self.yield_to_clean_price(x) - self.clean_price
 
             yld = scipy.optimize.newton(f, 0.001, tol=1e-6)
             return yld
@@ -172,9 +145,7 @@ class FixedRateBondPricer:
         return None
 
     def yield_to_clean_price(self, yield_to_mat: float) -> float:
-        """
-        Convert the YTM of a bond to a clean price.
-        """
+        """Convert the YTM of a bond to a clean price."""
         pv = 0.0
         df = 1.0
         num_of_periods = 1
@@ -193,4 +164,51 @@ class FixedRateBondPricer:
         # Normalization
         return pv / self._notionals_per_coupon[self._coupon_idx]
 
+    def pv(self):
+        """Compute the PV of bond using the risk-free discounting curve and z-spread."""
+        if not (self.discounting_curve or self.z_spread):
+            raise ValueError(
+                "The risk-free discounting curve and z-spread must be supplied!"
+            )
 
+        discounting_curve_to_use: DiscountingCurve = self.discounting_curve.add_spread(
+            self.z_spread
+        )
+        pv = 0.0
+
+        max_iter = len(self.bond.accrual_schedule.schedule_periods)
+
+        for i in range(self._coupon_idx, max_iter):
+            accrual_end_date = self.bond.accrual_schedule.schedule_periods[
+                i
+            ].adjusted_end_date
+
+            df = discounting_curve_to_use.discount_factor(
+                self.pv_date, accrual_end_date
+            )
+            pv += df * (
+                self.bond.coupon / self.bond.frequency * self._notionals_per_coupon[i]
+                + self._notional_repayment[i]
+            )
+
+        return pv
+
+    def dv01(self):
+        """
+        Compute the numerical derivative
+        dP/dy = (P(y+0.0001) - P(y))/0.0001
+        """
+        delta = 0.0001
+        x_0 = self.yield_to_maturity
+        funct = self.yield_to_clean_price
+
+        return (funct(x_0 + delta) - funct(x_0)) / delta
+
+    def convexity(self):
+        """Compute the central difference d2P/dy2 = P(y+0.0001)-2P(y) +
+        P(y-0.0001)/(0.0001^2)"""
+        delta = 0.0001
+        x_0 = self.yield_to_maturity
+        funct = self.yield_to_clean_price
+
+        return (funct(x_0 + delta) - 2 * funct(x_0) + funct(x_0 - delta)) / delta**2

@@ -1,6 +1,4 @@
-"""
-This module provides support for valuing fixed rate bonds.
-"""
+"""This module provides support for valuing fixed rate bonds."""
 
 from typing import List, Any
 import attrs.validators
@@ -14,11 +12,8 @@ from optionslib.time.day_count_basis import DayCountBase
 
 @define
 class FixedRateBond:
-    """
-    An abstraction for a fixed-rate coupon-bearing bond
-    that makes a stream of periodic coupon payments
-    and principal repayment at maturity.
-    """
+    """An abstraction for a fixed-rate coupon-bearing bond that makes a stream of
+    periodic coupon payments and principal repayment at maturity."""
 
     _isin: str = field(alias="isin", validator=attrs.validators.instance_of(str))
 
@@ -46,17 +41,17 @@ class FixedRateBond:
 
     @property
     def isin(self) -> str:
-        """Get the bond ISIN identifier"""
+        """Get the bond ISIN identifier."""
         return self._isin
 
     @property
     def accrual_schedule(self) -> Schedule:
-        """Get the underlying cashflow schedule"""
+        """Get the underlying cashflow schedule."""
         return self._accrual_schedule
 
     @property
     def coupon(self) -> NumericType:
-        """Get the fixed coupon rate"""
+        """Get the fixed coupon rate."""
         return self._coupon
 
     @property
@@ -66,10 +61,10 @@ class FixedRateBond:
 
     @property
     def accrual_basis(self) -> Any:
-        """Get the basis"""
+        """Get the basis."""
         return self._accrual_basis
 
     @property
     def frequency(self) -> int:
-        """Get the coupon frequency"""
+        """Get the coupon frequency."""
         return self._frequency
