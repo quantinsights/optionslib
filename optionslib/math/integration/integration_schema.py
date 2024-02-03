@@ -5,12 +5,11 @@ from typing import Callable
 import numpy as np
 
 from optionslib.math.integration.integration_schema_configs import (
-    RectangleConfig,
     IntegrationConfig,
     MonteCarloConfig,
+    RectangleConfig,
 )
 from optionslib.types.var_types import NumericType
-
 
 IntegrationSchema = Callable[
     [Callable, NumericType, NumericType, IntegrationConfig], NumericType

@@ -1,18 +1,18 @@
 """An integrator class that allows to perform integration using different schemas."""
 
-from typing import Optional, Callable, Type
+from typing import Callable, Optional, Type
 
 from attrs import define, field
 
 from optionslib.math.integration.integration_schema import (
-    rectangle_rule,
-    monte_carlo,
     IntegrationSchema,
+    monte_carlo,
+    rectangle_rule,
 )
 from optionslib.math.integration.integration_schema_configs import (
-    RectangleConfig,
     IntegrationConfig,
     MonteCarloConfig,
+    RectangleConfig,
 )
 from optionslib.types.var_types import NumericType
 

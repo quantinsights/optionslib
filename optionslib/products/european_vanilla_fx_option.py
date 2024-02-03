@@ -5,7 +5,7 @@ import datetime as dt
 import attrs
 from attrs import define, field
 
-from optionslib.types.enums import FxOptionsMarketQuote, OptionPayoff, Direction
+from optionslib.types.enums import Direction, FxOptionsMarketQuote, OptionPayoff
 from optionslib.types.var_types import NumericType
 
 

@@ -1,6 +1,7 @@
 """Discounting Curve."""
 
 import datetime as dt
+
 import numpy as np
 from attr import define, field
 

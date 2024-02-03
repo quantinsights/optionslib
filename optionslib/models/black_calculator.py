@@ -9,10 +9,7 @@ from scipy.stats import norm
 from optionslib.market.discounting_curve import DiscountingCurve, df_to_rate
 from optionslib.products.european_vanilla_fx_option import EuropeanVanillaFxOption
 from optionslib.time.day_count_basis import Actual365
-from optionslib.types.enums import (
-    FxOptionQuoteConvention,
-    DeltaConvention,
-)
+from optionslib.types.enums import DeltaConvention, FxOptionQuoteConvention
 
 
 @define
