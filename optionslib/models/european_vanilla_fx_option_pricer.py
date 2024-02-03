@@ -12,10 +12,12 @@ from optionslib.products.european_vanilla_fx_option import EuropeanVanillaFxOpti
 
 @define
 class EuropeanVanillaFxOptionPricer:
-    """A pricer for European Vanilla FX Options that uses the `BlackCalculator`.
+    """
+    A pricer for European Vanilla FX Options that uses the `BlackCalculator`.
 
-    Once initialized acts like callable returning Black calculator
-    with volatility set from surface.
+    Once initialized acts like callable returning Black calculator with volatility set
+    from surface.
+
     """
 
     valuationDate: dt.date
