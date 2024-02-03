@@ -5,9 +5,9 @@ import datetime as dt
 from attr import define
 
 from optionslib.market.discounting_curve import DiscountingCurve
-from optionslib.products.european_vanilla_fx_option import EuropeanVanillaFxOption
 from optionslib.market.fx_volatility_surface import FxVolatilitySurface
 from optionslib.models.black_calculator import BlackCalculator
+from optionslib.products.european_vanilla_fx_option import EuropeanVanillaFxOption
 
 
 @define

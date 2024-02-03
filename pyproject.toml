@@ -28,6 +28,7 @@ pre-commit = "^3.5"
 doxy = "^0.3.2"
 coverage = "^7.3.2"
 pylint = "^3.0"
+isort = "^5.13.2"
 
 
 [tool.black]
@@ -40,6 +41,10 @@ in-place = true
 black = true
 pre-summary-newline = true
 blank = true
+
+
+[tool.isort]
+profile = "black"
 
 
 [tool.pylint.main]

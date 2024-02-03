@@ -1,6 +1,6 @@
 """Hoare's quicksort algorithm."""
 
-from typing import List, Any
+from typing import Any, List
 
 
 def partition(arr: List[Any], low: int, high: int) -> int:
