@@ -25,6 +25,13 @@ def df_to_rate(discount_factor: float, t_1: dt.date, t_2: dt.date) -> float:
     return -(np.log(discount_factor)) / tau if tau else 0
 
 
+def rate_to_df(rate: float, t_1: dt.date, t_2: dt.date) -> float:
+    """Converts the continuously compounded spot interest rate R(t) to a discount factor
+    P(t,T)"""
+    tau = Actual365.year_fraction(t_1, t_2)
+    return np.exp(-rate * tau)
+
+
 def zero_to_df(y: float, t_1: dt.date, t_2: dt.date) -> float:
     """Converts the annually compounded spot interest rate Y(t,T) to a discount factor
     P(t,T)."""
@@ -118,14 +125,16 @@ class DiscountingCurve:
 
         match self.interpolation_method:
             case DiscountingInterpolationMethod.LINEAR_ON_DISCOUNT_FACTORS:
-                interpolator = LinearInterpolator(self.dates, self.discount_factors)
+                interpolator = LinearInterpolator(
+                    self.dates, self.discount_factors, extrapolate=True
+                )
                 # P(0,T) = P(0,t) x P(t,T)
                 return interpolator(t_2) / interpolator(t_1)
             case DiscountingInterpolationMethod.LINEAR_ON_RATES:
                 rates = np.ndarray(
                     [self.rate(anchor_date, t_1) for i in len(self.discount_factors)]
                 )
-                interpolator = LinearInterpolator(self.dates, rates)
+                interpolator = LinearInterpolator(self.dates, rates, extrapolate=True)
 
                 def compound_from_anchor(t):
                     r_t = interpolator(t)
@@ -138,7 +147,9 @@ class DiscountingCurve:
                 log_rates = np.ndarray(
                     [np.log(self.rate(anchor_date, t_)) for t_ in self.dates]
                 )
-                interpolator = LinearInterpolator(self.dates, log_rates)
+                interpolator = LinearInterpolator(
+                    self.dates, log_rates, extrapolate=True
+                )
 
                 def compound_from_anchor_log(t):
                     log_r_t = interpolator(t)
@@ -149,7 +160,7 @@ class DiscountingCurve:
                 return compound_from_anchor_log(t_1) / compound_from_anchor_log(t_2)
             case DiscountingInterpolationMethod.LINEAR_ON_LOG_OF_DISCOUNT_FACTORS:
                 log_dfs = np.log(self.discount_factors)
-                interpolator = LinearInterpolator(self.dates, log_dfs)
+                interpolator = LinearInterpolator(self.dates, log_dfs, extrapolate=True)
 
                 log_p_t_1 = interpolator(t_1)
                 log_p_t_2 = interpolator(t_2)
@@ -185,3 +196,19 @@ class DiscountingCurve:
             t_1,
             t_2,
         )
+
+    def add_spread(self, spread: float):
+        """Adds a fixed spread adjustment to the discounting rates"""
+        curr_rates = [
+            df_to_rate(self.discount_factors[i], self.dates[0], self.dates[i])
+            for i in range(len(self.dates))
+        ]
+
+        rates_plus_spd = [curr_rates[i] + spread for i in range(len(self.dates))]
+
+        self.discount_factors = [
+            rate_to_df(rates_plus_spd[i], self.dates[0], self.dates[i])
+            for i in range(len(self.dates))
+        ]
+
+        return self
