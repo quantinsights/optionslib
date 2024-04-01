@@ -32,7 +32,7 @@ isort = "^5.13.2"
 
 
 [tool.black]
-target-version = ["py312"]
+target-version = ["py311"]
 
 
 [tool.docformatter]
@@ -85,10 +85,6 @@ class-naming-style = "PascalCase"
 # Naming style matching correct constant names.
 const-naming-style = "UPPER_CASE"
 
-# Minimum line length for functions/classes that require docstrings, shorter ones
-# are exempt.
-docstring-min-length = 2
-
 # Naming style matching correct function names.
 function-naming-style = "snake_case"
 
@@ -107,27 +103,16 @@ variable-naming-style = "snake_case"
 # Good variable names which should always be accepted, separated by a comma.
 good-names = ["i", "j", "k", "_"]
 
+# Minimum line length for functions/classes that require docstrings, shorter ones
+# are exempt.
+docstring-min-length = -1
+
 # Regular expression which should only match function or class names that do not
 # require a docstring.
-no-docstring-rgx = "^_"
-
-# List of decorators that produce properties, such as abc.abstractproperty. Add
-# to this list to register other decorators that produce valid properties. These
-# decorators are taken in consideration only for invalid-name.
-property-classes = ["abc.abstractproperty"]
+no-docstring-rgx = ""
 
 # List of method names used to declare (i.e. assign) instance attributes.
-defining-attr-methods = ["__init__", "__new__", "setUp", "asyncSetUp", "__post_init__"]
-
-# List of member names, which should be excluded from the protected access
-# warning.
-exclude-protected = ["_asdict", "_fields", "_replace", "_source", "_make", "os._exit"]
-
-# List of valid names for the first argument in a class method.
-valid-classmethod-first-arg = ["cls"]
-
-# List of valid names for the first argument in a metaclass class method.
-valid-metaclass-classmethod-first-arg = ["mcs"]
+defining-attr-methods = ["__init__", "__new__", "__post_init__"]
 
 # Maximum number of arguments for function / method.
 max-args = 10
@@ -139,7 +124,7 @@ max-attributes = 10
 max-bool-expr = 5
 
 # Maximum number of branch for function / method body.
-max-branches = 12
+max-branches = 10
 
 # Maximum number of locals for function / method body.
 max-locals = 15
@@ -148,7 +133,7 @@ max-locals = 15
 max-parents = 7
 
 # Maximum number of public methods for a class (see R0904).
-max-public-methods = 20
+max-public-methods = 30
 
 # Maximum number of return / yield for function / method body.
 max-returns = 6
@@ -157,7 +142,7 @@ max-returns = 6
 max-statements = 50
 
 # Minimum number of public methods for a class (see R0903).
-min-public-methods = 2
+min-public-methods = -1
 
 [tool.pylint.exceptions]
 # Exceptions that will emit a warning when caught.
@@ -197,11 +182,7 @@ notes = [
 # Disable the message, report, category or checker with the given id(s).
 disable = [
     "fixme",
-    "too-few-public-methods",
-    "too-many-instance-attributes",
-    "too-many-public-methods",
 ]
-
 
 [tool.pylint.refactoring]
 # Maximum number of nested blocks for function / method body
