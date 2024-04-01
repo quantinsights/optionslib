@@ -20,21 +20,21 @@ class EuropeanVanillaFxOptionPricer:
 
     """
 
-    valuationDate: dt.date
-    europeanVanillaFxOption: EuropeanVanillaFxOption
-    fxSpot: float
-    foreignDiscountingCurve: DiscountingCurve
-    domesticDiscountingCurve: DiscountingCurve
-    fxVolatilitySurface: FxVolatilitySurface
+    domestic_discounting_curve: DiscountingCurve
+    european_vanilla_fx_option: EuropeanVanillaFxOption
+    foreign_discounting_curve: DiscountingCurve
+    fx_spot: float
+    fx_volatility_surface: FxVolatilitySurface
+    valuation_date: dt.date
 
     def __call__(self, strike, maturity):
         """Returns Black calculator."""
-        sigma = self.fxVolatilitySurface.volatility(strike, maturity).sigma
+        sigma = self.fx_volatility_surface.volatility(strike, maturity).sigma
         return BlackCalculator(
-            self.valuationDate,
-            self.europeanVanillaFxOption,
-            self.fxSpot,
-            self.foreignDiscountingCurve,
-            self.domesticDiscountingCurve,
+            self.valuation_date,
+            self.european_vanilla_fx_option,
+            self.fx_spot,
+            self.foreign_discounting_curve,
+            self.domestic_discounting_curve,
             sigma,
         )

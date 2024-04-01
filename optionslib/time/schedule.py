@@ -1,7 +1,7 @@
 """Module to support cashflow schedules."""
 
 import datetime as dt
-from typing import List
+from typing import Final, List
 
 import attrs
 import pandas as pd
@@ -104,7 +104,9 @@ class Schedule:
 
     _schedule_periods: List[SchedulePeriod] = field(default=[])
 
-    __INCOMPATIBLE_MSG = "The schedule dates and roll convention are incompatible."
+    __INCOMPATIBLE_MSG: Final[str] = (
+        "The schedule dates and roll convention are incompatible."
+    )
 
     @_end_date.validator
     def check_end_date(self, attribute, value):  # pylint: disable=W0613

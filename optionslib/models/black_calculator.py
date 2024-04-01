@@ -104,7 +104,7 @@ class BlackCalculator:
         self,
         quote_convention: FxOptionQuoteConvention,
     ):
-        """Prices the option"""
+        """Prices the option."""
         undiscounted_price = self.omega * (
             self.atm_forward * norm.cdf(self.omega * self.d_plus)
             - self.strike * norm.cdf(self.omega * self.d_minus)

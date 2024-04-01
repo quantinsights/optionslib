@@ -1,6 +1,6 @@
 """An integrator class that allows to perform integration using different schemas."""
 
-from typing import Callable, Optional, Type
+from typing import Callable, Final, Optional, Type
 
 from attrs import define, field
 
@@ -34,7 +34,7 @@ class Integrator:
         if self.default_start >= default_end_value:
             raise ValueError("Start value must be less than end value.")
 
-    _WORKER_MAP: dict[Type[IntegrationConfig], IntegrationSchema] = {
+    _WORKER_MAP: Final[dict[Type[IntegrationConfig], IntegrationSchema]] = {
         RectangleConfig: rectangle_rule,
         MonteCarloConfig: monte_carlo,
     }
